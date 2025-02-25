@@ -4,7 +4,16 @@ import supabase from '../supabaseClient';
 function Home() {
   const [tools, setTools] = useState([]);
   const [hover, setHover] = useState(false);
+  const [currentImage, setCurrentImage] = useState(0);
 
+  // Array of background images (replace with your own URLs if desired)
+  const backgroundImages = [
+    'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80', // Abstract tech
+    'https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80', // Circuit board
+    'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80', // Laptop coding
+  ];
+
+  // Fetch tools from Supabase
   useEffect(() => {
     async function fetchTools() {
       const { data } = await supabase.from('dd_tools').select('*');
@@ -13,37 +22,63 @@ function Home() {
     fetchTools();
   }, []);
 
+  // Background image slider
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % backgroundImages.length);
+    }, 5000); // Change image every 5 seconds
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [backgroundImages.length]);
+
   return (
     <div>
-      {/* Hero Section */}
+      {/* Hero Section with Background Slider */}
       <section style={{
-        background: 'linear-gradient(135deg, #4169E1, #000080)',
+        position: 'relative',
+        height: '100vh',
         color: '#FFFFFF',
         padding: '100px 20px',
         textAlign: 'center',
-        position: 'relative',
         overflow: 'hidden',
+        backgroundImage: `url(${backgroundImages[currentImage]})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        transition: 'background-image 1s ease-in-out',
       }}>
-        <h1 style={{
-          fontSize: '48px',
-          margin: '0',
-          transform: hover ? 'scale(1.05)' : 'scale(1)',
-          transition: 'transform 0.3s ease-in-out',
-        }}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        >
-          Discover the Best Domaining Tools
-        </h1>
-        <p style={{ fontSize: '20px', margin: '20px 0', color: '#C0C0C0' }}>
-          Explore top tools and resources for domain enthusiasts.
-        </p>
-        <div style={{ marginTop: '30px' }}>
-          <a href="/submit-tool" style={ctaStyle(true)}>Submit Your Tool</a>
-          <a href="/blog" style={ctaStyle(false)}>Read Our Blog</a>
+        {/* Overlay for readability */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'rgba(0, 0, 128, 0.6)', // Navy blue overlay with opacity
+          zIndex: 1,
+        }} />
+        {/* Content */}
+        <div style={{ position: 'relative', zIndex: 2 }}>
+          <h1 style={{
+            fontSize: '48px',
+            margin: '0',
+            transform: hover ? 'scale(1.05)' : 'scale(1)',
+            transition: 'transform 0.3s ease-in-out',
+          }}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          >
+            Discover the Best Domaining Tools
+          </h1>
+          <p style={{ fontSize: '20px', margin: '20px 0', color: '#C0C0C0' }}>
+            Explore top tools and resources for domain enthusiasts.
+          </p>
+          <div style={{ marginTop: '30px' }}>
+            <a href="/submit-tool" style={ctaStyle(true)}>Submit Your Tool</a>
+            <a href="/blog" style={ctaStyle(false)}>Read Our Blog</a>
+          </div>
+          {/* Dynamic Floating Circles */}
+          <div style={circleStyle(100, 50)} />
+          <div style={circleStyle(300, 200)} />
         </div>
-        <div style={circleStyle(100, 50)} />
-        <div style={circleStyle(300, 200)} />
       </section>
 
       {/* Tools List */}
@@ -89,6 +124,7 @@ const circleStyle = (top, left) => ({
   top: `${top}px`,
   left: `${left}px`,
   animation: 'float 6s infinite ease-in-out',
+  zIndex: 2,
 });
 
 export default Home;
