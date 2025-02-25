@@ -6,6 +6,7 @@ import Blog from './components/Blog';
 import ToolForm from './components/ToolForm';
 import AdminDashboard from './components/AdminDashboard';
 import Footer from './components/Footer';
+import Login from './components/Login';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/submit-tool" element={<ToolForm />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </div>
         <Footer />
