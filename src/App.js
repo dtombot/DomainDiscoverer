@@ -4,18 +4,23 @@ import Home from './components/Home';
 import Blog from './components/Blog';
 import ToolForm from './components/ToolForm';
 import AdminDashboard from './components/AdminDashboard';
+import Footer from './components/Footer';
 
 function App() {
   return (
-    <div>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/submit-tool" element={<ToolForm />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-      </Routes>
+      <div style={{ flex: '1' }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/submit-tool" element={<ToolForm />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+        </Routes>
+      </div>
+      <Footer />
     </div>
   );
 }
+
 export default App;
