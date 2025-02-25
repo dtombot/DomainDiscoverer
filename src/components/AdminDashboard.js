@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import supabase from '../supabaseClient';
+import { useState } from 'react';
+import { useAuth } from './AuthContext';
 import PostsManager from './PostsManager';
 import AdsManager from './AdsManager';
 import ToolsManager from './ToolsManager';
@@ -8,28 +8,10 @@ import AnalyticsPanel from './AnalyticsPanel';
 
 function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('posts');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { user } = useAuth();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const enteredPassword = prompt('Enter admin password');
-      const { data } = await supabase
-        .from('dd_users')
-        .select('password')
-        .eq('email', 'tomselfdevelopr@gmail.com')
-        .eq('role', 'admin')
-        .single();
-      if (data && enteredPassword === data.password) {
-        setIsAuthenticated(true);
-      } else {
-        alert('Incorrect password');
-      }
-    };
-    checkAuth();
-  }, []);
-
-  if (!isAuthenticated) {
-    return <div style={{ padding: '20px', color: '#000080' }}>Access Denied</div>;
+  if (!user || user.email !== 'tomselfdevelopr@gmail.com') {
+    return <div style={{ padding: '20px', color: '#000080' }}>Access Denied - Admin Only</div>;
   }
 
   return (
