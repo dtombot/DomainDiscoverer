@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Blog from './components/Blog';
 import ToolForm from './components/ToolForm';
+import AdminDashboard from './components/AdminDashboard';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/submit-tool" element={<ToolForm />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </div>
   );
