@@ -3,6 +3,7 @@ import supabase from '../supabaseClient';
 
 function Home() {
   const [tools, setTools] = useState([]);
+  const [hover, setHover] = useState(false);
 
   useEffect(() => {
     async function fetchTools() {
@@ -14,16 +15,80 @@ function Home() {
 
   return (
     <div>
-      <h2>Top Domaining Tools</h2>
-      {tools.map((tool) => (
-        <div key={tool.id} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
-          <h3>{tool.name}</h3>
-          <p>{tool.description}</p>
-          <a href={tool.link}>Visit Tool</a>
+      {/* Hero Section */}
+      <section style={{
+        background: 'linear-gradient(135deg, #4169E1, #000080)',
+        color: '#FFFFFF',
+        padding: '100px 20px',
+        textAlign: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        <h1 style={{
+          fontSize: '48px',
+          margin: '0',
+          transform: hover ? 'scale(1.05)' : 'scale(1)',
+          transition: 'transform 0.3s ease-in-out',
+        }}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        >
+          Discover the Best Domaining Tools
+        </h1>
+        <p style={{ fontSize: '20px', margin: '20px 0', color: '#C0C0C0' }}>
+          Explore top tools and resources for domain enthusiasts.
+        </p>
+        <div style={{ marginTop: '30px' }}>
+          <a href="/submit-tool" style={ctaStyle(true)}>Submit Your Tool</a>
+          <a href="/blog" style={ctaStyle(false)}>Read Our Blog</a>
         </div>
-      ))}
-      <a href="/submit-tool">Add Your Tool</a>
+        <div style={circleStyle(100, 50)} />
+        <div style={circleStyle(300, 200)} />
+      </section>
+
+      {/* Tools List */}
+      <section style={{ padding: '40px 20px', background: '#FFFFFF' }}>
+        <h2 style={{ color: '#000080', textAlign: 'center' }}>Top Domaining Tools</h2>
+        {tools.map((tool) => (
+          <div key={tool.id} style={{
+            border: '1px solid #C0C0C0',
+            padding: '15px',
+            margin: '10px auto',
+            maxWidth: '600px',
+            borderRadius: '5px',
+            transition: 'box-shadow 0.3s',
+          }}>
+            <h3 style={{ color: '#4169E1' }}>{tool.name}</h3>
+            <p style={{ color: '#000080' }}>{tool.description}</p>
+            <a href={tool.link} style={{ color: '#FFD700', textDecoration: 'none' }}>Visit Tool</a>
+          </div>
+        ))}
+      </section>
     </div>
   );
 }
+
+const ctaStyle = (isPrimary) => ({
+  display: 'inline-block',
+  padding: '12px 25px',
+  margin: '0 10px',
+  background: isPrimary ? '#FFD700' : '#C0C0C0',
+  color: isPrimary ? '#000080' : '#4169E1',
+  textDecoration: 'none',
+  borderRadius: '5px',
+  fontWeight: 'bold',
+  transition: 'transform 0.2s, box-shadow 0.2s',
+});
+
+const circleStyle = (top, left) => ({
+  position: 'absolute',
+  width: '50px',
+  height: '50px',
+  background: 'rgba(255, 215, 0, 0.2)',
+  borderRadius: '50%',
+  top: `${top}px`,
+  left: `${left}px`,
+  animation: 'float 6s infinite ease-in-out',
+});
+
 export default Home;
