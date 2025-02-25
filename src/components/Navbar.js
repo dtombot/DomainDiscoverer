@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 function Navbar() {
+  const { user, signOut } = useAuth();
+
   return (
     <nav style={{
       padding: '15px 20px',
@@ -16,7 +19,14 @@ function Navbar() {
         <Link to="/" style={navLinkStyle}>Home</Link>
         <Link to="/blog" style={navLinkStyle}>Blog</Link>
         <Link to="/submit-tool" style={navLinkStyle}>Submit Tool</Link>
-        <Link to="/admin" style={navLinkStyle}>Admin</Link>
+        {user && user.email === 'tomselfdevelopr@gmail.com' && (
+          <Link to="/admin" style={navLinkStyle}>Admin</Link>
+        )}
+        {user ? (
+          <button onClick={signOut} style={navLinkStyle}>Logout</button>
+        ) : (
+          <Link to="/login" style={navLinkStyle}>Login</Link>
+        )}
       </div>
     </nav>
   );
@@ -28,6 +38,9 @@ const navLinkStyle = {
   textDecoration: 'none',
   fontSize: '18px',
   transition: 'color 0.3s',
+  background: 'none',
+  border: 'none',
+  cursor: 'pointer',
 };
 
 export default Navbar;
