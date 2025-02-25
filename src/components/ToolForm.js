@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useAuth } from './AuthContext';
 import supabase from '../supabaseClient';
 
 function ToolForm() {
   const [formData, setFormData] = useState({ name: '', description: '', link: '', owner_email: '' });
+  const { user } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -10,7 +12,11 @@ function ToolForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await supabase.from('dd_tools').insert([formData]);
+    if (!user) {
+      alert('Please log in to submit a tool.');
+      return;
+    }
+    await supabase.from('dd_tools').insert([{ ...formData, owner_email: user.email }]);
     alert('Tool submitted!');
     setFormData({ name: '', description: '', link: '', owner_email: '' });
   };
@@ -50,6 +56,7 @@ function ToolForm() {
           placeholder="Your Email"
           required
           style={inputStyle}
+          disabled={user} // Auto-filled with logged-in user's email
         />
         <button type="submit" style={{
           padding: '12px',
