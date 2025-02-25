@@ -6,11 +6,11 @@ function Home() {
   const [hover, setHover] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
 
-  // Array of background images (replace with your own URLs if desired)
+  // Array of office activity background images
   const backgroundImages = [
-    'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80', // Abstract tech
-    'https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80', // Circuit board
-    'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80', // Laptop coding
+    'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80', // Workers collaborating
+    'https://images.unsplash.com/photo-1507208770228-c53a3d1a1d15?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80', // Businesswoman on laptop
+    'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80', // Team meeting with laptops
   ];
 
   // Fetch tools from Supabase
@@ -27,7 +27,7 @@ function Home() {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % backgroundImages.length);
     }, 5000); // Change image every 5 seconds
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, [backgroundImages.length]);
 
   return (
@@ -52,7 +52,7 @@ function Home() {
           left: 0,
           width: '100%',
           height: '100%',
-          background: 'rgba(0, 0, 128, 0.6)', // Navy blue overlay with opacity
+          background: 'rgba(0, 0, 128, 0.6)', // Navy blue overlay
           zIndex: 1,
         }} />
         {/* Content */}
