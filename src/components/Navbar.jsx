@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useAuth } from './AuthContext';
 
 function Navbar() {
-  const { isAdmin } = useAuth();
+  const { isAdmin, logout } = useAuth();
 
   return (
     <nav className="bg-gradient-to-r from-primary to-accent p-6 shadow-xl fixed w-full top-0 z-10">
@@ -19,6 +19,14 @@ function Navbar() {
           <Link to="/blog" className="text-white hover:text-secondary transition-colors duration-300">Blog</Link>
           {isAdmin && (
             <Link to="/admin" className="text-white hover:text-secondary transition-colors duration-300">Admin</Link>
+          )}
+          {isAdmin && (
+            <button
+              onClick={logout}
+              className="text-white hover:text-secondary transition-colors duration-300"
+            >
+              Logout
+            </button>
           )}
         </div>
       </div>
