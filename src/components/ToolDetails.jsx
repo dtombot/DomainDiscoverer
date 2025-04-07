@@ -15,19 +15,29 @@ function ToolDetails() {
     fetchTool();
   }, [id]);
 
-  if (!tool) return <div>Loading...</div>;
+  if (!tool) return <div className="text-center text-gray-400 pt-24">Loading...</div>;
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="container mx-auto p-6"
+      transition={{ duration: 0.8 }}
+      className="container mx-auto pt-24 pb-12 px-6"
     >
-      <div className="bg-accent p-6 rounded-lg shadow-lg">
-        <img src={tool.logo_url} alt={tool.title} className="h-24 mx-auto mb-4" />
-        <h1 className="text-3xl font-bold mb-4">{tool.title}</h1>
-        <p className="mb-4">{tool.description}</p>
-        <a href={tool.url} target="_blank" rel="noopener noreferrer" className="text-secondary hover:underline">
+      <div className="bg-accent bg-opacity-80 p-8 rounded-xl shadow-2xl max-w-2xl mx-auto">
+        <img
+          src={tool.logo_url}
+          alt={tool.title}
+          className="h-32 mx-auto mb-6 rounded-full border-4 border-secondary"
+        />
+        <h1 className="text-4xl font-extrabold text-center mb-6 text-secondary">{tool.title}</h1>
+        <p className="text-gray-300 text-center mb-6">{tool.description}</p>
+        <a
+          href={tool.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block text-center bg-secondary text-primary py-3 px-6 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-300"
+        >
           Visit Tool
         </a>
       </div>
