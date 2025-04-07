@@ -27,28 +27,28 @@ function Login() {
       transition={{ duration: 0.8 }}
       className="container mx-auto pt-24 pb-12 px-6"
     >
-      <h1 className="text-5xl font-bold mb-12 text-center text-white">
+      <h1 className="text-5xl font-extrabold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-secondary to-accent">
         Login
       </h1>
-      <div className="bg-blue-600 bg-opacity-70 p-8 rounded-xl shadow-2xl max-w-md mx-auto">
+      <div className="bg-accent bg-opacity-70 p-8 rounded-xl shadow-2xl max-w-md mx-auto">
         <form onSubmit={handleSubmit} className="space-y-6">
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 bg-white text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            className="w-full p-3 bg-primary border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-secondary"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 bg-white text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            className="w-full p-3 bg-primary border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-secondary"
           />
           <button
             type="submit"
-            className="w-full bg-yellow-300 text-blue-600 p-3 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-300"
+            className="w-full bg-secondary text-primary p-3 rounded-lg font-semibold hover:bg-yellow-400 transition-colors duration-300"
           >
             Log In
           </button>
