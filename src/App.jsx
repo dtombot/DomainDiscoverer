@@ -10,7 +10,7 @@ import ToolDetails from './components/ToolDetails';
 
 function ProtectedRoute({ children }) {
   const { isAdmin, loading } = useAuth();
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="text-center text-gray-400 pt-24">Loading...</div>;
   return isAdmin ? children : <Navigate to="/login" />;
 }
 
@@ -29,6 +29,7 @@ function App() {
             />
             <Route path="/login" element={<Login />} />
             <Route path="/tool/:id" element={<ToolDetails />} />
+            <Route path="*" element={<div className="text-center text-gray-400 pt-24">Page Not Found</div>} />
           </Routes>
         </main>
         <Footer />
