@@ -14,12 +14,18 @@ export function AuthProvider({ children }) {
       const { data: { session } } = await auth.getSession();
       setUser(session?.user ?? null);
       if (session?.user) {
-        const { data } = await supabase
-          .from('dd_users')
-          .select('is_admin')
-          .eq('id', session.user.id)
-          .single();
-        setIsAdmin(data?.is_admin ?? false);
+        try {
+          const { data, error } = await supabase
+            .from('dd_users')
+            .select('is_admin')
+            .eq('id', session.user.id)
+            .single();
+          if (error) throw error;
+          setIsAdmin(data?.is_admin ?? false);
+        } catch (err) {
+          console.error('Failed to fetch admin status:', err.message);
+          setIsAdmin(false); // Default to non-admin on error
+        }
       }
       setLoading(false);
     };
@@ -33,7 +39,14 @@ export function AuthProvider({ children }) {
           .select('is_admin')
           .eq('id', session.user.id)
           .single()
-          .then(({ data }) => setIsAdmin(data?.is_admin ?? false));
+          .then(({ data, error }) => {
+            if (error) {
+              console.error('Auth state change error:', error.message);
+              setIsAdmin(false);
+            } else {
+              setIsAdmin(data?.is_admin ?? false);
+            }
+          });
       } else {
         setIsAdmin(false);
       }
