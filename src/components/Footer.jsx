@@ -5,9 +5,10 @@ function Footer() {
     <motion.footer
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="bg-primary p-4 text-center"
+      transition={{ duration: 0.8 }}
+      className="bg-gradient-to-r from-primary to-accent p-6 text-center shadow-inner"
     >
-      <p>&copy; 2025 DomainDiscoverer. All rights reserved.</p>
+      <p className="text-gray-300 text-sm">© 2025 DomainDiscoverer. All rights reserved.</p>
     </motion.footer>
   );
 }
