@@ -39,7 +39,7 @@ function Home() {
             >
               <Link to={`/tool/${tool.id}`}>
                 <img src={tool.logo_url} alt={tool.title} className="h-20 mx-auto mb-6 rounded-full" />
-                <h3 className="text-2xl font-bold text-center mb-4">{tool.title}</h3>
+                <h3 className="text-2xl font-bold text-center mb-4 text-white">{tool.title}</h3>
                 <p className="text-gray-300 text-center">{tool.description}</p>
               </Link>
             </motion.div>
@@ -59,7 +59,7 @@ function Home() {
             >
               <Link to={`/tool/${tool.id}`}>
                 <img src={tool.logo_url} alt={tool.title} className="h-16 mx-auto mb-4 rounded-full" />
-                <h3 className="text-xl font-bold text-center mb-3">{tool.title}</h3>
+                <h3 className="text-xl font-bold text-center mb-3 text-white">{tool.title}</h3>
                 <p className="text-gray-300 text-center">{tool.description}</p>
               </Link>
             </motion.div>
