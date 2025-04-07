@@ -17,15 +17,23 @@ function Blog() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="container mx-auto p-6"
+      transition={{ duration: 0.8 }}
+      className="container mx-auto pt-24 pb-12 px-6"
     >
-      <h1 className="text-3xl font-bold mb-6">Blog</h1>
-      <div className="space-y-6">
+      <h1 className="text-5xl font-extrabold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-secondary to-accent">
+        Blog
+      </h1>
+      <div className="space-y-10">
         {posts.map(post => (
-          <div key={post.id} className="bg-accent p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-semibold mb-2">{post.title}</h2>
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
-            <p className="text-sm mt-2">Posted on: {new Date(post.created_at).toLocaleDateString()}</p>
+          <div
+            key={post.id}
+            className="bg-accent bg-opacity-70 p-8 rounded-xl shadow-2xl hover:shadow-secondary/50 transition-shadow duration-300"
+          >
+            <h2 className="text-3xl font-semibold mb-4 text-secondary">{post.title}</h2>
+            <div className="text-gray-300" dangerouslySetInnerHTML={{ __html: post.content }} />
+            <p className="text-sm mt-4 text-gray-400">
+              Posted on: {new Date(post.created_at).toLocaleDateString()}
+            </p>
           </div>
         ))}
       </div>
