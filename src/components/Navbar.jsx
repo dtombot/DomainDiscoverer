@@ -6,19 +6,19 @@ function Navbar() {
   const { isAdmin } = useAuth();
 
   return (
-    <nav className="bg-blue-500 p-6">
+    <nav className="bg-gradient-to-r from-primary to-accent p-6 shadow-xl fixed w-full top-0 z-10">
       <div className="container mx-auto flex justify-between items-center">
         <motion.div
           whileHover={{ scale: 1.1 }}
-          className="text-3xl font-bold text-white"
+          className="text-3xl font-extrabold text-secondary tracking-tight"
         >
           <Link to="/">DomainDiscoverer</Link>
         </motion.div>
-        <div className="space-x-6 text-lg text-white">
-          <Link to="/" className="hover:text-yellow-300">Home</Link>
-          <Link to="/blog" className="hover:text-yellow-300">Blog</Link>
+        <div className="space-x-8 text-lg font-medium">
+          <Link to="/" className="text-white hover:text-secondary transition-colors duration-300">Home</Link>
+          <Link to="/blog" className="text-white hover:text-secondary transition-colors duration-300">Blog</Link>
           {isAdmin && (
-            <Link to="/admin" className="hover:text-yellow-300">Admin</Link>
+            <Link to="/admin" className="text-white hover:text-secondary transition-colors duration-300">Admin</Link>
           )}
         </div>
       </div>
