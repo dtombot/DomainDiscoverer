@@ -1,11 +1,17 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['Poppins', 'Inter', 'Segoe UI', 'sans-serif'],
+        body: ['Inter', 'Segoe UI', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Menlo', 'monospace'],
+      },
       colors: {
-        primary: '#1E1E2F', // Dark Web3 background
-        secondary: '#FFD700', // Gold accent
-        accent: '#4B5EAA', // Blue-purple highlight
+        primary: "#2a003f",     // Deep onion purple
+        secondary: "#a779e9",   // Light onion purple
+        accent: "#dfbfff",      // Extra light purple
       },
     },
   },
