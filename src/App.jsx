@@ -9,6 +9,7 @@ import SignupPage from './components/SignupPage';
 import RequireAdmin from './components/RequireAdmin';
 
 function App() {
+  console.log('Key at runtime:', process.env.REACT_APP_SUPABASE_KEY);
   return (
     <AuthProvider>
       <div className="min-h-screen flex flex-col bg-primary">
