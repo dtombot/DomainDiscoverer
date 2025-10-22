@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const title = 'Domain Guides & Blog - Domain Discoverer';
+const description = 'SEO-focused domain tutorials: availability checks, long-tail keywords, registrars, and pricing. Learn to choose and register better domain names.';
+const posts = [
+  { slug: 'how-to-check-domain-availability-smart-way', title: 'How to Check Domain Availability The Smart Way', desc: 'Save time and avoid false positives with these tips.', date: '2025-01-15' },
+  { slug: 'best-domain-name-tools-for-beginners', title: 'Best Domain Name Tools for Beginners (2025)', desc: 'Free and low-cost tools to research names fast.', date: '2025-01-20' },
+  { slug: 'long-tail-domain-keywords', title: 'Long‑Tail Domain Keywords: Get Traffic with Less Competition', desc: 'Win SEO by targeting specific domain queries.', date: '2025-02-02' },
+  { slug: 'brandable-domain-names-guide', title: 'Brandable Domain Names: Complete Guide for Startups', desc: 'Choose memorable names that customers remember and search engines respect.', date: '2025-02-16' },
+  { slug: 'cheap-domain-registrars-with-free-whois', title: 'Cheap Domain Registrars with Free WHOIS Privacy (2025)', desc: 'Protect your info while saving money with transparent pricing.', date: '2025-03-05' },
+];
+---
+<BaseLayout {title} {description}>
+  <section class="container-pad">
+    <h1 class="text-3xl sm:text-4xl font-extrabold mb-6">Domain Guides & Blog</h1>
+    <p class="text-white/80 mb-8 max-w-2xl">Practical, SEO-focused tutorials about domain availability checks, picking names, and using reputable tools - written to rank for long‑tail keywords and help you act quickly.</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {posts.map((p) => (
+        <a href={`/blog/${p.slug}`} class="card p-5 hover:shadow-xl transition text-left">
+          <div class="text-xs text-white/60">{new Date(p.date).toLocaleDateString()}</div>
+          <h2 class="font-bold text-xl mt-1">{p.title}</h2>
+          <p class="text-white/75 mt-1">{p.desc}</p>
+          <span class="inline-block mt-3 text-accent text-sm">Read more →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+
+

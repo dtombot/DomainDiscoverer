@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const title = 'Check Domain Availability - Fast & Free';
+const description = 'Instantly check if your domain is available. Plus, explore the best domain tools and in-depth guides to help you choose and register the perfect name.';
+---
+<BaseLayout {title} {description}>
+  <section id="check" class="container-pad mt-6">
+    <div class="card px-6 py-10 text-center">
+      <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">Find Your Next <span class="text-accent">Valuable Domain</span></h1>
+      <p class="text-white/80 mb-6 max-w-2xl mx-auto">Search, discover, and grab top domains before anyone else. Built for speed, SEO, and zero-budget performance.</p>
+      <form id="domain-form" class="mx-auto max-w-xl flex gap-2 flex-col sm:flex-row">
+        <input id="domain-input" type="text" placeholder="e.g. smartmininghub.com" class="flex-1 px-4 py-3 rounded-xl sm:rounded-l-xl sm:rounded-r-none bg-primary text-white border-2 border-secondary focus:outline-none focus:border-accent placeholder-white/50 font-medium transition text-base" required />
+        <button class="btn-primary px-6 py-3 rounded-xl sm:rounded-r-xl sm:rounded-l-none w-full sm:w-auto">Check</button>
+      </form>
+      <div id="domain-result" class="mt-4 text-lg font-semibold min-h-[1.5rem]"></div>
+      <div id="domain-cta" class="mt-4 hidden">
+        <a id="reg-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-block px-7 py-3 bg-gradient-to-r from-secondary to-primary text-white font-bold rounded-2xl shadow hover:scale-105 transition text-base">Register this domain now</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="tools" class="container-pad mt-14">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-bold">Best Domain Tools</h2>
+      <a href="/blog/best-domain-name-tools-for-beginners" class="text-accent text-sm hover:underline">See how to use these tools</a>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
+      {[
+        { name: 'NameBio', link: 'https://namebio.com', img: '/domainingtools/namebio.jpg', alt: 'NameBio logo' },
+        { name: 'Ahrefs', link: 'https://ahrefs.com', img: '/domainingtools/ahrefs.jpg', alt: 'Ahrefs logo' },
+        { name: 'SEMrush', link: 'https://semrush.com', img: '/domainingtools/semrush.jpg', alt: 'SEMrush logo' },
+        { name: 'DotDB', link: 'https://dotdb.com', img: '/domainingtools/dotdb.jpg', alt: 'DotDB logo' },
+        { name: 'DNSlytics', link: 'https://dnslytics.com', img: '/domainingtools/dnslytics.jpg', alt: 'DNSlytics logo' },
+        { name: 'Estibot', link: 'https://estibot.com', img: '/domainingtools/estibot-01.jpg', alt: 'Estibot logo' },
+        { name: 'Instant Domain Search', link: 'https://instantdomainsearch.com', img: '/domainingtools/instant-domain-search.jpg', alt: 'Instant Domain Search logo' },
+        { name: 'NameMaxi', link: 'https://namemaxi.com', img: '/domainingtools/name-maxi.jpg', alt: 'NameMaxi logo' }
+      ].map((t) => (
+        <a href={t.link} target="_blank" rel="noopener noreferrer" class="card aspect-square w-full p-0 overflow-hidden relative flex items-center justify-center group" aria-label={t.name} title={t.name}>
+          <img src={t.img} alt={t.alt} loading="lazy" class="w-full h-full object-contain p-6 group-hover:scale-105 transition" />
+          <span class="sr-only">{t.name}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="container-pad mt-16">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-bold">Latest Guides</h2>
+      <a href="/blog" class="text-accent text-sm hover:underline">View all</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {
+        [
+          { title: 'How to Check Domain Availability The Smart Way', href: '/blog/how-to-check-domain-availability-smart-way', desc: 'Save time and avoid false positives with these tips.' },
+          { title: 'Best Domain Name Tools for Beginners (2025)', href: '/blog/best-domain-name-tools-for-beginners', desc: 'Free and low-cost tools to research names fast.' },
+          { title: 'Cheap Domain Registrars with Free WHOIS Privacy (2025)', href: '/blog/cheap-domain-registrars-with-free-whois', desc: 'Protect your details and avoid surprise renewal fees.' }
+        ].map((p) => (
+          <a href={p.href} class="card p-5 hover:shadow-xl transition text-left">
+            <h3 class="font-bold text-lg mb-1">{p.title}</h3>
+            <p class="text-white/75 text-sm">{p.desc}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('domain-form');
+    const input = document.getElementById('domain-input');
+    const result = document.getElementById('domain-result');
+    const cta = document.getElementById('domain-cta');
+    const regLink = document.getElementById('reg-link');
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const domain = input.value.trim().toLowerCase();
+      if (!domain) return;
+      result.textContent = 'Checking...';
+      cta.classList.add('hidden');
+      try {
+        const res = await fetch(`/.netlify/functions/check-domain?domain=${encodeURIComponent(domain)}`);
+        const data = await res.json();
+        if (data.status === 'available') {
+          result.textContent = '🎉 Domain is AVAILABLE!';
+          result.className = 'mt-4 text-lg font-semibold text-green-400';
+          cta.classList.remove('hidden');
+          regLink.href = `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(domain)}&affid=000000`;
+        } else if (data.status === 'taken') {
+          result.textContent = '❌ Domain is already registered.';
+          result.className = 'mt-4 text-lg font-semibold text-red-400';
+        } else {
+          result.textContent = 'Error checking domain.';
+          result.className = 'mt-4 text-lg font-semibold text-red-300';
+        }
+      } catch (err) {
+        result.textContent = 'Network error. Try again.';
+        result.className = 'mt-4 text-lg font-semibold text-red-300';
+      }
+    });
+  </script>
+</BaseLayout>
+
+
+
