@@ -1,0 +1,18 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const title = "Message Sent";
+const description = "Thanks for reaching out";
+---
+<BaseLayout title={title} description={description}>
+  <header class="bg-gradient-to-r from-primary to-secondary/40">
+    <div class="container-pad py-10">
+      <h1 class="text-3xl sm:text-4xl font-extrabold">Thanks — message sent</h1>
+      <p class="text-white/70 mt-2 max-w-2xl">I’ll get back to you soon. You can return to the homepage or explore recent guides.</p>
+    </div>
+  </header>
+
+  <section class="container-pad my-10">
+    <a href="/" class="btn-primary inline-block px-5 py-2">Back to Home</a>
+  </section>
+</BaseLayout>
+

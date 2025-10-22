@@ -1,0 +1,42 @@
+---
+import BaseLayout from './BaseLayout.astro';
+export interface Props { title: string; description?: string; pubDate?: string; updatedDate?: string; }
+const { title, description, pubDate, updatedDate } = Astro.props as Props;
+---
+<BaseLayout title={title} description={description}>
+  <header class="bg-gradient-to-r from-primary to-secondary/60">
+    <div class="container-pad py-10">
+      <h1 class="text-3xl sm:text-4xl font-extrabold">{title}</h1>
+      {(pubDate || updatedDate) && (
+        <div class="text-white/70 text-sm mt-2">
+          {pubDate && (<span>Published: {new Date(pubDate).toLocaleDateString()}</span>)}
+          {pubDate && updatedDate && <span class="mx-2">·</span>}
+          {updatedDate && (<span>Updated: {new Date(updatedDate).toLocaleDateString()}</span>)}
+        </div>
+      )}
+    </div>
+  </header>
+
+  <article class="container-pad my-10">
+    <div class="prose">
+      <slot />
+    </div>
+    <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <a href="/domain-availability-checker" class="card p-4 hover:shadow-xl transition text-left">
+        <div class="text-sm text-white/60">Tool</div>
+        <div class="font-bold">Domain Availability Checker</div>
+        <div class="text-white/70 text-sm mt-1">Check a domain and act fast when it's free.</div>
+      </a>
+      <a href="/blog/best-domain-name-tools-for-beginners" class="card p-4 hover:shadow-xl transition text-left">
+        <div class="text-sm text-white/60">Guide</div>
+        <div class="font-bold">Best Domain Name Tools for Beginners</div>
+        <div class="text-white/70 text-sm mt-1">Build a reliable toolkit without overspending.</div>
+      </a>
+      <a href="/blog/long-tail-domain-keywords" class="card p-4 hover:shadow-xl transition text-left">
+        <div class="text-sm text-white/60">SEO</div>
+        <div class="font-bold">Long-Tail Domain Keywords</div>
+        <div class="text-white/70 text-sm mt-1">Rank faster by targeting specific queries.</div>
+      </a>
+    </div>
+  </article>
+</BaseLayout>
