@@ -88,7 +88,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
       <div class="container-pad py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div>
           <div class="font-extrabold text-white text-lg">Domain Discoverer</div>
-          <p class="text-white/70 mt-2 text-sm">Fast domain checks, helpful guides, and curated tools to help you build and invest with confidence.</p>
+          <p class="text-white/70 mt-2 text-sm">Discover valuable domain names faster. Check availability instantly and use curated tools and guides for investors, businesses, SaaS, SEO experts, and startups.</p>
         </div>
         <div>
           <div class="text-white font-semibold mb-3">Explore</div>
@@ -104,13 +104,22 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
             <li><a class="text-white/80 hover:text-white" href="/about">About</a></li>
             <li><a class="text-white/80 hover:text-white" href="/contact">Contact</a></li>
             <li><a class="text-white/80 hover:text-white" href="/privacy">Privacy</a></li>
+            <li><a class="text-white/80 hover:text-white" href="/terms">Terms of Service</a></li>
             <li><a class="text-white/80 hover:text-white" href="/disclosure">Affiliate Disclosure</a></li>
           </ul>
         </div>
         <div>
-          <div class="text-white font-semibold mb-3">Connect</div>
-          <p class="text-white/70 text-sm">Questions or suggestions? Reach out via the contact form.</p>
-          <a href="/contact" class="mt-3 inline-block btn-outline px-4 py-2">Send a message</a>
+          <div class="text-white font-semibold mb-3">Newsletter</div>
+          <p class="text-white/70 text-sm">Occasional updates about new tools and guides. No spam. Unsubscribe anytime.</p>
+          <form name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/contact/success" class="mt-3">
+            <input type="hidden" name="form-name" value="newsletter" />
+            <p class="hidden"><label>Do not fill<input name="bot-field" /></label></p>
+            <div class="flex items-center gap-2">
+              <input id="nl-email" name="email" type="email" required placeholder="you@example.com" class="px-3 py-2 rounded-lg bg-white/90 text-slate-900 placeholder-slate-600 focus:outline-none border border-white/20 w-full" />
+              <button class="px-3 py-2 rounded-lg bg-white/10 text-white border border-white/30 hover:bg-white/15 text-sm font-semibold">Subscribe</button>
+            </div>
+            <div class="text-white/60 text-xs mt-2">By subscribing you agree to receive emails from us. We respect your privacy.</div>
+          </form>
         </div>
       </div>
       <div class="text-center text-white/70 text-xs pb-2">Disclosure: Some links may be affiliate links. If you purchase through them, we may earn a commission at no extra cost to you.</div>
