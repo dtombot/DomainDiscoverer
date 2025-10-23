@@ -7,9 +7,11 @@
 html, body {
   @apply text-slate-900 font-body;
   background-color: #ffffff;
+  /* Very light color splash gradient for modern look */
   background-image:
-    radial-gradient(1200px 600px at 20% -10%, rgba(167,121,233,0.08), rgba(167,121,233,0) 50%),
-    radial-gradient(900px 500px at 100% 110%, rgba(249,168,212,0.06), rgba(249,168,212,0) 55%);
+    radial-gradient(1200px 600px at 15% -10%, rgba(167,121,233,0.32), rgba(167,121,233,0) 55%),
+    radial-gradient(900px 500px at 100% 110%, rgba(249,168,212,0.26), rgba(249,168,212,0) 60%),
+    radial-gradient(800px 400px at 85% 10%, rgba(59,130,246,0.22), rgba(59,130,246,0) 55%);
 }
 .container-pad { @apply max-w-6xl mx-auto px-4 sm:px-6; }
 
@@ -47,3 +49,11 @@ h1, h2, h3, .display { @apply font-display; }
 @media (prefers-reduced-motion: reduce) {
   .fade-in, .fade-up { animation: none; }
 }
+
+/* Soft animated hero shapes */
+@keyframes float-slow {
+  0% { transform: translateY(0) translateX(0) scale(1); }
+  50% { transform: translateY(-8px) translateX(6px) scale(1.02); }
+  100% { transform: translateY(0) translateX(0) scale(1); }
+}
+.float-slow { animation: float-slow 12s ease-in-out infinite; }

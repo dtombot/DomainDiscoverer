@@ -2,65 +2,110 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 const title = 'Check Domain Availability - Fast & Free';
 const description = 'Instantly check if your domain is available. Plus, explore the best domain tools and in-depth guides to help you choose and register the perfect name.';
+
+const tools = [
+  { name: 'ExpiredDomains.net', link: 'https://www.expireddomains.net/?ref=dd', img: null, alt: 'ExpiredDomains.net', desc: 'Free powerhouse for finding expiring and expired names with strong filters.' },
+  { name: 'DomainIQ', link: 'https://www.domainiq.com/?ref=dd', img: null, alt: 'DomainIQ', desc: 'Historical ownership, DNS footprint, hosting changes, and related assets.' },
+  { name: 'NameBio', link: 'https://namebio.com/?ref=dd', img: '/domainingtools/namebio.jpg', alt: 'NameBio logo', desc: 'Comparable sales to price with confidence across markets.' },
+  { name: 'Ahrefs', link: 'https://ahrefs.com/?ref=dd', img: '/domainingtools/ahrefs.jpg', alt: 'Ahrefs logo', desc: 'Backlink quality, anchors, and organic signals to vet SEO value.' },
+  { name: 'SEMrush', link: 'https://semrush.com/?ref=dd', img: '/domainingtools/semrush.jpg', alt: 'SEMrush logo', desc: 'SERP volatility and keyword volume for demand validation.' },
+  { name: 'DotDB', link: 'https://dotdb.com/?ref=dd', img: '/domainingtools/dotdb.jpg', alt: 'DotDB logo', desc: 'See saturation across TLDs to gauge interest and potential confusion.' },
+  { name: 'DNSlytics', link: 'https://dnslytics.com/?ref=dd', img: '/domainingtools/dnslytics.jpg', alt: 'DNSlytics logo', desc: 'Reverse IP, analytics IDs, MX, and related infrastructure lookups.' },
+  { name: 'Estibot', link: 'https://estibot.com/?ref=dd', img: '/domainingtools/estibot-01.jpg', alt: 'Estibot logo', desc: 'Directional valuations and liquidity signals for quick triage.' },
+  { name: 'Instant Domain Search', link: 'https://instantdomainsearch.com/?ref=dd', img: '/domainingtools/instant-domain-search.jpg', alt: 'Instant Domain Search logo', desc: 'Lightning-fast availability checks for hand-reg brainstorming.' },
+  { name: 'NameMaxi', link: 'https://namemaxi.com/?ref=dd', img: '/domainingtools/name-maxi.jpg', alt: 'NameMaxi logo', desc: 'Bulk checks and name ideas to explore patterns quickly.' },
+];
 ---
 <BaseLayout {title} {description}>
-  <section id="check" class="container-pad mt-6">
-    <div class="card px-6 py-10 text-center">
-      <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">Find Your Next <span class="text-accent">Valuable Domain</span></h1>
-      <p class="text-white/80 mb-6 max-w-2xl mx-auto">Search, discover, and grab top domains before anyone else. Built for speed, SEO, and zero-budget performance.</p>
-      <form id="domain-form" class="mx-auto max-w-xl flex gap-2 flex-col sm:flex-row">
-        <input id="domain-input" type="text" placeholder="e.g. smartmininghub.com" class="flex-1 px-4 py-3 rounded-xl sm:rounded-l-xl sm:rounded-r-none bg-primary text-white border-2 border-secondary focus:outline-none focus:border-accent placeholder-white/50 font-medium transition text-base" required />
-        <button class="btn-primary px-6 py-3 rounded-xl sm:rounded-r-xl sm:rounded-l-none w-full sm:w-auto">Check</button>
-      </form>
-      <div id="domain-result" class="mt-4 text-lg font-semibold min-h-[1.5rem]"></div>
-      <div id="domain-cta" class="mt-4 hidden">
-        <a id="reg-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-block px-7 py-3 bg-gradient-to-r from-secondary to-primary text-white font-bold rounded-2xl shadow hover:scale-105 transition text-base">Register this domain now</a>
+  <!-- Full-width Hero -->
+  <section id="hero" class="relative isolate overflow-hidden bg-gradient-to-b from-[#0b0013] to-[#130022]">
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute -top-24 -left-24 w-72 h-72 bg-secondary/40 blur-3xl rounded-full float-slow"></div>
+      <div class="absolute -bottom-24 -right-24 w-80 h-80 bg-accent/40 blur-3xl rounded-full float-slow" style="animation-delay: -3s"></div>
+    </div>
+    <div class="container-pad pt-24 sm:pt-28 pb-10">
+      <div class="text-center text-white">
+        <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">Find Your Next <span class="text-accent">Valuable Domain</span></h1>
+        <p class="text-white/80 sm:text-lg mb-6 max-w-2xl mx-auto">Search, discover, and grab top domains before anyone else. Built for speed, SEO, and zero-budget performance.</p>
+      </div>
+      <div class="max-w-3xl mx-auto">
+        <div class="rounded-2xl border border-slate-200/70 bg-white/90 backdrop-blur-xl shadow-xl p-4 sm:p-5">
+          <form id="domain-form" class="mx-auto max-w-xl flex gap-2 flex-col sm:flex-row">
+            <input id="domain-input" type="text" placeholder="e.g. smartmininghub.com" class="flex-1 px-4 py-3 rounded-xl sm:rounded-l-xl sm:rounded-r-none bg-white text-slate-900 border-2 border-secondary focus:outline-none focus:border-accent placeholder-slate-500 font-medium transition text-base" required />
+            <button class="px-6 py-3 rounded-xl sm:rounded-r-xl sm:rounded-l-none w-full sm:w-auto bg-gradient-to-r from-secondary to-primary text-white font-bold shadow hover:scale-[1.02] transition text-base">Check</button>
+          </form>
+          <div id="domain-result" class="mt-4 text-lg font-semibold min-h-[1.5rem]"></div>
+          <div id="domain-cta" class="mt-4 hidden">
+            <a id="reg-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-block px-7 py-3 bg-gradient-to-r from-secondary to-primary text-white font-bold rounded-2xl shadow hover:scale-105 transition text-base">Register this domain now</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- Tools with modal -->
   <section id="tools" class="container-pad mt-14">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-2xl font-bold">Best Domain Tools</h2>
-      <a href="/blog/best-domain-name-tools-for-beginners" class="text-accent text-sm hover:underline">See how to use these tools</a>
+      <a href="/blog/top-domaining-tools-for-investors-2025" class="text-secondary text-sm hover:underline">See how to use these tools</a>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
-      {[
-        { name: 'NameBio', link: 'https://namebio.com', img: '/domainingtools/namebio.jpg', alt: 'NameBio logo' },
-        { name: 'Ahrefs', link: 'https://ahrefs.com', img: '/domainingtools/ahrefs.jpg', alt: 'Ahrefs logo' },
-        { name: 'SEMrush', link: 'https://semrush.com', img: '/domainingtools/semrush.jpg', alt: 'SEMrush logo' },
-        { name: 'DotDB', link: 'https://dotdb.com', img: '/domainingtools/dotdb.jpg', alt: 'DotDB logo' },
-        { name: 'DNSlytics', link: 'https://dnslytics.com', img: '/domainingtools/dnslytics.jpg', alt: 'DNSlytics logo' },
-        { name: 'Estibot', link: 'https://estibot.com', img: '/domainingtools/estibot-01.jpg', alt: 'Estibot logo' },
-        { name: 'Instant Domain Search', link: 'https://instantdomainsearch.com', img: '/domainingtools/instant-domain-search.jpg', alt: 'Instant Domain Search logo' },
-        { name: 'NameMaxi', link: 'https://namemaxi.com', img: '/domainingtools/name-maxi.jpg', alt: 'NameMaxi logo' }
-      ].map((t) => (
-        <a href={t.link} target="_blank" rel="noopener noreferrer" class="card aspect-square w-full p-0 overflow-hidden relative flex items-center justify-center group" aria-label={t.name} title={t.name}>
-          <img src={t.img} alt={t.alt} loading="lazy" class="w-full h-full object-contain p-6 group-hover:scale-105 transition" />
-          <span class="sr-only">{t.name}</span>
-        </a>
+      {tools.map((t, i) => (
+        <button class="group w-full aspect-square rounded-2xl border border-slate-200 bg-white/80 backdrop-blur-sm shadow hover:shadow-lg transition overflow-hidden flex items-center justify-center relative tool-card" data-idx={i} aria-label={`Open details for ${t.name}`}
+          title={t.name}>
+          {t.img ? (
+            <img src={t.img} alt={t.alt} loading="lazy" class="w-full h-full object-contain p-6 group-hover:scale-105 transition" />
+          ) : (
+            <div class="w-full h-full flex items-center justify-center">
+              <div class="text-slate-700 font-bold text-center px-3">{t.name}</div>
+            </div>
+          )}
+        </button>
       ))}
     </div>
   </section>
 
+  <!-- Tools Modal -->
+  <div id="tool-modal" class="fixed inset-0 z-30 hidden">
+    <div class="absolute inset-0 bg-black/40" data-close></div>
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[92%] sm:w-[520px] rounded-2xl border border-slate-200 bg-white/95 backdrop-blur-xl shadow-2xl p-5">
+      <div class="flex items-start gap-3">
+        <div class="flex-1">
+          <h3 id="tool-title" class="font-extrabold text-xl"></h3>
+          <p id="tool-desc" class="text-slate-700 mt-1"></p>
+        </div>
+        <button class="p-2 text-slate-500 hover:text-slate-900" data-close aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="mt-4 flex items-center justify-between gap-3">
+        <a id="tool-cta" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-secondary to-primary shadow hover:scale-[1.02] transition">
+          Visit Tool
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3Z"/></svg>
+        </a>
+        <a href="/blog/top-domaining-tools-for-investors-2025" class="text-sm text-secondary hover:underline">Why this tool?</a>
+      </div>
+    </div>
+  </div>
+
   <section class="container-pad mt-16">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-2xl font-bold">Latest Guides</h2>
-      <a href="/blog" class="text-accent text-sm hover:underline">View all</a>
+      <a href="/blog" class="text-secondary text-sm hover:underline">View all</a>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {
-        [
-          { title: 'How to Check Domain Availability The Smart Way', href: '/blog/how-to-check-domain-availability-smart-way', desc: 'Save time and avoid false positives with these tips.' },
-          { title: 'Best Domain Name Tools for Beginners (2025)', href: '/blog/best-domain-name-tools-for-beginners', desc: 'Free and low-cost tools to research names fast.' },
-          { title: 'Cheap Domain Registrars with Free WHOIS Privacy (2025)', href: '/blog/cheap-domain-registrars-with-free-whois', desc: 'Protect your details and avoid surprise renewal fees.' }
-        ].map((p) => (
-          <a href={p.href} class="card p-5 hover:shadow-xl transition text-left">
-            <h3 class="font-bold text-lg mb-1">{p.title}</h3>
-            <p class="text-white/75 text-sm">{p.desc}</p>
-          </a>
-        ))
-      }
+      {[
+        { title: 'How to Check Domain Availability The Smart Way', href: '/blog/how-to-check-domain-availability-smart-way', desc: 'Save time and avoid false positives with these tips.' },
+        { title: 'Top Domaining Tools for Investors (2025)', href: '/blog/top-domaining-tools-for-investors-2025', desc: 'Expired, brandable, and SEO-ready picks without overspending.' },
+        { title: 'Cheap Domain Registrars with Free WHOIS Privacy (2025)', href: '/blog/cheap-domain-registrars-with-free-whois', desc: 'Protect your details and avoid surprise renewal fees.' }
+      ].map((p) => (
+        <a href={p.href} class="group rounded-2xl border border-slate-200 bg-white/80 backdrop-blur-sm p-5 shadow hover:shadow-lg transition text-left relative overflow-hidden">
+          <div class="absolute inset-x-0 -top-10 h-20 bg-gradient-to-r from-secondary/20 to-primary/20 opacity-0 group-hover:opacity-100 transition"></div>
+          <h3 class="font-bold text-lg mb-1 relative">{p.title}</h3>
+          <p class="text-slate-700 text-sm relative">{p.desc}</p>
+          <span class="mt-3 inline-flex items-center gap-1 text-secondary text-sm relative">Read more <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' class='w-4 h-4'><path d='M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3Z'/></svg></span>
+        </a>
+      ))}
     </div>
   </section>
 
@@ -80,24 +125,48 @@ const description = 'Instantly check if your domain is available. Plus, explore 
         const res = await fetch(`/.netlify/functions/check-domain?domain=${encodeURIComponent(domain)}`);
         const data = await res.json();
         if (data.status === 'available') {
-          result.textContent = '🎉 Domain is AVAILABLE!';
-          result.className = 'mt-4 text-lg font-semibold text-green-400';
+          result.textContent = 'Domain is AVAILABLE!';
+          result.className = 'mt-4 text-lg font-semibold text-green-600';
           cta.classList.remove('hidden');
           regLink.href = `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(domain)}&affid=000000`;
         } else if (data.status === 'taken') {
-          result.textContent = '❌ Domain is already registered.';
-          result.className = 'mt-4 text-lg font-semibold text-red-400';
+          result.textContent = 'Domain is already registered.';
+          result.className = 'mt-4 text-lg font-semibold text-red-600';
         } else {
           result.textContent = 'Error checking domain.';
-          result.className = 'mt-4 text-lg font-semibold text-red-300';
+          result.className = 'mt-4 text-lg font-semibold text-red-500';
         }
       } catch (err) {
         result.textContent = 'Network error. Try again.';
-        result.className = 'mt-4 text-lg font-semibold text-red-300';
+        result.className = 'mt-4 text-lg font-semibold text-red-500';
       }
     });
+
+    // Tools modal
+    const modal = document.getElementById('tool-modal');
+    const titleEl = document.getElementById('tool-title');
+    const descEl = document.getElementById('tool-desc');
+    const ctaEl = document.getElementById('tool-cta');
+    const toolsJsonEl = document.querySelector('script[data-tools]');
+    const toolsData = toolsJsonEl ? JSON.parse(toolsJsonEl.textContent || '[]') : [];
+    document.addEventListener('click', (e) => {
+      const target = e.target || e.srcElement;
+      const card = target && target.closest ? target.closest('.tool-card') : null;
+      const closeTrigger = target && target.closest ? target.closest('[data-close]') : null;
+      if (card) {
+        const idx = parseInt(card.getAttribute('data-idx') || '0', 10);
+        const t = toolsData[idx];
+        if (t) {
+          titleEl.textContent = t.name;
+          descEl.textContent = t.desc || '';
+          ctaEl.setAttribute('href', t.link);
+          modal.classList.remove('hidden');
+        }
+      } else if (closeTrigger) {
+        modal.classList.add('hidden');
+      }
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') modal.classList.add('hidden'); });
   </script>
+  <script type="application/json" data-tools set:html={JSON.stringify(tools)}></script>
 </BaseLayout>
-
-
-

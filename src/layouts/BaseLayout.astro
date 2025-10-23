@@ -13,6 +13,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical ?? `https://domaindiscoverer.com${Astro.url.pathname}`} />
+    <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#0b0013" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -33,24 +34,26 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
     })}></script>
   </head>
   <body class="min-h-screen flex flex-col bg-white text-slate-900 font-body">
-    <header id="site-header" class="fixed top-0 w-full z-20 bg-gradient-to-r from-[#0b0013]/95 to-[#130022]/90 backdrop-blur-md border-b border-white/10 transition-shadow fade-in">
+    <header id="site-header" class="fixed top-0 w-full z-20 bg-gradient-to-r from-[#0b0013]/80 to-[#130022]/70 backdrop-blur-xl border-b border-white/10 ring-1 ring-white/10 transition-shadow fade-in">
       <nav class="container-pad h-16 flex items-center justify-between">
         <a href="/" class="flex items-center gap-2 font-extrabold text-xl sm:text-2xl tracking-tight text-white">
           <img src="/logo.png" alt="Domain Discoverer logo" class="h-7 w-7 sm:h-8 sm:w-8 object-contain" loading="eager" />
           <span>Domain Discoverer</span>
         </a>
-        <button id="nav-toggle" class="sm:hidden p-2 rounded-lg text-white hover:bg-white/10" aria-label="Toggle menu">☰</button>
+        <button id="nav-toggle" class="sm:hidden p-2 rounded-lg text-white hover:bg-white/10" aria-label="Toggle menu">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
         <div id="nav-links" class="hidden sm:flex items-center gap-1 text-sm">
           <a href="/blog" aria-current={isActive('/blog') ? 'page' : undefined} class={`px-3 py-2 rounded-lg text-white transition-colors hover:bg-white/10 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 ${isActive('/blog') ? 'text-accent bg-white/10' : ''}`}>Blog</a>
-          <a href="#tools" class="px-3 py-2 rounded-lg text-white transition-colors hover:bg-white/10 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60">Tools</a>
-          <a href="#check" class="px-3 py-2 rounded-lg text-white transition-colors hover:bg-white/10 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60">Check</a>
+          <a href="/#tools" class="px-3 py-2 rounded-lg text-white transition-colors hover:bg-white/10 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60">Tools</a>
+          <a href="/#check" class="px-3 py-2 rounded-lg text-white transition-colors hover:bg-white/10 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60">Check</a>
         </div>
       </nav>
       <div id="nav-mobile" class="container-pad sm:hidden hidden pb-3">
         <div class="card p-3 mt-2">
           <a href="/blog" aria-current={isActive('/blog') ? 'page' : undefined} class={`block px-2 py-2 rounded-md text-white hover:bg-white/10 hover:text-accent ${isActive('/blog') ? 'text-accent bg-white/10' : ''}`}>Blog</a>
-          <a class="block px-2 py-2 rounded-md text-white hover:bg-white/10 hover:text-accent" href="#tools">Tools</a>
-          <a class="block px-2 py-2 rounded-md text-white hover:bg-white/10 hover:text-accent" href="#check">Check</a>
+          <a class="block px-2 py-2 rounded-md text-white hover:bg-white/10 hover:text-accent" href="/#tools">Tools</a>
+          <a class="block px-2 py-2 rounded-md text-white hover:bg-white/10 hover:text-accent" href="/#check">Check</a>
         </div>
       </div>
       <script>
@@ -105,8 +108,18 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
           <a href="/contact" class="mt-3 inline-block btn-outline px-4 py-2">Send a message</a>
         </div>
       </div>
+      <div class="text-center text-white/70 text-xs pb-2">Disclosure: Some links may be affiliate links. If you purchase through them, we may earn a commission at no extra cost to you.</div>
       <div class="text-center text-white/60 text-xs pb-6">© {new Date().getFullYear()} Domain Discoverer. All rights reserved.</div>
     </footer>
+    <!-- Cookie consent -->
+    <div id="cookie-banner" class="fixed inset-x-0 bottom-3 mx-auto w-[95%] sm:w-auto sm:left-1/2 sm:-translate-x-1/2 sm:bottom-6 z-30 hidden">
+      <div class="backdrop-blur-xl bg-white/70 text-slate-900 border border-slate-200/60 shadow-xl rounded-2xl px-4 py-3 sm:px-5 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <div class="text-sm leading-snug">We use functional cookies to keep things running. See our <a href="/privacy" class="underline">privacy</a>.</div>
+        <div class="flex gap-2 ml-auto">
+          <button id="cookie-accept" class="px-3 py-2 bg-slate-900 text-white rounded-xl text-sm font-semibold hover:opacity-90">Got it</button>
+        </div>
+      </div>
+    </div>
     <script>
       if (import.meta.env.DEV) {
         const log = (...a) => console.log('[DEV]', ...a);
@@ -119,6 +132,16 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
           const bg = getComputedStyle(document.body).backgroundColor; log('Computed body background:', bg);
         });
       }
+      // Cookie consent
+      (function(){
+        const KEY = 'dd_cookie_consent_v1';
+        const banner = document.getElementById('cookie-banner');
+        const accept = document.getElementById('cookie-accept');
+        try {
+          if (!localStorage.getItem(KEY)) banner?.classList.remove('hidden');
+          accept?.addEventListener('click', () => { localStorage.setItem(KEY, '1'); banner?.classList.add('hidden'); });
+        } catch(_) {}
+      })();
     </script>
   </body>
   </html>

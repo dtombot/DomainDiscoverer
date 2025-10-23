@@ -1,31 +1,43 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const title = 'Domain Guides & Blog - Domain Discoverer';
-const description = 'SEO-focused domain tutorials: availability checks, long-tail keywords, registrars, and pricing. Learn to choose and register better domain names.';
+const description = 'SEO-focused domain tutorials: availability checks, expired domains, registrars, and pricing. Learn to choose and register better domain names.';
 const posts = [
   { slug: 'how-to-check-domain-availability-smart-way', title: 'How to Check Domain Availability The Smart Way', desc: 'Save time and avoid false positives with these tips.', date: '2025-01-15' },
   { slug: 'best-domain-name-tools-for-beginners', title: 'Best Domain Name Tools for Beginners (2025)', desc: 'Free and low-cost tools to research names fast.', date: '2025-01-20' },
-  { slug: 'long-tail-domain-keywords', title: 'Long‑Tail Domain Keywords: Get Traffic with Less Competition', desc: 'Win SEO by targeting specific domain queries.', date: '2025-02-02' },
+  { slug: 'top-domaining-tools-for-investors-2025', title: 'Top Domaining Tools for Investors (2025)', desc: 'The essential toolkit for expired, brandable, and SEO-ready names.', date: '2025-03-15' },
   { slug: 'brandable-domain-names-guide', title: 'Brandable Domain Names: Complete Guide for Startups', desc: 'Choose memorable names that customers remember and search engines respect.', date: '2025-02-16' },
   { slug: 'cheap-domain-registrars-with-free-whois', title: 'Cheap Domain Registrars with Free WHOIS Privacy (2025)', desc: 'Protect your info while saving money with transparent pricing.', date: '2025-03-05' },
 ];
 ---
 <BaseLayout {title} {description}>
-  <section class="container-pad">
-    <h1 class="text-3xl sm:text-4xl font-extrabold mb-6">Domain Guides & Blog</h1>
-    <p class="text-white/80 mb-8 max-w-2xl">Practical, SEO-focused tutorials about domain availability checks, picking names, and using reputable tools - written to rank for long‑tail keywords and help you act quickly.</p>
+  <!-- Blog header -->
+  <section class="bg-gradient-to-r from-primary to-secondary/60">
+    <div class="container-pad py-10">
+      <nav aria-label="Breadcrumb" class="text-sm text-white/80 mb-2">
+        <ol class="flex gap-2 items-center">
+          <li><a href="/" class="hover:underline">Home</a></li>
+          <li>/</li>
+          <li aria-current="page" class="text-white">Blog</li>
+        </ol>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Domain Guides & Blog</h1>
+      <p class="text-white/80 mt-2 max-w-2xl">Practical, SEO-focused tutorials about domain checks, picking names, and using reputable tools — written to rank and help you act quickly.</p>
+    </div>
+  </section>
+
+  <!-- Modern cards -->
+  <section class="container-pad py-10">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {posts.map((p) => (
-        <a href={`/blog/${p.slug}`} class="card p-5 hover:shadow-xl transition text-left">
-          <div class="text-xs text-white/60">{new Date(p.date).toLocaleDateString()}</div>
-          <h2 class="font-bold text-xl mt-1">{p.title}</h2>
-          <p class="text-white/75 mt-1">{p.desc}</p>
-          <span class="inline-block mt-3 text-accent text-sm">Read more →</span>
+        <a href={`/blog/${p.slug}`} class="group rounded-2xl border border-slate-200 bg-white/90 backdrop-blur-sm p-5 shadow hover:shadow-lg transition text-left relative overflow-hidden">
+          <div class="absolute inset-x-0 -top-10 h-20 bg-gradient-to-r from-secondary/20 to-primary/20 opacity-0 group-hover:opacity-100 transition"></div>
+          <div class="text-[12px] text-slate-500">{new Date(p.date).toLocaleDateString()}</div>
+          <h2 class="font-extrabold text-xl mt-1 text-slate-900">{p.title}</h2>
+          <p class="text-slate-700 mt-1">{p.desc}</p>
+          <span class="inline-flex items-center gap-1 mt-3 text-secondary text-sm">Read more <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' class='w-4 h-4'><path d='M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3Z'/></svg></span>
         </a>
       ))}
     </div>
   </section>
 </BaseLayout>
-
-
-

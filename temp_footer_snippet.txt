@@ -1,0 +1,5 @@
+<footer class="mt-16 bg-gradient-to-b from-[#0b0013] to-[#130022] border-t border-white/10">
+      <div class="container-pad py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div>
+          <div class="font-extrabold text-white text-lg">Domain Discoverer</div>
+          <p class="text-white/70 mt-2 text-sm">Fast domain checks, helpful guides, and curated tools to help you build
