@@ -4,10 +4,10 @@ const title = "Contact";
 const description = "Get in touch with Domain Discoverer";
 ---
 <BaseLayout title={title} description={description}>
-  <header class="bg-gradient-to-r from-primary to-secondary/40">
+  <header class="bg-gradient-to-r from-primary to-secondary/40 text-white">
     <div class="container-pad py-10">
       <h1 class="text-3xl sm:text-4xl font-extrabold">Contact</h1>
-      <p class="text-white/70 mt-2 max-w-2xl">Have a question, suggestion, or partnership idea? Send a message and I’ll get back to you.</p>
+      <p class="text-white/80 mt-2 max-w-2xl">Have a question, suggestion, or partnership idea? Send a message and I'll get back to you.</p>
     </div>
   </header>
 
@@ -16,32 +16,44 @@ const description = "Get in touch with Domain Discoverer";
       <form name="contact" method="POST" action="/contact/success" data-netlify="true" netlify-honeypot="bot-field" class="card p-6 space-y-4">
         <input type="hidden" name="form-name" value="contact" />
         <p class="hidden">
-          <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+          <label>Don't fill this out if you're human: <input name="bot-field" /></label>
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <label class="block">
             <span class="text-sm text-white/80">Name</span>
-            <input required name="name" type="text" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:border-accent focus:ring-2 focus:ring-accent/50 outline-none" placeholder="Your name" />
+            <input required aria-label="Name" autocomplete="name" name="name" type="text" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:border-accent focus:ring-2 focus:ring-accent/50 outline-none" placeholder="Your name" />
           </label>
           <label class="block">
             <span class="text-sm text-white/80">Email</span>
-            <input required name="email" type="email" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:border-accent focus:ring-2 focus:ring-accent/50 outline-none" placeholder="you@example.com" />
+            <input required aria-label="Email" autocomplete="email" name="email" type="email" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:border-accent focus:ring-2 focus:ring-accent/50 outline-none" placeholder="you@example.com" />
+          </label>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <label class="block">
+            <span class="text-sm text-white/80">Subject</span>
+            <input required aria-label="Subject" name="subject" type="text" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:border-accent focus:ring-2 focus:ring-accent/50 outline-none" placeholder="How can I help?" />
+          </label>
+          <label class="block">
+            <span class="text-sm text-white/80">Category</span>
+            <select aria-label="Category" name="category" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-white focus:border-accent focus:ring-2 focus:ring-accent/50 outline-none">
+              <option class="text-slate-900" value="General">General</option>
+              <option class="text-slate-900" value="Bug report">Bug report</option>
+              <option class="text-slate-900" value="Feature request">Feature request</option>
+              <option class="text-slate-900" value="Partnership">Partnership</option>
+              <option class="text-slate-900" value="Other">Other</option>
+            </select>
           </label>
         </div>
 
         <label class="block">
-          <span class="text-sm text-white/80">Subject</span>
-          <input name="subject" type="text" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:border-accent focus:ring-2 focus:ring-accent/50 outline-none" placeholder="How can I help?" />
-        </label>
-
-        <label class="block">
           <span class="text-sm text-white/80">Message</span>
-          <textarea required name="message" rows="6" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:border-accent focus:ring-2 focus:ring-accent/50 outline-none" placeholder="Write your message…"></textarea>
+          <textarea required aria-label="Message" name="message" rows="6" class="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:border-accent focus:ring-2 focus:ring-accent/50 outline-none" placeholder="Write your message..."></textarea>
         </label>
 
         <div class="flex items-center justify-between">
-          <div class="text-xs text-white/50">Protected by Netlify forms. No account required to send.</div>
+          <div class="text-xs text-white/60">Protected by Netlify Forms with honeypot spam protection.</div>
           <button class="btn-primary px-5 py-2" type="submit">Send message</button>
         </div>
       </form>
@@ -50,7 +62,7 @@ const description = "Get in touch with Domain Discoverer";
     <aside class="space-y-4">
       <div class="card p-4">
         <div class="font-semibold">Response time</div>
-        <div class="text-sm text-white/70">Usually within 1–2 business days.</div>
+        <div class="text-sm text-white/70">Usually within 1-2 business days.</div>
       </div>
       <div class="card p-4">
         <div class="font-semibold">Other</div>
