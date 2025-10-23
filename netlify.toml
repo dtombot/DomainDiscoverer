@@ -13,3 +13,8 @@
   from = "/blog/long-tail-domain-keywords"
   to = "/blog/top-domaining-tools-for-investors-2025"
   status = 301
+
+[[headers]]
+  for = "/tom/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"

@@ -1,6 +1,11 @@
 ---
-export interface Props { title?: string; description?: string; canonical?: string; }
-const { title = 'Domain Discoverer - Fast Domain Availability & Guides', description = 'Check domain availability instantly and learn domain strategies. Fast, SEO-first, and built for zero-budget performance.', canonical } = Astro.props as Props;
+export interface Props { title?: string; description?: string; canonical?: string; robots?: string; }
+const {
+  title = 'Domain Discoverer - Discover Valuable Domain Names',
+  description = 'Discover valuable domain names faster. Check availability instantly and use curated tools and guides for investors, businesses, SaaS, SEO experts, and startups.',
+  canonical,
+  robots = 'index,follow'
+} = Astro.props as Props;
 import '../styles/tailwind.css';
 const fullTitle = title.includes('Domain Discoverer') ? title : `${title} - Domain Discoverer`;
 const path = Astro.url.pathname;
@@ -13,7 +18,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical ?? `https://domaindiscoverer.com${Astro.url.pathname}`} />
-    <meta name="robots" content="index,follow" />
+    <meta name="robots" content={robots} />
     <meta name="theme-color" content="#0b0013" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -145,4 +150,3 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
     </script>
   </body>
   </html>
-
