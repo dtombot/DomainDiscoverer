@@ -83,7 +83,7 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
 
     async function validateKey(k) {
       try {
-        const res = await fetch('/.netlify/functions/admin-list-emails?limit=1', { headers: { 'x-admin-key': k } });
+        const res = await fetch('/.netlify/functions/admin-verify', { headers: { 'x-admin-key': k } });
         if (!res.ok) return false;
         const data = await res.json().catch(() => ({}));
         return data && (data.status === 'ok');
@@ -193,4 +193,3 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
     tryAutoUnlock();
   </script>
 </BaseLayout>
-
