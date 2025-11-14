@@ -277,7 +277,7 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
       });
 
       sendBtn.addEventListener('click', async () => {
-        sendStatus.textContent = 'Sending…';
+        sendStatus.textContent = 'SendingÃ¢â‚¬Â¦';
         sendBtn.disabled = true;
         try {
           const res = await fetch('/.netlify/functions/admin-send-email', {
@@ -299,7 +299,7 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
           const data = await res.json();
           if (data && data.status === 'ok') {
             sendStatus.textContent = '';
-            showToast('Sent successfully ✓');
+            showToast('Sent successfully Ã¢Å“â€œ');
             toEl.value = '';
             subjectEl.value = '';
             htmlEl.value = '';
@@ -408,16 +408,16 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
                 const url = decodeURIComponent(btn.getAttribute('data-url'));
                 const bodyEl = document.getElementById(`body-${i}`);
                 if (!bodyEl) return;
-                bodyEl.innerHTML = 'Loading…';
+                bodyEl.innerHTML = 'LoadingÃ¢â‚¬Â¦';
                 bodyEl.classList.remove('hidden');
                 try {
                   const res = await fetch(`/.netlify/functions/admin-get-stored?url=${encodeURIComponent(url)}`, { headers: { 'x-admin-key': getKey() } });
                   const data = await res.json();
                   if (data && data.status === 'ok') {
                     const m = data.message || {};
-                    const html = m['stripped-html'] || m['body-html'] || '';
-                    const text = (m['stripped-text'] || m['body-plain'] || '').replace(/\n/g,'<br/>');
-                    bodyEl.innerHTML = html || `<div class="text-slate-700">${text}</div>` || '<div class="text-slate-500">No content</div>';
+                    const htmlMG = m['stripped-html'] || m['body-html'] || '';
+                    const textMG = (m['stripped-text'] || m['body-plain'] || '').replace(/\n/g,'<br/>');
+                    bodyEl.innerHTML = htmlMG || `<div class="text-slate-700">${textMG}</div>` || '<div class="text-slate-500">No content</div>';
                   } else {
                     bodyEl.innerHTML = `<div class="text-red-600">${(data && data.message) || 'Error'}</div>`;
                   }
@@ -439,7 +439,7 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
       const refreshStatsBtn = document.getElementById('refresh-stats');
       const trendEl = document.getElementById('trend');
       async function loadStats() {
-        statsEl.innerHTML = 'Loading…';
+        statsEl.innerHTML = 'LoadingÃ¢â‚¬Â¦';
         trendEl.innerHTML = '';
         try {
           const range = rangeSel.value;
@@ -507,7 +507,7 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
       const refreshSentBtn = document.getElementById('refresh-sent');
       const sentLimitSel = document.getElementById('sent-limit');
       async function loadSent() {
-        sentEl.textContent = 'Loading…';
+        sentEl.textContent = 'LoadingÃ¢â‚¬Â¦';
         try {
           const res = await fetch(`/.netlify/functions/admin-list-sent?limit=${encodeURIComponent(sentLimitSel.value)}`, { headers: { 'x-admin-key': getKey() } });
           const data = await res.json();
@@ -529,13 +529,6 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
               const text = it.body_text || '';
               const meta = `<div><span class=\"text-slate-500\">From:</span> ${it.from_email || ''}</div><div><span class=\"text-slate-500\">To:</span> ${it.to_email || ''}</div>`;
               openMessageModal({ title: it.subject || 'Message', meta, html, text, reply: { to: (it.to_email || '').replace(/^.*<([^>]+)>.*/, '$1'), subject: it.subject || '', quote: html || (text ? `<blockquote class=\\\"border-l-2 pl-3 text-slate-600\\\">${text.replace(/\\n/g,'<br/>')}</blockquote>` : '') } });
-              return;
-              const bodyEl = document.getElementById(`sent-body-${i}`);
-              if (!bodyEl) return;
-              const html = it.body_html || '';
-              const text = (it.body_text || '').replace(/\n/g,'<br/>');
-              bodyEl.classList.remove('hidden');
-              bodyEl.innerHTML = html || `<div class=\"text-slate-700\">${text}</div>` || '<div class=\"text-slate-500\">No content</div>';
             });
           });
 
