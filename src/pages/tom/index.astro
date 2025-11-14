@@ -190,59 +190,103 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
       async function loadInbox() {
         inboxEl.textContent = 'Loading...';
         try {
-          const res = await fetch(`/.netlify/functions/admin-list-emails?event=${encodeURIComponent(eventSel.value)}&limit=${encodeURIComponent(limitSel.value)}`, {
-            headers: { 'x-admin-key': getKey() }
-          });
-          const data = await res.json();
-          if (!data || data.status !== 'ok') { inboxEl.textContent = (data && data.message) || 'Error'; return; }
-          const items = data.events || [];
-          inboxEl.innerHTML = items.map((it, idx) => {
-            const ts = it.timestamp ? new Date(it.timestamp * 1000).toLocaleString() : '';
-            const ev = it.event || eventSel.value;
-            const msg = it.message || {};
-            const headers = msg.headers || {};
-            const from = headers.from || (it.envelope && it.envelope.sender) || '';
-            const to = headers.to || (it.envelope && it.envelope.targets) || '';
-            const subject = headers.subject || headers.Subject || it.campaign || ev.toUpperCase();
-            const storage = it.storage || {};
-            const viewBtn = storage.url ? `<button data-url="${encodeURIComponent(storage.url)}" class="btn-view text-xs px-2 py-1 rounded-lg bg-slate-900 text-white">View</button>` : '';
-            return `<div class="rounded-xl border border-slate-200 bg-white/70 p-3 space-y-1">
-              <div class="flex items-center justify-between">
-                <div class="text-slate-500 text-xs">${ts}</div>
-                <div class="text-slate-600 text-xs">${ev}</div>
-              </div>
-              <div class="font-semibold">${subject}</div>
-              <div class="text-slate-600">From: ${from}</div>
-              <div class="text-slate-600">To: ${to}</div>
-              <div>${viewBtn}</div>
-              <div id="body-${idx}" class="prose prose-sm max-w-none hidden"></div>
-            </div>`;
-          }).join('');
-
-          // Wire up view buttons for stored messages
-          inboxEl.querySelectorAll('.btn-view').forEach((btn, i) => {
-            btn.addEventListener('click', async () => {
-              const url = decodeURIComponent(btn.getAttribute('data-url'));
-              const bodyEl = document.getElementById(`body-${i}`);
-              if (!bodyEl) return;
-              bodyEl.innerHTML = 'Loading…';
-              bodyEl.classList.remove('hidden');
-              try {
-                const res = await fetch(`/.netlify/functions/admin-get-stored?url=${encodeURIComponent(url)}`, { headers: { 'x-admin-key': getKey() } });
-                const data = await res.json();
-                if (data && data.status === 'ok') {
-                  const m = data.message || {};
-                  const html = m['stripped-html'] || m['body-html'] || '';
-                  const text = (m['stripped-text'] || m['body-plain'] || '').replace(/\n/g,'<br/>');
-                  bodyEl.innerHTML = html || `<div class="text-slate-700">${text}</div>` || '<div class="text-slate-500">No content</div>';
-                } else {
-                  bodyEl.innerHTML = `<div class="text-red-600">${(data && data.message) || 'Error'}</div>`;
-                }
-              } catch {
-                bodyEl.innerHTML = '<div class="text-red-600">Network error</div>';
-              }
+          const ev = eventSel.value;
+          if (ev === 'stored') {
+            // Supabase-backed inbox
+            const res = await fetch(`/.netlify/functions/admin-list-inbound?limit=${encodeURIComponent(limitSel.value)}`, {
+              headers: { 'x-admin-key': getKey() }
             });
-          });
+            const data = await res.json();
+            if (!data || data.status !== 'ok') { inboxEl.textContent = (data && data.message) || 'Error'; return; }
+            const items = data.messages || [];
+            inboxEl.innerHTML = items.map((it, idx) => {
+              const ts = it.received_at ? new Date(it.received_at).toLocaleString() : (it.created_at ? new Date(it.created_at).toLocaleString() : '');
+              const from = it.from_email || '';
+              const to = it.to_email || '';
+              const subject = it.subject || '';
+              const viewBtn = `<button data-idx="${idx}" class="btn-view-supa text-xs px-2 py-1 rounded-lg bg-slate-900 text-white">View</button>`;
+              return `<div class="rounded-xl border border-slate-200 bg-white/70 p-3 space-y-1">
+                <div class="flex items-center justify-between">
+                  <div class="text-slate-500 text-xs">${ts}</div>
+                  <div class="text-slate-600 text-xs">stored</div>
+                </div>
+                <div class="font-semibold">${subject}</div>
+                <div class="text-slate-600">From: ${from}</div>
+                <div class="text-slate-600">To: ${to}</div>
+                <div>${viewBtn}</div>
+                <div id="body-${idx}" class="prose prose-sm max-w-none hidden"></div>
+              </div>`;
+            }).join('');
+
+            // Bind view buttons to render content from saved HTML/text
+            (items || []).forEach((it, i) => {
+              const btn = inboxEl.querySelector(`.btn-view-supa[data-idx="${i}"]`);
+              if (!btn) return;
+              btn.addEventListener('click', () => {
+                const bodyEl = document.getElementById(`body-${i}`);
+                if (!bodyEl) return;
+                bodyEl.classList.remove('hidden');
+                const html = it.body_html || '';
+                const text = (it.body_text || '').replace(/\n/g,'<br/>');
+                bodyEl.innerHTML = html || `<div class="text-slate-700">${text}</div>` || '<div class="text-slate-500">No content</div>';
+              });
+            });
+          } else {
+            // Mailgun events for other types
+            const res = await fetch(`/.netlify/functions/admin-list-emails?event=${encodeURIComponent(ev)}&limit=${encodeURIComponent(limitSel.value)}`, {
+              headers: { 'x-admin-key': getKey() }
+            });
+            const data = await res.json();
+            if (!data || data.status !== 'ok') { inboxEl.textContent = (data && data.message) || 'Error'; return; }
+            const items = data.events || [];
+            inboxEl.innerHTML = items.map((it, idx) => {
+              const ts = it.timestamp ? new Date(it.timestamp * 1000).toLocaleString() : '';
+              const evName = it.event || ev;
+              const msg = it.message || {};
+              const headers = msg.headers || {};
+              const from = headers.from || (it.envelope && it.envelope.sender) || '';
+              const to = headers.to || (it.envelope && it.envelope.targets) || '';
+              const subject = headers.subject || headers.Subject || it.campaign || evName.toUpperCase();
+              const storage = it.storage || {};
+              const viewBtn = storage.url ? `<button data-url="${encodeURIComponent(storage.url)}" class="btn-view text-xs px-2 py-1 rounded-lg bg-slate-900 text-white">View</button>` : '';
+              return `<div class="rounded-xl border border-slate-200 bg-white/70 p-3 space-y-1">
+                <div class="flex items-center justify-between">
+                  <div class="text-slate-500 text-xs">${ts}</div>
+                  <div class="text-slate-600 text-xs">${evName}</div>
+                </div>
+                <div class="font-semibold">${subject}</div>
+                <div class="text-slate-600">From: ${from}</div>
+                <div class="text-slate-600">To: ${to}</div>
+                <div>${viewBtn}</div>
+                <div id="body-${idx}" class="prose prose-sm max-w-none hidden"></div>
+              </div>`;
+            }).join('');
+
+            // Wire up Mailgun stored-view buttons (may be blocked on your plan)
+            inboxEl.querySelectorAll('.btn-view').forEach((btn, i) => {
+              btn.addEventListener('click', async () => {
+                const url = decodeURIComponent(btn.getAttribute('data-url'));
+                const bodyEl = document.getElementById(`body-${i}`);
+                if (!bodyEl) return;
+                bodyEl.innerHTML = 'Loading…';
+                bodyEl.classList.remove('hidden');
+                try {
+                  const res = await fetch(`/.netlify/functions/admin-get-stored?url=${encodeURIComponent(url)}`, { headers: { 'x-admin-key': getKey() } });
+                  const data = await res.json();
+                  if (data && data.status === 'ok') {
+                    const m = data.message || {};
+                    const html = m['stripped-html'] || m['body-html'] || '';
+                    const text = (m['stripped-text'] || m['body-plain'] || '').replace(/\n/g,'<br/>');
+                    bodyEl.innerHTML = html || `<div class="text-slate-700">${text}</div>` || '<div class="text-slate-500">No content</div>';
+                  } else {
+                    bodyEl.innerHTML = `<div class="text-red-600">${(data && data.message) || 'Error'}</div>`;
+                  }
+                } catch {
+                  bodyEl.innerHTML = '<div class="text-red-600">Network error</div>';
+                }
+              });
+            });
+          }
         } catch (e) {
           inboxEl.textContent = 'Network error';
         }
