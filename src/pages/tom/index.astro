@@ -355,18 +355,18 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
               const btn = inboxEl.querySelector(`.btn-view-supa[data-idx="${i}"]`);
               if (!btn) return;
               btn.addEventListener('click', () => {
-                const html = it.body_html || '';
-                const text = it.body_text || '';
+                const msgHtml = it.body_html || '';
+                const msgText = it.body_text || '';
                 const meta = `<div><span class=\"text-slate-500\">From:</span> ${it.from_email || ''}</div><div><span class=\"text-slate-500\">To:</span> ${it.to_email || ''}</div>`;
                 openMessageModal({
                   title: it.subject || 'Message',
                   meta,
-                  html,
-                  text,
+                  html: msgHtml,
+                  text: msgText,
                   reply: {
                     to: (it.from_email || '').replace(/^.*<([^>]+)>.*/, '$1'),
                     subject: it.subject || '',
-                    quote: html || (text ? `<blockquote class=\\\"border-l-2 pl-3 text-slate-600\\\">${text.replace(/\\n/g,'<br/>')}</blockquote>` : ''),
+                    quote: msgHtml || (msgText ? `<blockquote class=\\\"border-l-2 pl-3 text-slate-600\\\">${msgText.replace(/\\n/g,'<br/>')}</blockquote>` : ''),
                   }
                 });
               });
