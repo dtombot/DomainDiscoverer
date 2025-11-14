@@ -58,6 +58,13 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
             </label>
             <input id="replyto" type="email" class="flex-1 px-3 py-2 rounded-lg border border-slate-300 bg-white" placeholder="reply@yourdomain.com" disabled />
           </div>
+          <div class="sm:col-span-2 flex items-center gap-3">
+            <label class="inline-flex items-center gap-2 text-sm text-slate-700">
+              <input id="sig-enable" type="checkbox" class="rounded border-slate-300" />
+              Include signature
+            </label>
+            <div class="text-xs text-slate-500">Adds a small avatar + name block</div>
+          </div>
         </div>
         <div class="mt-3 flex items-center gap-3">
           <button id="send" class="px-4 py-2 rounded-xl bg-gradient-to-r from-secondary to-primary text-white font-bold disabled:opacity-60 disabled:cursor-not-allowed">Send</button>
@@ -160,6 +167,7 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
       const sendStatus = document.getElementById('send-status');
       const replyToEnable = document.getElementById('replyto-enable');
       const replyToInput = document.getElementById('replyto');
+      const sigEnable = document.getElementById('sig-enable');
       const inboxEl = document.getElementById('inbox');
       const refreshBtn = document.getElementById('refresh');
       const eventSel = document.getElementById('event');
@@ -245,6 +253,30 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
         if (!replyToEnable.checked) replyToInput.value = '';
       });
 
+      function buildSignatureHTML() {
+        const img = new URL('/tom.jpg', location.origin).toString();
+        const name = 'Domain Discoverer';
+        const site = 'domaindiscoverer.com';
+        const email = 'tom@domaindiscoverer.com';
+        return `\n<!-- dd-signature -->\n<table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:16px">\n  <tr>\n    <td style="padding-right:12px; vertical-align:top">\n      <img src="${img}" alt="${name}" width="48" height="48" style="border-radius:9999px; display:block; width:48px; height:48px;"/>\n    </td>\n    <td style="font-family:Arial,Helvetica,sans-serif; font-size:14px; line-height:20px; color:#0f172a;">\n      <div style="font-weight:700; color:#2a003f;">${name}</div>\n      <div style="color:#475569;">${site}</div>\n      <div><a href="mailto:${email}" style="color:#a779e9; text-decoration:none;">${email}</a></div>\n    </td>\n  </tr>\n</table>\n<!-- /dd-signature -->`;
+      }
+
+      function ensureSignaturePresent() {
+        const sigMarker = '<!-- dd-signature -->';
+        if (!sigEnable.checked) return;
+        if (!htmlEl.value.includes(sigMarker)) {
+          htmlEl.value = (htmlEl.value ? htmlEl.value + '\n\n' : '') + buildSignatureHTML();
+        }
+      }
+      function removeSignatureIfAny() {
+        const re = /<!-- dd-signature -->([\s\S]*?)<!-- \/dd-signature -->/g;
+        htmlEl.value = htmlEl.value.replace(re, '').trim();
+      }
+      sigEnable.addEventListener('change', () => {
+        if (sigEnable.checked) ensureSignaturePresent();
+        else removeSignatureIfAny();
+      });
+
       sendBtn.addEventListener('click', async () => {
         sendStatus.textContent = 'Sending…';
         sendBtn.disabled = true;
@@ -255,7 +287,13 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
             body: JSON.stringify({
               to: toEl.value,
               subject: subjectEl.value,
-              html: htmlEl.value,
+              html: (function(){
+                const hasSig = /<!-- dd-signature -->/.test(htmlEl.value);
+                if (sigEnable.checked && !hasSig) {
+                  return (htmlEl.value ? htmlEl.value + '\n\n' : '') + buildSignatureHTML();
+                }
+                return htmlEl.value;
+              })(),
               replyTo: replyToEnable.checked ? replyToInput.value : undefined
             })
           });
