@@ -1,3 +1,12 @@
+const { createClient } = require('@supabase/supabase-js');
+
+function getSupabase() {
+  const url = process.env.SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
+}
+
 exports.handler = async (event) => {
   try {
     if (event.httpMethod !== 'POST') {
@@ -45,6 +54,27 @@ exports.handler = async (event) => {
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
       return { statusCode: res.status, body: JSON.stringify({ status: 'error', message: data.message || 'Mailgun error', data }) };
+    }
+    // Best-effort: store sent message in Supabase
+    try {
+      const supabase = getSupabase();
+      if (supabase) {
+        const row = {
+          to_email: toAddr,
+          from_email: from,
+          subject,
+          body_text: text || null,
+          body_html: html || null,
+          reply_to: replyTo || null,
+          provider: 'mailgun',
+          mg_id: data.id || null,
+          status: 'queued',
+          raw: data,
+        };
+        await supabase.from('dd_sent_messages').insert(row);
+      }
+    } catch (_) {
+      // ignore storage failures
     }
     return { statusCode: 200, body: JSON.stringify({ status: 'ok', data }) };
   } catch (err) {
