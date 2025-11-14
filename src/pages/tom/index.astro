@@ -165,6 +165,57 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
       const eventSel = document.getElementById('event');
       const limitSel = document.getElementById('limit');
 
+      // Message modal (viewer + reply)
+      const modal = document.createElement('div');
+      modal.id = 'msg-modal';
+      modal.className = 'fixed inset-0 z-50 hidden';
+      modal.innerHTML = `
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="absolute inset-0 flex items-end sm:items-center justify-center p-4">
+          <div class="w-full sm:max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200">
+              <div class="font-semibold text-slate-900" id="modal-title">Message</div>
+              <div class="flex items-center gap-2">
+                <button id="modal-reply" class="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-sm">Reply</button>
+                <button id="modal-close" class="px-3 py-1.5 rounded-lg bg-slate-200 text-slate-900 text-sm">Close</button>
+              </div>
+            </div>
+            <div class="px-4 py-3 text-sm text-slate-600 border-b border-slate-100" id="modal-meta"></div>
+            <div class="p-4 max-h-[70vh] overflow-auto" id="modal-body"></div>
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
+      const modalBody = modal.querySelector('#modal-body');
+      const modalMeta = modal.querySelector('#modal-meta');
+      const modalTitle = modal.querySelector('#modal-title');
+      const modalClose = modal.querySelector('#modal-close');
+      const modalReply = modal.querySelector('#modal-reply');
+      let modalReplyData = null;
+      function openMessageModal({ title, meta, html, text, reply }) {
+        modalTitle.textContent = title || 'Message';
+        modalMeta.innerHTML = meta || '';
+        modalBody.innerHTML = html || (text ? `<div class=\"text-slate-700\">${text.replace(/\n/g,'<br/>')}</div>` : '<div class=\"text-slate-500\">No content</div>');
+        modal.classList.remove('hidden');
+        modalReplyData = reply || null;
+      }
+      function closeMessageModal() { modal.classList.add('hidden'); modalBody.innerHTML=''; modalMeta.innerHTML=''; modalReplyData=null; }
+      modalClose.addEventListener('click', closeMessageModal);
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeMessageModal(); });
+      modalReply.addEventListener('click', () => {
+        if (!modalReplyData) { closeMessageModal(); return; }
+        const { to, subject, quote } = modalReplyData;
+        toEl.value = to || toEl.value;
+        const subj = subject || '';
+        subjectEl.value = /^\s*re:/i.test(subj) ? subj : `Re: ${subj}`;
+        if (quote) {
+          const existing = htmlEl.value ? htmlEl.value + '\n\n' : '';
+          htmlEl.value = existing + quote;
+        }
+        activate(tabSend); panelSend.classList.remove('hidden');
+        panelInbox.classList.add('hidden'); panelAnalytics.classList.add('hidden');
+        closeMessageModal();
+      });
+
       // Toast for success/error
       const toast = document.createElement('div');
       toast.id = 'toast';
@@ -262,17 +313,25 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
               </div>`;
             }).join('');
 
-            // Bind view buttons to render content from saved HTML/text
+            // Bind view buttons to open modal with message + Reply
             (items || []).forEach((it, i) => {
               const btn = inboxEl.querySelector(`.btn-view-supa[data-idx="${i}"]`);
               if (!btn) return;
               btn.addEventListener('click', () => {
-                const bodyEl = document.getElementById(`body-${i}`);
-                if (!bodyEl) return;
-                bodyEl.classList.remove('hidden');
                 const html = it.body_html || '';
-                const text = (it.body_text || '').replace(/\n/g,'<br/>');
-                bodyEl.innerHTML = html || `<div class="text-slate-700">${text}</div>` || '<div class="text-slate-500">No content</div>';
+                const text = it.body_text || '';
+                const meta = `<div><span class=\"text-slate-500\">From:</span> ${it.from_email || ''}</div><div><span class=\"text-slate-500\">To:</span> ${it.to_email || ''}</div>`;
+                openMessageModal({
+                  title: it.subject || 'Message',
+                  meta,
+                  html,
+                  text,
+                  reply: {
+                    to: (it.from_email || '').replace(/^.*<([^>]+)>.*/, '$1'),
+                    subject: it.subject || '',
+                    quote: html || (text ? `<blockquote class=\\\"border-l-2 pl-3 text-slate-600\\\">${text.replace(/\\n/g,'<br/>')}</blockquote>` : ''),
+                  }
+                });
               });
             });
           } else {
