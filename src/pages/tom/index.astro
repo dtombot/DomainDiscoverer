@@ -437,6 +437,29 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
               bodyEl.innerHTML = html || `<div class=\"text-slate-700\">${text}</div>` || '<div class=\"text-slate-500\">No content</div>';
             });
           });
+
+          // Enhance status badges for Sent items without extra network calls
+          const cards = sentEl.querySelectorAll('.rounded-xl');
+          cards.forEach((card, i) => {
+            const it = items[i] || {};
+            let primary = 'queued';
+            if (it.failed_at) primary = 'failed';
+            else if (it.delivered_at) primary = 'delivered';
+            else if (it.accepted_at) primary = 'accepted';
+            const sec = [];
+            if (it.opened_at) sec.push('<span class="px-2 py-0.5 rounded-lg bg-green-100 text-green-700 text-xs">opened</span>');
+            if (it.clicked_at) sec.push('<span class="px-2 py-0.5 rounded-lg bg-blue-100 text-blue-700 text-xs">clicked</span>');
+            const primaryBadge = primary === 'failed'
+              ? '<span class="px-2 py-0.5 rounded-lg bg-red-100 text-red-700 text-xs">failed</span>'
+              : primary === 'delivered'
+                ? '<span class="px-2 py-0.5 rounded-lg bg-slate-900 text-white text-xs">delivered</span>'
+                : `<span class="px-2 py-0.5 rounded-lg bg-slate-200 text-slate-900 text-xs">${primary}</span>`;
+            const header = card.querySelector('.flex.items-center.justify-between');
+            if (header && header.children && header.children[1]) {
+              header.children[1].innerHTML = `${primaryBadge} ${sec.join(' ')}`;
+            }
+          });
+
         } catch (e) {
           sentEl.textContent = 'Network error';
         }

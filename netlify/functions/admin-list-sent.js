@@ -23,7 +23,7 @@ exports.handler = async (event) => {
     const supabase = getSupabase();
     const { data, error } = await supabase
       .from('dd_sent_messages')
-      .select('id, created_at, to_email, from_email, subject, body_text, body_html, reply_to, mg_id, status')
+      .select('id, created_at, to_email, from_email, subject, body_text, body_html, reply_to, mg_id, status, accepted_at, delivered_at, opened_at, clicked_at, failed_at, failure_code, failure_reason, last_event, last_event_at')
       .order('created_at', { ascending: false })
       .limit(limit);
     if (error) throw error;
@@ -33,4 +33,3 @@ exports.handler = async (event) => {
     return { statusCode: 500, body: JSON.stringify({ status: 'error', message: err.message }) };
   }
 };
-
