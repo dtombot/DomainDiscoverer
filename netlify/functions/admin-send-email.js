@@ -9,9 +9,10 @@ exports.handler = async (event) => {
       return { statusCode: 401, body: JSON.stringify({ status: 'error', message: 'Unauthorized' }) };
     }
 
-    const { to, subject, text, html } = JSON.parse(event.body || '{}');
+    const { to, subject, text, html, replyTo } = JSON.parse(event.body || '{}');
     const apiKey = process.env.MAILGUN_API_KEY;
     const domain = process.env.MAILGUN_DOMAIN;
+    const base = (process.env.MAILGUN_BASE || 'https://api.mailgun.net').replace(/\/$/, '');
     const from = process.env.MAILGUN_FROM || `Domain Discoverer <mail@${domain || 'example.com'}>`;
     const fallbackTo = process.env.MAILGUN_TO_DEFAULT;
     if (!apiKey || !domain) {
@@ -31,8 +32,9 @@ exports.handler = async (event) => {
     params.append('subject', subject);
     if (text) params.append('text', text);
     if (html) params.append('html', html);
+    if (replyTo) params.append('h:Reply-To', replyTo);
 
-    const res = await fetch(`https://api.mailgun.net/v3/${domain}/messages`, {
+    const res = await fetch(`${base}/v3/${domain}/messages`, {
       method: 'POST',
       headers: {
         'Authorization': 'Basic ' + Buffer.from(`api:${apiKey}`).toString('base64'),
@@ -49,4 +51,3 @@ exports.handler = async (event) => {
     return { statusCode: 500, body: JSON.stringify({ status: 'error', message: err.message }) };
   }
 };
-

@@ -34,6 +34,7 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
       <div class="flex gap-2 mb-4">
         <button id="tab-send" class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm font-semibold">Send Email</button>
         <button id="tab-inbox" class="px-3 py-2 rounded-lg bg-slate-200 text-slate-900 text-sm font-semibold">Inbox</button>
+        <button id="tab-analytics" class="px-3 py-2 rounded-lg bg-slate-200 text-slate-900 text-sm font-semibold">Analytics</button>
       </div>
       <div id="panel-send">
         <div class="grid sm:grid-cols-2 gap-3">
@@ -49,6 +50,13 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
             <label class="text-sm text-slate-700">HTML</label>
             <textarea id="html" class="w-full min-h-[140px] px-3 py-2 rounded-lg border border-slate-300 bg-white" placeholder="<p>Hello</p>"></textarea>
           </div>
+          <div class="sm:col-span-2 flex items-center gap-3">
+            <label class="inline-flex items-center gap-2 text-sm text-slate-700">
+              <input id="replyto-enable" type="checkbox" class="rounded border-slate-300" />
+              Enable Reply-To
+            </label>
+            <input id="replyto" type="email" class="flex-1 px-3 py-2 rounded-lg border border-slate-300 bg-white" placeholder="reply@yourdomain.com" disabled />
+          </div>
         </div>
         <div class="mt-3 flex items-center gap-3">
           <button id="send" class="px-4 py-2 rounded-xl bg-gradient-to-r from-secondary to-primary text-white font-bold">Send</button>
@@ -59,13 +67,42 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
         <div class="flex items-center gap-2 mb-3">
           <label class="text-sm text-slate-700">Event</label>
           <select id="event" class="px-3 py-2 rounded-lg border border-slate-300 bg-white">
-            <option value="stored">stored</option>
+            <option value="stored">stored (received)</option>
             <option value="delivered">delivered</option>
             <option value="accepted">accepted</option>
+            <option value="opened">opened</option>
+            <option value="clicked">clicked</option>
+            <option value="failed">failed</option>
+            <option value="complained">complained</option>
+            <option value="unsubscribed">unsubscribed</option>
+            <option value="rejected">rejected</option>
+          </select>
+          <label class="text-sm text-slate-700 ml-3">Limit</label>
+          <select id="limit" class="px-3 py-2 rounded-lg border border-slate-300 bg-white">
+            <option value="10">10</option>
+            <option value="25" selected>25</option>
+            <option value="50">50</option>
           </select>
           <button id="refresh" class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm font-semibold">Refresh</button>
         </div>
         <div id="inbox" class="space-y-2 text-sm"></div>
+      </div>
+      <div id="panel-analytics" class="hidden">
+        <div class="flex items-center gap-2 mb-3">
+          <label class="text-sm text-slate-700">Range</label>
+          <select id="range" class="px-3 py-2 rounded-lg border border-slate-300 bg-white">
+            <option value="24h">Last 24h</option>
+            <option value="7d">Last 7 days</option>
+            <option value="30d" selected>Last 30 days</option>
+            <option value="90d">Last 90 days</option>
+          </select>
+          <button id="refresh-stats" class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm font-semibold">Refresh</button>
+        </div>
+        <div id="stats" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+        <div class="mt-4">
+          <div class="text-sm text-slate-700 mb-2">Hourly Trend (24h)</div>
+          <div id="trend" class="space-y-3"></div>
+        </div>
       </div>
     </div>
   </template>
@@ -97,32 +134,37 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
       // Wire UI only after mount
       const tabSend = document.getElementById('tab-send');
       const tabInbox = document.getElementById('tab-inbox');
+      const tabAnalytics = document.getElementById('tab-analytics');
       const panelSend = document.getElementById('panel-send');
       const panelInbox = document.getElementById('panel-inbox');
+      const panelAnalytics = document.getElementById('panel-analytics');
       const toEl = document.getElementById('to');
       const subjectEl = document.getElementById('subject');
       const htmlEl = document.getElementById('html');
       const sendBtn = document.getElementById('send');
       const sendStatus = document.getElementById('send-status');
+      const replyToEnable = document.getElementById('replyto-enable');
+      const replyToInput = document.getElementById('replyto');
       const inboxEl = document.getElementById('inbox');
       const refreshBtn = document.getElementById('refresh');
       const eventSel = document.getElementById('event');
+      const limitSel = document.getElementById('limit');
 
-      tabSend.addEventListener('click', () => {
-        tabSend.classList.replace('bg-slate-200','bg-slate-900');
-        tabSend.classList.add('text-white');
-        tabInbox.classList.replace('bg-slate-900','bg-slate-200');
-        tabInbox.classList.remove('text-white');
-        panelSend.classList.remove('hidden');
-        panelInbox.classList.add('hidden');
-      });
-      tabInbox.addEventListener('click', () => {
-        tabInbox.classList.replace('bg-slate-200','bg-slate-900');
-        tabInbox.classList.add('text-white');
-        tabSend.classList.replace('bg-slate-900','bg-slate-200');
-        tabSend.classList.remove('text-white');
-        panelInbox.classList.remove('hidden');
-        panelSend.classList.add('hidden');
+      function activate(tab) {
+        const allTabs = [tabSend, tabInbox, tabAnalytics];
+        const allPanels = [panelSend, panelInbox, panelAnalytics];
+        allTabs.forEach((t) => { t.classList.replace('bg-slate-900','bg-slate-200'); t.classList.remove('text-white'); });
+        allPanels.forEach((p) => p.classList.add('hidden'));
+        tab.classList.replace('bg-slate-200','bg-slate-900');
+        tab.classList.add('text-white');
+      }
+      tabSend.addEventListener('click', () => { activate(tabSend); panelSend.classList.remove('hidden'); });
+      tabInbox.addEventListener('click', () => { activate(tabInbox); panelInbox.classList.remove('hidden'); });
+      tabAnalytics.addEventListener('click', () => { activate(tabAnalytics); panelAnalytics.classList.remove('hidden'); });
+
+      replyToEnable.addEventListener('change', () => {
+        replyToInput.disabled = !replyToEnable.checked;
+        if (!replyToEnable.checked) replyToInput.value = '';
       });
 
       sendBtn.addEventListener('click', async () => {
@@ -131,7 +173,12 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
           const res = await fetch('/.netlify/functions/admin-send-email', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'x-admin-key': getKey() },
-            body: JSON.stringify({ to: toEl.value, subject: subjectEl.value, html: htmlEl.value })
+            body: JSON.stringify({
+              to: toEl.value,
+              subject: subjectEl.value,
+              html: htmlEl.value,
+              replyTo: replyToEnable.checked ? replyToInput.value : undefined
+            })
           });
           const data = await res.json();
           sendStatus.textContent = (data && data.status === 'ok') ? 'Sent' : (data && data.message) || 'Error';
@@ -143,24 +190,133 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
       async function loadInbox() {
         inboxEl.textContent = 'Loading...';
         try {
-          const res = await fetch(`/.netlify/functions/admin-list-emails?event=${encodeURIComponent(eventSel.value)}`, {
+          const res = await fetch(`/.netlify/functions/admin-list-emails?event=${encodeURIComponent(eventSel.value)}&limit=${encodeURIComponent(limitSel.value)}`, {
             headers: { 'x-admin-key': getKey() }
           });
           const data = await res.json();
           if (!data || data.status !== 'ok') { inboxEl.textContent = (data && data.message) || 'Error'; return; }
           const items = data.events || [];
-          inboxEl.innerHTML = items.map((it) => {
+          inboxEl.innerHTML = items.map((it, idx) => {
             const ts = it.timestamp ? new Date(it.timestamp * 1000).toLocaleString() : '';
-            const from = (it.message && it.message.headers && it.message.headers.from) || (it.envelope && it.envelope.sender) || '';
-            const to = (it.message && it.message.headers && it.message.headers.to) || (it.envelope && it.envelope.targets) || '';
-            const subject = (it.message && it.message.headers && (it.message.headers.subject || it.message.headers.Subject)) || '';
-            return `<div class="rounded-xl border border-slate-200 bg-white/70 p-3"><div class="text-slate-500 text-xs">${ts}</div><div class="font-semibold">${subject}</div><div class="text-slate-600">From: ${from}</div><div class="text-slate-600">To: ${to}</div></div>`;
+            const ev = it.event || eventSel.value;
+            const msg = it.message || {};
+            const headers = msg.headers || {};
+            const from = headers.from || (it.envelope && it.envelope.sender) || '';
+            const to = headers.to || (it.envelope && it.envelope.targets) || '';
+            const subject = headers.subject || headers.Subject || it.campaign || ev.toUpperCase();
+            const storage = it.storage || {};
+            const viewBtn = storage.url ? `<button data-url="${encodeURIComponent(storage.url)}" class="btn-view text-xs px-2 py-1 rounded-lg bg-slate-900 text-white">View</button>` : '';
+            return `<div class="rounded-xl border border-slate-200 bg-white/70 p-3 space-y-1">
+              <div class="flex items-center justify-between">
+                <div class="text-slate-500 text-xs">${ts}</div>
+                <div class="text-slate-600 text-xs">${ev}</div>
+              </div>
+              <div class="font-semibold">${subject}</div>
+              <div class="text-slate-600">From: ${from}</div>
+              <div class="text-slate-600">To: ${to}</div>
+              <div>${viewBtn}</div>
+              <div id="body-${idx}" class="prose prose-sm max-w-none hidden"></div>
+            </div>`;
           }).join('');
+
+          // Wire up view buttons for stored messages
+          inboxEl.querySelectorAll('.btn-view').forEach((btn, i) => {
+            btn.addEventListener('click', async () => {
+              const url = decodeURIComponent(btn.getAttribute('data-url'));
+              const bodyEl = document.getElementById(`body-${i}`);
+              if (!bodyEl) return;
+              bodyEl.innerHTML = 'Loading…';
+              bodyEl.classList.remove('hidden');
+              try {
+                const res = await fetch(`/.netlify/functions/admin-get-stored?url=${encodeURIComponent(url)}`, { headers: { 'x-admin-key': getKey() } });
+                const data = await res.json();
+                if (data && data.status === 'ok') {
+                  const m = data.message || {};
+                  const html = m['stripped-html'] || m['body-html'] || '';
+                  const text = (m['stripped-text'] || m['body-plain'] || '').replace(/\n/g,'<br/>');
+                  bodyEl.innerHTML = html || `<div class="text-slate-700">${text}</div>` || '<div class="text-slate-500">No content</div>';
+                } else {
+                  bodyEl.innerHTML = `<div class="text-red-600">${(data && data.message) || 'Error'}</div>`;
+                }
+              } catch {
+                bodyEl.innerHTML = '<div class="text-red-600">Network error</div>';
+              }
+            });
+          });
         } catch (e) {
           inboxEl.textContent = 'Network error';
         }
       }
       refreshBtn.addEventListener('click', loadInbox);
+
+      // Analytics
+      const statsEl = document.getElementById('stats');
+      const rangeSel = document.getElementById('range');
+      const refreshStatsBtn = document.getElementById('refresh-stats');
+      const trendEl = document.getElementById('trend');
+      async function loadStats() {
+        statsEl.innerHTML = 'Loading…';
+        trendEl.innerHTML = '';
+        try {
+          const range = rangeSel.value;
+          const params = new URLSearchParams({ duration: range });
+          if (range === '24h') params.append('resolution', '1h');
+          const res = await fetch(`/.netlify/functions/admin-stats?${params.toString()}`, { headers: { 'x-admin-key': getKey() } });
+          const data = await res.json();
+          if (!data || data.status !== 'ok') { statsEl.innerHTML = `<div class=\"text-red-600\">${(data && data.message) || 'Error'}</div>`; return; }
+          const t = data.totals || {};
+          const cards = [
+            ['delivered', 'Delivered'],
+            ['opened', 'Opened'],
+            ['clicked', 'Clicked'],
+            ['failed', 'Failed (bounced)'],
+            ['complained', 'Complaints'],
+            ['unsubscribed', 'Unsubscribed'],
+            ['accepted', 'Accepted'],
+            ['stored', 'Received (stored)'],
+          ];
+          statsEl.innerHTML = cards.map(([k, label]) => {
+            const val = t[k] ?? 0;
+            return `<div class=\"rounded-xl border border-slate-200 bg-white/70 p-4\"><div class=\"text-slate-500 text-xs\">${label}</div><div class=\"text-3xl font-extrabold\">${val}</div></div>`;
+          }).join('');
+
+          // Trend for 24h only
+          if (range === '24h' && Array.isArray(data.series)) {
+            const focus = ['delivered', 'opened', 'clicked', 'failed'];
+            // Compute max per event for scaling
+            const maxes = {};
+            for (const k of focus) maxes[k] = 0;
+            for (const pt of data.series) {
+              for (const k of focus) {
+                const v = (pt.values && typeof pt.values[k] === 'number') ? pt.values[k] : 0;
+                if (v > maxes[k]) maxes[k] = v;
+              }
+            }
+            const row = (label, key) => {
+              const bars = (data.series || []).map((pt) => {
+                const v = (pt.values && typeof pt.values[key] === 'number') ? pt.values[key] : 0;
+                const max = maxes[key] || 1;
+                const h = Math.max(2, Math.round((v / max) * 48));
+                const ts = pt.time ? new Date(pt.time).toLocaleString() : '';
+                return `<div title=\"${label}: ${v} at ${ts}\" class=\"w-2 bg-slate-900 rounded-sm\" style=\"height:${h}px\"></div>`;
+              }).join('');
+              return `<div>
+                <div class=\"text-xs text-slate-600 mb-1\">${label}</div>
+                <div class=\"flex items-end gap-1 h-12\">${bars}</div>
+              </div>`;
+            };
+            trendEl.innerHTML = [
+              row('Delivered', 'delivered'),
+              row('Opened', 'opened'),
+              row('Clicked', 'clicked'),
+              row('Failed', 'failed'),
+            ].join('');
+          }
+        } catch {
+          statsEl.innerHTML = '<div class="text-red-600">Network error</div>';
+        }
+      }
+      refreshStatsBtn.addEventListener('click', loadStats);
     }
 
     async function tryAutoUnlock() {

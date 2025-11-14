@@ -1,3 +1,12 @@
+function isAllowedMailgunUrl(u) {
+  try {
+    const url = new URL(u);
+    return /(^|\.)mailgun\.net$/.test(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
 exports.handler = async (event) => {
   try {
     if (event.httpMethod !== 'GET') {
@@ -16,19 +25,31 @@ exports.handler = async (event) => {
       return { statusCode: 500, body: JSON.stringify({ status: 'error', message: 'Mailgun not configured' }) };
     }
 
-    const limit = Math.min(50, Math.max(1, parseInt(event.queryStringParameters?.limit || '25', 10)));
-    const eventFilter = event.queryStringParameters?.event || 'stored';
-    const searchParams = new URLSearchParams({ limit: String(limit), event: eventFilter });
+    const qp = event.queryStringParameters || {};
+    const urlParam = qp.url;
+    const keyParam = qp.key;
+    let targetUrl = '';
+    if (urlParam && isAllowedMailgunUrl(urlParam)) {
+      targetUrl = urlParam;
+    } else if (keyParam) {
+      targetUrl = `${base}/v3/domains/${encodeURIComponent(domain)}/messages/${encodeURIComponent(keyParam)}`;
+    } else {
+      return { statusCode: 400, body: JSON.stringify({ status: 'error', message: 'Missing url or key' }) };
+    }
 
-    const res = await fetch(`${base}/v3/${domain}/events?${searchParams}`, {
-      headers: { 'Authorization': 'Basic ' + Buffer.from(`api:${apiKey}`).toString('base64') }
+    const res = await fetch(targetUrl, {
+      headers: {
+        'Authorization': 'Basic ' + Buffer.from(`api:${apiKey}`).toString('base64'),
+        'Accept': 'application/json'
+      }
     });
-    const data = await res.json().catch(() => ({}));
+    const data = await res.json().catch(async () => ({ raw: await res.text() }));
     if (!res.ok) {
       return { statusCode: res.status, body: JSON.stringify({ status: 'error', message: data.message || 'Mailgun error', data }) };
     }
-    return { statusCode: 200, body: JSON.stringify({ status: 'ok', events: data?.items || [] }) };
+    return { statusCode: 200, body: JSON.stringify({ status: 'ok', message: data }) };
   } catch (err) {
     return { statusCode: 500, body: JSON.stringify({ status: 'error', message: err.message }) };
   }
 };
+
