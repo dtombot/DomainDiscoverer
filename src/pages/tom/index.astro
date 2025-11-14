@@ -202,7 +202,17 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
       function openMessageModal({ title, meta, html, text, reply }) {
         modalTitle.textContent = title || 'Message';
         modalMeta.innerHTML = meta || '';
-        modalBody.innerHTML = html || (text ? `<div class=\"text-slate-700\">${text.replace(/\n/g,'<br/>')}</div>` : '<div class=\"text-slate-500\">No content</div>');
+        const looksLikeHTML = !!(html && /<\s*[a-z!\/][^>]*>/i.test(html));
+        const escapeHTML = (s) => (s || '').replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+        if (looksLikeHTML) {
+          modalBody.innerHTML = html;
+        } else if (text) {
+          modalBody.innerHTML = `<div class=\"text-slate-700\">${escapeHTML(text).replace(/\n/g,'<br/>')}</div>`;
+        } else if (html) {
+          modalBody.innerHTML = `<div class=\"text-slate-700\">${escapeHTML(html).replace(/\n/g,'<br/>')}</div>`;
+        } else {
+          modalBody.innerHTML = '<div class=\"text-slate-500\">No content</div>';
+        }
         modal.classList.remove('hidden');
         modalReplyData = reply || null;
       }
@@ -230,7 +240,9 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
       toast.className = 'fixed bottom-4 right-4 z-50 hidden';
       document.body.appendChild(toast);
       function showToast(msg, ok = true) {
-        toast.innerHTML = `<div class="px-4 py-3 rounded-xl shadow text-sm ${ok ? 'bg-green-600 text-white' : 'bg-red-600 text-white'}">${msg}</div>`;
+        const clean = (msg || '').replace(/[^\x20-\x7E]/g, '');
+        const finalMsg = clean || (ok ? 'Success' : 'Error');
+        toast.innerHTML = `<div class="px-4 py-3 rounded-xl shadow text-sm ${ok ? 'bg-green-600 text-white' : 'bg-red-600 text-white'}">${finalMsg}</div>`;
         toast.classList.remove('hidden');
         setTimeout(() => toast.classList.add('hidden'), 2400);
       }
@@ -279,6 +291,8 @@ const description = 'Send and view emails via Mailgun. Secured by an admin key.'
       sendBtn.addEventListener('click', async () => {
         sendStatus.textContent = 'SendingÃ¢â‚¬Â¦';
         sendBtn.disabled = true;
+        // Normalize any garbled copy; ensure clean "Sending..."
+        sendStatus.textContent = 'Sending...';
         try {
           const res = await fetch('/.netlify/functions/admin-send-email', {
             method: 'POST',

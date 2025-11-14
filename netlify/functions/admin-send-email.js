@@ -19,6 +19,14 @@ exports.handler = async (event) => {
     }
 
     const { to, subject, text, html, replyTo } = JSON.parse(event.body || '{}');
+    // Normalize content: if HTML looks like plain text, convert newlines to <br/>
+    let textBody = text || null;
+    let htmlBody = html || null;
+    if (htmlBody && !/<\s*[a-z!\/][^>]*>/i.test(htmlBody)) {
+      const escapeHTML = (s) => (s || '').replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+      htmlBody = `<div>${escapeHTML(htmlBody).replace(/\r?\n/g, '<br/>')}</div>`;
+      if (!textBody) textBody = (text || html) || null;
+    }
     const apiKey = process.env.MAILGUN_API_KEY;
     const domain = process.env.MAILGUN_DOMAIN;
     const base = (process.env.MAILGUN_BASE || 'https://api.mailgun.net').replace(/\/$/, '');
@@ -31,7 +39,7 @@ exports.handler = async (event) => {
     if (!toAddr) {
       return { statusCode: 400, body: JSON.stringify({ status: 'error', message: 'Missing recipient' }) };
     }
-    if (!subject || !(text || html)) {
+    if (!subject || !(textBody || htmlBody)) {
       return { statusCode: 400, body: JSON.stringify({ status: 'error', message: 'Missing subject or content' }) };
     }
 
@@ -39,8 +47,8 @@ exports.handler = async (event) => {
     params.append('from', from);
     params.append('to', toAddr);
     params.append('subject', subject);
-    if (text) params.append('text', text);
-    if (html) params.append('html', html);
+    if (textBody) params.append('text', textBody);
+    if (htmlBody) params.append('html', htmlBody);
     if (replyTo) params.append('h:Reply-To', replyTo);
 
     const res = await fetch(`${base}/v3/${domain}/messages`, {
@@ -63,8 +71,8 @@ exports.handler = async (event) => {
           to_email: toAddr,
           from_email: from,
           subject,
-          body_text: text || null,
-          body_html: html || null,
+          body_text: textBody || null,
+          body_html: htmlBody || null,
           reply_to: replyTo || null,
           provider: 'mailgun',
           mg_id: data.id || null,
