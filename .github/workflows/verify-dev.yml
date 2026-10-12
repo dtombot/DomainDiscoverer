@@ -1,0 +1,23 @@
+name: Verify development site
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  website:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Install pinned dependencies
+        run: npm ci
+      - name: Validate article links
+        run: npm run check:content
+      - name: Build static website
+        run: npm run build
