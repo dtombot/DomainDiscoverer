@@ -2,50 +2,64 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DomainSearch from '../components/DomainSearch.astro';
 const title = 'Free Domain Availability Checker | Search a Domain Name';
-const description = 'Check if a domain name is available with a simple free lookup. Search a .com or other extension and learn what to do before registering.';
-const breadcrumbs = { '@context':'https://schema.org', '@type':'BreadcrumbList', itemListElement:[
+const description = 'Check whether a domain name is available. Search .com or other extensions with a free lookup, then verify final pricing with a registrar.';
+const breadcrumbs = { '@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[
   { '@type':'ListItem',position:1,name:'Home',item:'https://domaindiscoverer.com/' },
   { '@type':'ListItem',position:2,name:'Domain availability checker',item:'https://domaindiscoverer.com/domain-availability-checker' }
 ]};
+const faqs = [
+  {q:'Is the domain availability check free?',a:'Yes. You do not need an account to submit a name. Each submission makes one live lookup request.'},
+  {q:'Can I buy a domain here?',a:'No. Domain Discoverer provides availability research. Registration is completed on a registrar’s website.'},
+  {q:'Why can availability change at checkout?',a:'Domain availability changes, and some names are reserved, restricted or classified as premium. The registrar’s checkout is the final confirmation.'},
+  {q:'What should I do if my domain is already taken?',a:'Try a clear variation or another extension. Check for existing trademarks before deciding on a similar name.'},
+  {q:'Can I check different extensions?',a:'Yes. Select an extension below the search field, then submit another check. We make no automatic background lookups.'}
+];
 ---
 <BaseLayout {title} {description} structuredData={breadcrumbs}>
-  <section class="page-hero checker-hero">
+  <section class="checker-hero">
     <div class="container-pad">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Domain checker</span></nav>
-      <p class="eyebrow">Free availability lookup</p>
-      <h1 class="display">Check domain availability</h1>
-      <p>Type the name you want to check. We'll look it up, then you can confirm the result and pricing with a registrar.</p>
-      <DomainSearch />
+      <p class="eyebrow">Domain availability checker</p>
+      <h1>Check a domain name.</h1>
+      <p class="checker-lead">Find out whether your chosen domain may be available. Try different extensions, then confirm the final price and registration terms with a registrar.</p>
+      <DomainSearch heading="What domain would you like to check?" />
     </div>
   </section>
-  <section class="container-pad checker-body">
-    <div class="how-to-grid">
-      <div><h2>Search the exact name</h2><p>Try example.com or another domain extension. Each extension counts as a separate name.</p></div>
-      <div><h2>Confirm availability</h2><p>The result may change, and some names have restrictions or premium prices. Confirm before you pay.</p></div>
-      <div><h2>Compare the full cost</h2><p>Check first-year and renewal prices, privacy options and transfer rules before registering.</p></div>
+  <section class="checker-steps">
+    <div class="container-pad">
+      <div class="steps-heading"><p class="section-kicker">Before you register</p><h2>Three things worth checking.</h2></div>
+      <div class="step-grid">
+        <div><h3>Spell it clearly</h3><p>Choose a name that people can remember and type without explanation.</p></div>
+        <div><h3>Check the extension</h3><p>Look at the extension’s purpose, eligibility requirements and common usage.</p></div>
+        <div><h3>Compare renewals</h3><p>Review ongoing costs and privacy options, not just the first-year offer.</p></div>
+      </div>
     </div>
-    <section class="checker-faq">
-      <p class="section-kicker">Frequently asked questions</p>
-      <h2>About checking domains</h2>
-      <details><summary>Is this domain availability check free?</summary><p>Yes. You do not need an account to submit a single name. Each submission makes one lookup request.</p></details>
-      <details><summary>Can I buy the domain here?</summary><p>No. Domain Discoverer helps you check and research names. Registration is completed on a registrar's website.</p></details>
-      <details><summary>Why might a result differ from a registrar's checkout?</summary><p>Availability can change quickly, and registry restrictions or premium classifications may apply. Treat the registrar's checkout as the final confirmation.</p></details>
-      <details><summary>What if the name is taken?</summary><p>Try a short, clear variation or another extension. Avoid confusing spellings or a name too close to an existing brand.</p></details>
-      <a href="/blog/how-to-check-domain-availability-smart-way" class="body-link">Read the domain availability guide →</a>
-    </section>
+  </section>
+  <section class="container-pad checker-faq">
+    <div class="faq-head"><p class="section-kicker">Common questions</p><h2>About domain availability</h2><p>What the lookup can tell you, and what still needs confirming.</p><a class="body-link" href="/blog/how-to-check-domain-availability-smart-way">Read the full availability guide ↗</a></div>
+    <div class="faq-list">{faqs.map(({q,a}) => <details><summary>{q}<span aria-hidden="true">+</span></summary><p>{a}</p></details>)}</div>
   </section>
 </BaseLayout>
 <style>
-  .checker-body { padding-top: 3.5rem; }
-  .how-to-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 2rem; padding-bottom: 3rem; border-bottom: 1px solid var(--line); }
-  .how-to-grid h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: .75rem; letter-spacing: -.02em; }
-  .how-to-grid p { color: var(--muted); font-size: .91rem; line-height: 1.7; }
-  .checker-faq { max-width: 800px; padding-top: 4rem; }
-  .checker-faq h2 { font-size: clamp(1.8rem,3vw,2.4rem); letter-spacing: -.04em; font-weight: 730; margin: .5rem 0 1.5rem; }
-  .checker-faq details { border-bottom: 1px solid var(--line); padding: 1.25rem 0; }
-  .checker-faq summary { cursor: pointer; font-size: .97rem; font-weight: 650; }
-  .checker-faq details p { margin-top: .7rem; color: var(--muted); max-width: 690px; line-height: 1.7; }
-  .checker-faq .body-link { margin-top: 2rem; }
-  .checker-hero :global(.domain-lookup) { margin-top: 2rem; }
-  @media(max-width:740px) { .how-to-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+  .checker-hero { padding-block: clamp(3rem,6vw,5rem) clamp(3.7rem,7vw,6rem); background: #1e2227; border-bottom: 1px solid var(--line); }
+  .checker-hero h1 { font-size: clamp(3rem,6vw,5.4rem); font-weight: 570; letter-spacing: -.06em; line-height: 1.12; margin: 1.3rem 0 1.1rem; }
+  .checker-lead { max-width: 740px; color: #c0beb9; font-size: 1.09rem; line-height: 1.75; margin-bottom: 2.6rem; }
+  .checker-steps { padding-block: 4.7rem; background: var(--cream); color: var(--paper-ink); }
+  .steps-heading h2 { font-size: clamp(2.1rem,3.5vw,3rem); font-weight: 585; line-height: 1.2; letter-spacing: -.045em; margin: .9rem 0 2.5rem; }
+  .checker-steps .section-kicker { color: #846a4b; }
+  .step-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2.8rem; }
+  .step-grid > div { padding-top: 1.4rem; border-top: 1px solid var(--paper-line); }
+  .step-grid h3 { font-size: 1.1rem; font-weight: 645; letter-spacing: -.025em; }
+  .step-grid p { max-width: 300px; margin-top: .6rem; color: #636560; font-size: .91rem; line-height: 1.75; }
+  .checker-faq { display: grid; grid-template-columns: minmax(240px,.7fr) minmax(0,1fr); gap: clamp(2rem,7vw,7rem); padding-top: 5.5rem; }
+  .faq-head h2 { font-size: clamp(2rem,3.5vw,3rem); font-weight: 580; line-height: 1.17; letter-spacing: -.05em; margin: 1rem 0; }
+  .faq-head p:not(.section-kicker) { color: var(--muted); font-size: .9rem; margin-bottom: 1.4rem; }
+  .faq-list { border-top: 1px solid var(--line); }
+  .faq-list details { border-bottom: 1px solid var(--line); }
+  .faq-list summary { cursor: pointer; display: flex; justify-content: space-between; gap: 1rem; list-style: none; padding: 1.4rem 0; font-weight: 600; font-size: .96rem; }
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary span { color: var(--accent); font-size: 1.2rem; }
+  .faq-list details[open] summary span { transform: rotate(45deg); }
+  .faq-list details p { padding: 0 1.5rem 1.5rem 0; color: var(--muted); font-size: .91rem; line-height: 1.75; }
+  @media(max-width:750px) { .step-grid,.checker-faq { grid-template-columns: 1fr; } .step-grid { gap: 1.2rem; } .checker-faq { padding-top: 4rem; } }
 </style>

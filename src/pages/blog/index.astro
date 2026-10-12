@@ -1,43 +1,56 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const title = 'Domain Name Guides: Basics, Registration & Research';
-const description = 'Learn about domain names, choosing extensions, web hosting, availability checks, privacy, renewals, brandability and domain research tools.';
+const description = 'Clear guides to domain names, domain extensions, hosting, renewal costs, registrars and domain research.';
 const posts = (await Astro.glob('./*.md'))
-  .map((post) => ({
+  .map(post => ({
     url: post.url,
-    title: String(post.frontmatter.title ?? 'Domain guide').replace(/ \(2025\)/g, ''),
+    title: String(post.frontmatter.title ?? 'Domain guide').replace(/ \(2025\)/g,''),
     description: String(post.frontmatter.description ?? ''),
-    pubDate: post.frontmatter.pubDate,
-    category: post.frontmatter.category ?? 'Domain research'
+    category: String(post.frontmatter.category ?? 'Domain research'),
+    pubDate: post.frontmatter.pubDate
   }))
-  .sort((a,b) => +new Date(b.pubDate) - +new Date(a.pubDate));
+  .sort((a,b)=>+new Date(b.pubDate)-+new Date(a.pubDate));
 ---
 <BaseLayout {title} {description}>
-  <section class="page-hero"><div class="container-pad">
-    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Guides</span></nav>
-    <p class="eyebrow">Domain learning library</p>
-    <h1 class="display">Domain name guides</h1>
-    <p>Clear explanations of domain names, hosting, extensions, registration and the research involved in choosing a name.</p>
+  <section class="guides-hero"><div class="container-pad">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Guides</span></nav>
+    <p class="eyebrow">The learning library</p>
+    <div class="guides-heading"><h1>Know your domain.</h1><p>Practical reading for choosing a name, understanding what you’re buying, and avoiding surprises later.</p></div>
+    <a class="body-link" href="/domain-availability-checker">Already have a name? Check it ↗</a>
   </div></section>
-  <section class="container-pad library-section">
-    <div class="library-top"><h2>Browse the guides</h2><a href="/domain-availability-checker" class="body-link">Check a domain →</a></div>
-    <div class="rail-grid">
-      {posts.map((post) => (
-        <a class="rail-item" href={post.url}>
-          <span class="rail-index">{post.category}</span>
-          <h3>{post.title} <span aria-hidden="true">↗</span></h3>
-          <p>{post.description}</p>
-        </a>
-      ))}
+  <section class="guides-content">
+    <div class="container-pad">
+      <div class="library-bar"><h2>Explore the guides</h2><span>{posts.length} guides</span></div>
+      <div class="library-list">
+        {posts.map(post => <a class="library-row" href={post.url}>
+          <span class="library-tag">{post.category}</span>
+          <span class="library-desc"><strong>{post.title}</strong><span>{post.description}</span></span>
+          <span class="library-arrow" aria-hidden="true">↗</span>
+        </a>)}
+      </div>
+      <p class="library-note">Before registering a domain, check availability, possible brand conflicts, ongoing costs and any requirements attached to its extension.</p>
     </div>
-    <div class="library-note"><strong>Registering a name?</strong> Check availability, potential trademark conflicts, renewal prices and any requirements attached to its extension.</div>
   </section>
 </BaseLayout>
 <style>
-  .library-section { padding-top: 3.5rem; }
-  .library-top { display: flex; justify-content: space-between; align-items: center; gap: 2rem; margin-bottom: 1.5rem; }
-  .library-top h2 { font-size: 1.45rem; font-weight: 700; letter-spacing: -.03em; }
-  .library-note { margin: 3rem 0; padding: 1.35rem 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
-  .library-note strong { color: var(--text); }
-  @media(max-width:740px) { .library-top { align-items: flex-start; flex-direction: column; gap: .65rem; } }
+  .guides-hero { background: #1e2227; padding-block: 3.75rem 4.5rem; }
+  .guides-heading { display: flex; justify-content: space-between; align-items: end; gap: 3rem; margin-bottom: 2rem; }
+  .guides-heading h1 { font-size: clamp(3.4rem,6vw,5.8rem); font-weight: 565; letter-spacing: -.065em; line-height: 1.1; }
+  .guides-heading p { max-width: 350px; color: var(--muted); font-size: 1.01rem; line-height: 1.75; }
+  .guides-content { background: var(--cream); color: var(--paper-ink); padding-block: clamp(3.5rem,6vw,5rem); }
+  .library-bar { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 1.4rem; }
+  .library-bar h2 { font-size: clamp(1.5rem,2.5vw,2rem); font-weight: 625; letter-spacing: -.03em; }
+  .library-bar span { color: #686b6d; font-size: .81rem; }
+  .library-list { border-top: 1px solid var(--paper-line); }
+  .library-row { display: grid; grid-template-columns: minmax(140px,.3fr) minmax(0,1fr) 22px; gap: 1rem 2.3rem; align-items: center; padding: 1.6rem .25rem; border-bottom: 1px solid var(--paper-line); text-decoration: none; transition: background .15s ease,padding .15s ease; }
+  .library-row:hover { padding-left: .8rem; background: #eae7e1; }
+  .library-tag { color: #856e51; font-size: .79rem; font-weight: 625; }
+  .library-desc { display: flex; flex-direction: column; gap: .45rem; }
+  .library-desc strong { color: #2b2c2c; font-size: clamp(1.15rem,1.9vw,1.55rem); font-weight: 610; letter-spacing: -.035em; }
+  .library-desc > span { max-width: 620px; color: #626663; font-size: .87rem; line-height: 1.6; }
+  .library-arrow { color: #826d56; font-size: 1.1rem; }
+  .library-note { max-width: 770px; color: #6b6c69; font-size: .85rem; margin-top: 2rem; }
+  @media(max-width:820px) { .guides-heading { align-items: flex-start; flex-direction: column; gap: 1rem; } .guides-heading p { max-width: 600px; } }
+  @media(max-width:650px) { .library-row { grid-template-columns: 1fr 20px; gap: .5rem 1rem; } .library-tag { grid-column: 1/-1; } .library-desc { grid-column: 1; } .library-arrow { grid-column: 2; grid-row: 2; } }
 </style>
