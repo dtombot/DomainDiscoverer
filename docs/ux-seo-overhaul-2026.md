@@ -1,5 +1,7 @@
 # Domain Discoverer: 2026 UX, SEO and performance overhaul
 
+**Design revision, October 12, 2026:** The original sage/lime serif direction documented below was superseded after preview feedback. The active `dev` implementation is now a graphite-and-stone, restrained sans-serif interface with the domain checker directly embedded in the homepage hero, an editorial light reading surface, and a no-dependency client-side domain lookup experience. See [design-system-2026.md](design-system-2026.md) for the current specification. Earlier design notes below are preserved as history, not as the current styling contract.
+
 **Development only:** Implemented on `dev`; `main` is intentionally unchanged.
 
 ## Product promise
