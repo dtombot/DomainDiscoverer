@@ -2,8 +2,8 @@
 export interface Props { title?: string; description?: string; canonical?: string; robots?: string; structuredData?: Record<string, unknown> | Record<string, unknown>[]; }
 import '../styles/tailwind.css';
 const {
-  title = 'Domain Discoverer | Find and Understand Domain Names',
-  description = 'Check domain name availability for free. Learn how domains, extensions, registrars and renewals work before choosing a name.',
+  title = 'Domain Discoverer | Check Domain Availability',
+  description = 'Check whether a domain name is available, compare your options and read straightforward guides to domain registration.',
   canonical,
   robots = 'index,follow',
   structuredData
@@ -14,9 +14,9 @@ const fullTitle = title.includes('Domain Discoverer') ? title : `${title} | Doma
 const pageUrl = canonical ?? new URL(Astro.url.pathname, site).toString();
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const nav = [
-  { href: '/domain-availability-checker', label: 'Check a domain' },
-  { href: '/blog', label: 'Learn' },
-  { href: '/#tools', label: 'Research tools' },
+  { href: '/domain-availability-checker', label: 'Domain checker' },
+  { href: '/blog', label: 'Guides' },
+  { href: '/tools', label: 'Research tools' },
   { href: '/about', label: 'About' }
 ];
 const active = (href: string) => path === href || (href === '/blog' && path.startsWith('/blog/'));
@@ -31,7 +31,7 @@ const schemas = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#111815" />
+    <meta name="theme-color" content="#111b29" />
     <meta name="description" content={description} />
     <meta name="robots" content={effectiveRobots} />
     <link rel="canonical" href={pageUrl} />
@@ -50,31 +50,31 @@ const schemas = [
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
     <header class="site-header" id="site-header">
       <div class="container-pad nav-shell">
-        <a class="brand" href="/" aria-label="Domain Discoverer homepage"><span class="brand-symbol" aria-hidden="true">d<span>.</span></span><span>domain<span class="brand-secondary">discoverer</span></span></a>
-        <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation">
-          <span></span><span></span>
-        </button>
+        <a class="brand" href="/" aria-label="Domain Discoverer home">
+          <span class="brand-symbol" aria-hidden="true">D<span>D</span></span>
+          <span class="brand-name">Domain<span>Discoverer</span></span>
+        </a>
+        <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation"><span></span><span></span><span></span></button>
         <nav aria-label="Main navigation" class="primary-nav" id="primary-nav">
           {nav.map((item) => <a href={item.href} aria-current={active(item.href) ? 'page' : undefined}>{item.label}</a>)}
-          <a href="/domain-availability-checker" class="nav-action">Search now <span aria-hidden="true">↗</span></a>
+          <a href="/domain-availability-checker" class="nav-action">Check a domain <span aria-hidden="true">→</span></a>
         </nav>
       </div>
     </header>
     <main id="main-content"><slot /></main>
     <footer class="site-footer">
       <div class="container-pad footer-top">
-        <div>
-          <a class="brand footer-brand" href="/"><span class="brand-symbol" aria-hidden="true">d<span>.</span></span><span>domain<span class="brand-secondary">discoverer</span></span></a>
-          <p class="footer-pitch">A quieter, clearer way to find a domain and understand what you are buying.</p>
+        <div class="footer-about">
+          <a class="brand footer-brand" href="/"><span class="brand-symbol" aria-hidden="true">D<span>D</span></span><span class="brand-name">Domain<span>Discoverer</span></span></a>
+          <p>Domain availability checks, useful tools and practical guidance for choosing a name online.</p>
         </div>
-        <div class="footer-column"><h2>Explore</h2><a href="/domain-availability-checker">Domain availability checker</a><a href="/blog">Domain learning library</a><a href="/#tools">Research tools</a></div>
-        <div class="footer-column"><h2>Company</h2><a href="/about">About</a><a href="/contact">Contact</a><a href="/disclosure">Affiliate disclosure</a></div>
-        <div class="footer-column"><h2>Legal</h2><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+        <div class="footer-column"><h2>Explore</h2><a href="/domain-availability-checker">Domain checker</a><a href="/blog">Domain guides</a><a href="/tools">Research tools</a></div>
+        <div class="footer-column"><h2>Company</h2><a href="/about">About us</a><a href="/contact">Contact</a><a href="/disclosure">Affiliate disclosure</a></div>
+        <div class="footer-column"><h2>Legal</h2><a href="/privacy">Privacy policy</a><a href="/terms">Terms of use</a></div>
       </div>
-      <div class="container-pad footer-bottom"><span>© {new Date().getFullYear()} Domain Discoverer</span><span>Built for curious minds and careful decisions.</span></div>
+      <div class="container-pad footer-bottom"><span>© {new Date().getFullYear()} Domain Discoverer</span><span>Independent domain research and education</span></div>
     </footer>
     <script>
       const toggle = document.getElementById('menu-toggle');
@@ -88,24 +88,6 @@ const schemas = [
       nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeNav));
       document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeNav(); });
       document.addEventListener('click', (event) => { if (event.target instanceof Element && !event.target.closest('.nav-shell')) closeNav(); });
-      const progress = document.getElementById('scroll-progress');
-      const header = document.getElementById('site-header');
-      let pending = false;
-      const updateScroll = () => {
-        const range = document.documentElement.scrollHeight - window.innerHeight;
-        if (progress) progress.style.transform = `scaleX(${range > 0 ? Math.min(1, window.scrollY / range) : 0})`;
-        header?.classList.toggle('is-scrolled', window.scrollY > 20);
-        pending = false;
-      };
-      addEventListener('scroll', () => { if (!pending) { pending = true; requestAnimationFrame(updateScroll); } }, { passive: true });
-      updateScroll();
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
-        const elements = document.querySelectorAll('[data-reveal]');
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } });
-        }, { threshold: 0.08, rootMargin: '0px 0px -18px 0px' });
-        elements.forEach(el => { el.classList.add('can-reveal'); observer.observe(el); });
-      }
     </script>
   </body>
 </html>

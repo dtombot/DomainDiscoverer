@@ -1,40 +1,42 @@
 ---
 interface Props { compact?: boolean; heading?: string; }
-const { compact = false, heading = 'Check a domain name' } = Astro.props as Props;
+const { compact = false, heading = 'Enter a domain name' } = Astro.props as Props;
 ---
 <div class:list={['domain-lookup', { compact }]}>
   <form class="domain-search" action="/domain-availability-checker" method="get" novalidate>
     <label for={compact ? 'quick-domain' : 'full-domain'}>{heading}</label>
     <div class="input-row">
-      <input id={compact ? 'quick-domain' : 'full-domain'} name="domain" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="yourgreatidea.com" maxlength="253" required aria-describedby={compact ? 'quick-help' : 'full-help'} />
-      <button type="submit">Check availability <span aria-hidden="true">↗</span></button>
+      <input id={compact ? 'quick-domain' : 'full-domain'} name="domain" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="example.com" maxlength="253" required aria-describedby={compact ? 'quick-help' : 'full-help'} />
+      <button type="submit">Check availability <span aria-hidden="true">→</span></button>
     </div>
-    <p class="search-help" id={compact ? 'quick-help' : 'full-help'}>Type a complete domain, like example.com, or a name to check its .com version. No account required.</p>
+    <p class="search-help" id={compact ? 'quick-help' : 'full-help'}>Enter a full domain or just a name to check its .com version.</p>
     <div class="lookup-result" role="status" aria-live="polite" aria-atomic="true" hidden>
-      <span class="result-label"></span>
+      <strong class="result-label"></strong>
       <p class="result-detail"></p>
-      <a class="result-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Review registration with a registrar ↗</a>
+      <a class="result-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Review registration options ↗</a>
     </div>
   </form>
 </div>
 <style>
-  .domain-lookup { max-width: 780px; background: #222e25; border: 1px solid #455448; padding: clamp(1.2rem, 3vw, 2rem); }
-  .domain-lookup.compact { max-width: 100%; }
-  .domain-search label { display: block; margin-bottom: .85rem; color: #edf0e7; font-size: .78rem; text-transform: uppercase; letter-spacing: .15em; font-weight: 700; }
-  .input-row { display: flex; gap: .5rem; }
-  .input-row input { min-width: 0; flex: 1 1 auto; width: 100%; padding: 1.08rem 1rem; border: 1px solid #5b6b5e; border-radius: 0; background: #101714; color: #edf0e7; font-size: 1.08rem; }
-  .input-row input::placeholder { color: #96a89b; }
-  .input-row button { flex: none; padding: 1rem 1.4rem; color: #101714; background: #c6dc85; border: 1px solid #c6dc85; font-weight: 750; transition: background .2s ease; }
-  .input-row button:hover { background: #e4f0b8; }
-  .input-row button:disabled { cursor: progress; opacity: .65; }
-  .search-help { margin: .8rem 0 0; font-size: .8rem; color: #b1beb2; }
-  .lookup-result { margin-top: 1.35rem; padding: 1.1rem 1.15rem; border: 1px solid #566854; background: #152019; }
-  .lookup-result[data-state="available"] { border-left: 3px solid #c6dc85; }
-  .lookup-result[data-state="taken"], .lookup-result[data-state="error"] { border-left: 3px solid #d7aa88; }
-  .result-label { font-weight: 750; }
-  .result-detail { margin-top: .4rem; font-size: .9rem; color: #d1dacd; }
-  .result-link { display: inline-block; margin-top: 1rem; color: #c6dc85; text-underline-offset: .3rem; font-size: .9rem; }
-  @media(max-width: 620px) { .input-row { flex-direction: column; } .input-row button { width: 100%; } }
+  .domain-lookup { max-width: 790px; padding: clamp(1.15rem,2.5vw,1.65rem); border: 1px solid #d3dce6; border-radius: 9px; background: #e9eef4; color: #1b293a; }
+  .domain-search label { display: block; margin: 0 0 .75rem; color: #27384c; font-size: .88rem; font-weight: 700; letter-spacing: 0; }
+  .input-row { display: flex; gap: .6rem; }
+  .input-row input { flex: 1 1 auto; min-width: 0; width: 100%; border: 1px solid #aebccb; border-radius: 6px; background: #fff; color: #172437; padding: 1rem 1.05rem; font-size: 1.08rem; }
+  .input-row input::placeholder { color: #65768a; opacity: 1; }
+  .input-row button { flex: none; border: 1px solid #355f97; border-radius: 6px; background: #355f97; color: white; padding: .95rem 1.2rem; font-size: .94rem; font-weight: 710; transition: background .15s ease; }
+  .input-row button:hover { background: #234d87; }
+  .input-row button:disabled { opacity: .66; cursor: progress; }
+  .input-row button span { margin-left: .3rem; }
+  .domain-search :focus-visible { outline: 2px solid #315d9b; outline-offset: 2px; }
+  .search-help { font-size: .8rem; line-height: 1.55; color: #526479; margin-top: .7rem; }
+  .lookup-result { margin-top: 1.1rem; border: 1px solid #b5c3d2; border-radius: 6px; background: #fff; padding: 1rem; }
+  .lookup-result[data-state="available"] { border-left: 4px solid #2f775e; }
+  .lookup-result[data-state="taken"],.lookup-result[data-state="error"] { border-left: 4px solid #aa6843; }
+  .lookup-result[data-state="loading"] { border-left: 4px solid #527cac; }
+  .result-label { font-size: .96rem; color: #192c3e; }
+  .result-detail { margin-top: .3rem; font-size: .88rem; line-height: 1.55; color: #465a70; }
+  .result-link { display: inline-block; margin-top: .7rem; color: #214f87; font-size: .87rem; font-weight: 650; }
+  @media(max-width:600px) { .input-row { flex-direction: column; } .input-row button { width: 100%; padding-block: 1rem; } }
 </style>
 <script>
   const domainPattern = /^(?=.{4,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z](?:[a-z0-9-]{0,61}[a-z0-9])$/i;
@@ -64,7 +66,7 @@ const { compact = false, heading = 'Check a domain name' } = Astro.props as Prop
       result.hidden = false;
       result.dataset.state = 'loading';
       label.textContent = 'Checking ' + domain + '…';
-      detail.textContent = 'One live availability request is being made.';
+      detail.textContent = 'Contacting the lookup service.';
       link.hidden = true;
       button.disabled = true;
       const controller = new AbortController();
@@ -82,7 +84,7 @@ const { compact = false, heading = 'Check a domain name' } = Astro.props as Prop
         } else {
           result.dataset.state = 'taken';
           label.textContent = domain + ' is registered';
-          detail.textContent = 'Try a shorter variation, a different word, or another domain extension. Each check is made only when you submit.';
+          detail.textContent = 'Try another name or a different extension. Each check is made only when you submit.';
         }
       } catch (_) {
         result.dataset.state = 'error';
