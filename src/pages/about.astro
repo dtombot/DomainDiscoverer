@@ -6,18 +6,18 @@ const description = 'Learn why Domain Discoverer exists: a simple, independent r
 <BaseLayout {title} {description}>
   <section class="page-hero"><div class="container-pad">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">About</span></nav>
-    <p class="eyebrow">Our point of view</p>
-    <h1 class="display">The internet starts with <em>a name.</em></h1>
+    <p class="eyebrow">About</p>
+    <h1 class="display">About Domain Discoverer</h1>
     <p>Domain Discoverer helps people understand domain names, check availability and evaluate options without unnecessary complexity.</p>
   </div></section>
   <section class="container-pad about-body">
     <div class="about-intro"><span class="section-kicker">Why we exist</span><div class="prose"><p>Finding a domain should not require becoming an expert in domain registries, DNS or aftermarket pricing. Yet a hurried choice can leave you with a difficult name, unexpected renewal costs or a confusing setup.</p><p>Our goal is practical: give you one simple availability check, useful research references and plain-English explanations of what happens next. We do not register domains or promise investment returns.</p></div></div>
     <div class="rail-grid">
-      <div class="rail-item"><span class="rail-index">01 / CLEAR</span><h3>Make the basics understandable</h3><p>Explain domains, extensions, hosting and registrations with useful examples.</p></div>
-      <div class="rail-item"><span class="rail-index">02 / PRACTICAL</span><h3>One step at a time</h3><p>Help visitors check a precise name instead of creating an endless stream of suggestions.</p></div>
-      <div class="rail-item"><span class="rail-index">03 / INDEPENDENT</span><h3>Be transparent</h3><p>Explain third-party links and distinguish live availability from guaranteed registration.</p></div>
+      <div class="rail-item"><span class="rail-index">Domain basics</span><h3>Make the basics understandable</h3><p>Explain domains, extensions, hosting and registrations with useful examples.</p></div>
+      <div class="rail-item"><span class="rail-index">Practical tools</span><h3>One step at a time</h3><p>Help visitors check a precise name instead of creating an endless stream of suggestions.</p></div>
+      <div class="rail-item"><span class="rail-index">Transparency</span><h3>Be transparent</h3><p>Explain third-party links and distinguish live availability from guaranteed registration.</p></div>
     </div>
-    <div class="about-more"><h2 class="display">A useful resource for <em>every kind of builder.</em></h2><div class="prose"><p>Whether you're naming your first business, setting up a small website, comparing options for a client or learning about domain investing, start with the fundamentals. Check the name, consider brand conflicts, compare extensions and prices, then make the final choice with your registrar.</p><p>Have an idea for improving the site or a question we haven't answered? <a href="/contact">Send us a message</a>.</p></div></div>
+    <div class="about-more"><h2 class="display">Who this is for</h2><div class="prose"><p>Whether you're naming your first business, setting up a small website, comparing options for a client or learning about domain investing, start with the fundamentals. Check the name, consider brand conflicts, compare extensions and prices, then make the final choice with your registrar.</p><p>Have an idea for improving the site or a question we haven't answered? <a href="/contact">Send us a message</a>.</p></div></div>
   </section>
 </BaseLayout>
 <style>
@@ -25,7 +25,7 @@ const description = 'Learn why Domain Discoverer exists: a simple, independent r
   .about-intro { display: grid; grid-template-columns: .55fr 1.45fr; gap: 3rem; margin-bottom: 4rem; }
   .about-intro .prose p:first-child { margin-top: 0; }
   .about-more { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; padding-top: 5rem; }
-  .about-more h2 { font-size: clamp(2.6rem,4.5vw,4.5rem); }
-  .about-more h2 em { color: var(--accent); }
+  .about-more h2 { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 720; letter-spacing: -.035em; }
+  
   @media(max-width:750px){ .about-intro,.about-more { grid-template-columns: 1fr; gap: 1rem; } }
 </style>

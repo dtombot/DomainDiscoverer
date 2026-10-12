@@ -6,8 +6,8 @@ const description = 'Contact Domain Discoverer about our domain checker, guides,
 <BaseLayout {title} {description}>
   <section class="page-hero"><div class="container-pad">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Contact</span></nav>
-    <p class="eyebrow">Contact / We listen</p>
-    <h1 class="display">Have a question? <em>Write to us.</em></h1>
+    <p class="eyebrow">Contact us</p>
+    <h1 class="display">Contact Domain Discoverer</h1>
     <p>Tell us what you're working on, report an issue with a guide or suggest something we should explain better.</p>
   </div></section>
   <section class="container-pad contact-layout">
@@ -25,7 +25,7 @@ const description = 'Contact Domain Discoverer about our domain checker, guides,
       <label>Your message <textarea required name="message" rows="7" maxlength="5000" placeholder="Include any relevant links or steps to reproduce an issue."></textarea></label>
       <div class="form-end"><p>Your message is submitted using Netlify Forms. Please do not include passwords or payment information.</p><button class="button-accent" type="submit">Send message ↗</button></div>
     </form>
-    <aside class="contact-aside"><span class="section-kicker">A quick note</span><h2>Useful context helps us respond.</h2><p>For a domain lookup problem, include the domain extension and the error you saw. Please don't send API keys or sensitive account information.</p><p>You can also read our <a href="/privacy">privacy policy</a>.</p></aside>
+    <aside class="contact-aside"><span class="section-kicker">Helpful details</span><h2>Useful context helps us respond.</h2><p>For a domain lookup problem, include the domain extension and the error you saw. Please don't send API keys or sensitive account information.</p><p>You can also read our <a href="/privacy">privacy policy</a>.</p></aside>
   </section>
 </BaseLayout>
 <style>
@@ -34,11 +34,11 @@ const description = 'Contact Domain Discoverer about our domain checker, guides,
   .field-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
   .contact-form label { display: block; font-size: .81rem; letter-spacing: .04em; color: var(--muted); }
   .contact-form :where(input,select,textarea) { display: block; width: 100%; padding: .95rem 1rem; margin-top: .55rem; background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 0; }
-  .contact-form :where(input,textarea)::placeholder { color: #a7b3a8; }
+  .contact-form :where(input,textarea)::placeholder { color: #9bacbd; }
   .form-end { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
   .form-end p { max-width: 350px; color: var(--muted); font-size: .77rem; }
   .contact-aside { border-top: 1px solid var(--line); padding-top: 1.3rem; }
-  .contact-aside h2 { font: 2.2rem var(--serif); margin: 1.2rem 0; }
+  .contact-aside h2 { font: 700 1.5rem/1.3 var(--sans); letter-spacing: -.03em; margin: 1.2rem 0; }
   .contact-aside p { color: var(--muted); margin-bottom: 1rem; font-size: .94rem; }
   .contact-aside a { color: var(--accent); }
   @media(max-width:800px) { .contact-layout { grid-template-columns: 1fr; gap: 3rem; } }
