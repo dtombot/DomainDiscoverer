@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DomainSearch from '../components/DomainSearch.astro';
+import HeroGeometry from '../components/HeroGeometry.astro';
 const title = 'Free Domain Availability Checker | Search a Domain Name';
 const description = 'Check whether a domain name is available. Search .com or other extensions with a free lookup, then verify final pricing with a registrar.';
 const breadcrumbs = { '@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[
@@ -17,7 +18,8 @@ const faqs = [
 ---
 <BaseLayout {title} {description} structuredData={breadcrumbs}>
   <section class="checker-hero">
-    <div class="container-pad">
+    <HeroGeometry />
+    <div class="container-pad checker-content">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Domain checker</span></nav>
       <p class="eyebrow">Domain availability checker</p>
       <h1>Check a domain name.</h1>
@@ -41,7 +43,10 @@ const faqs = [
   </section>
 </BaseLayout>
 <style>
-  .checker-hero { padding-block: clamp(3rem,6vw,5rem) clamp(3.7rem,7vw,6rem); background: #182641; border-bottom: 1px solid var(--line); }
+  .checker-hero { position:relative; isolation:isolate; overflow:hidden; padding-block:clamp(3rem,6vw,5rem) clamp(3.7rem,7vw,6rem); background:#182641; border-bottom:1px solid var(--line); }
+  .checker-content { position:relative; z-index:2; }
+  .checker-hero :global(.domain-lookup) { max-width:900px; }
+
   .checker-hero h1 { font-size: clamp(3rem,6vw,5.4rem); font-weight: 570; letter-spacing: -.06em; line-height: 1.12; margin: 1.3rem 0 1.1rem; }
   .checker-lead { max-width: 740px; color: #c1d1e2; font-size: 1.09rem; line-height: 1.75; margin-bottom: 2.6rem; }
   .checker-steps { padding-block: 4.7rem; background: var(--cream); color: var(--paper-ink); }

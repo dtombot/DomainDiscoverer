@@ -2,11 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Domain Discoverer / graphite and stone. Deliberately no remote fonts or effects. */
+/* Domain Discoverer / Midnight Iris, Sea-Glass and Pearl. Flat geometry, no shadows, filters or gradients. */
 :root {
   color-scheme: dark;
   --ink: #11172a;
   --surface: #1d2844;
+  --iris: #aeaef7;
+  --sea-glass: #a8eee4;
+  --ocean: #247991;
   --surface-2: #263653;
   --line: #3d4b67;
   --text: #f3f8ff;
@@ -43,7 +46,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .brand-name span { font-weight: 470; color: #bdcfe0; }
 .primary-nav { display: flex; align-items: center; gap: clamp(1.1rem,2.3vw,2.1rem); }
 .primary-nav > a { text-decoration: none; color: #cdd9e5; font-size: .86rem; font-weight: 520; transition: color .16s ease; }
-.primary-nav > a:hover, .primary-nav > a[aria-current="page"] { color: #fff; }
+.primary-nav > a:hover, .primary-nav > a[aria-current="page"] { color:#fff; }
+.primary-nav > a[aria-current="page"]:not(.nav-action) { text-decoration:underline; text-decoration-color:#A8EEE4; text-decoration-thickness:2px; text-underline-offset:1.2rem; }
 .primary-nav > .nav-action { display: inline-flex; align-items: center; gap: 1rem; margin-left: .5rem; padding: .68rem .95rem; border: 1px solid #7289ab; border-radius: 5px; color: #f4f8ff; font-weight: 600; }
 .primary-nav > .nav-action:hover { border-color: var(--accent); background: #202c45; }
 .menu-toggle { display: none; border: 1px solid var(--line); background: none; border-radius: 4px; padding: .65rem; }

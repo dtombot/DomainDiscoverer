@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DomainSearch from '../components/DomainSearch.astro';
+import HeroGeometry from '../components/HeroGeometry.astro';
 const title = 'Free Domain Availability Checker & Domain Name Guides | Domain Discoverer';
 const description = 'Check domain name availability without signing up, explore popular extensions, and read practical guides to choosing and registering domains.';
 const guides = [
@@ -16,11 +17,12 @@ const tools = [
 ---
 <BaseLayout {title} {description}>
   <section class="home-hero" id="check">
-    <div class="container-pad">
+    <HeroGeometry />
+    <div class="container-pad hero-content">
       <div class="hero-overline"><span>DOMAIN AVAILABILITY</span><span>Free to check · No account needed</span></div>
       <div class="hero-heading-row">
-        <div><h1>Find your next<br /> domain name.</h1></div>
-        <p>Search a domain, explore different extensions and find out what to check before registering it.</p>
+        <div><h1>Find a name.<br /><span class="hero-highlight">Make it yours.</span></h1></div>
+        <p>Explore domain availability, compare extensions and learn what matters before you register.</p>
       </div>
       <DomainSearch compact={true} heading="Search for a domain name" />
       <div class="hero-after">
@@ -70,16 +72,21 @@ const tools = [
   </section>
 </BaseLayout>
 <style>
-  .home-hero { padding-block: clamp(3.8rem,6vw,6rem) clamp(3.2rem,5vw,4.65rem); background: #15213c; border-bottom: 1px solid #465d85; }
+  .home-hero { position:relative; isolation:isolate; overflow:hidden; padding-block:clamp(4rem,6vw,6rem) clamp(3.8rem,5vw,5.2rem); background:#15213c; border-bottom:1px solid #465d85; }
+  .home-hero::before { content:''; position:absolute; z-index:0; inset:auto -15% -55% 26%; width:86%; height:83%; background:#111b35; transform:rotate(-17deg); clip-path:polygon(0 0,100% 0,100% 66%,0 100%); }
+  .hero-content { position:relative; z-index:2; }
+  .hero-highlight { color:#a8eee4; }
+
   .hero-overline { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.25rem; color: var(--accent); font-size: .73rem; font-weight: 650; letter-spacing: .14em; }
   .hero-overline span:last-child { color: #b8c9e0; font-weight: 440; letter-spacing: .015em; font-size: .8rem; }
   .hero-heading-row { display: grid; grid-template-columns: minmax(0,1.55fr) minmax(245px,.72fr); align-items: end; gap: 3rem; margin-bottom: 3.15rem; }
   .hero-heading-row h1 { max-width: 790px; font-size: clamp(3.65rem,6.9vw,6.65rem); line-height: 1.045; font-weight: 560; letter-spacing: -.067em; color: #f8fbff; }
-  .hero-heading-row p { max-width: 335px; color: #c8d8e8; font-size: 1.04rem; line-height: 1.75; padding-bottom: .7rem; }
-  .hero-after { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding-top: 1.2rem; color: #b8c9e0; font-size: .78rem; }
+  .hero-heading-row p { max-width:335px; position:relative; color:#E4EEFA; font-size:1.03rem; line-height:1.72; padding:1.05rem 0 1.05rem 1.3rem; border-left:2px solid #74C6C6; background:#15213c; }
+  .home-hero :global(.domain-lookup) { position:relative; max-width:1050px; margin-top:.3rem; }
+  .hero-after { display:flex; align-items:center; justify-content:space-between; gap:1.5rem; padding-top:1.25rem; color:#C5D6E9; font-size:.78rem; }
   .hero-after a { flex: none; text-decoration: none; color: #a8eee4; font-size: .8rem; }
   .hero-after a:hover { color: #fff; }
-  .home-learn { background: var(--cream); color: var(--paper-ink); padding-block: clamp(4.5rem,8vw,8rem); }
+  .home-learn { position:relative; background: var(--cream); color: var(--paper-ink); padding-block: clamp(4.5rem,8vw,8rem); }
   .learn-layout { display: grid; grid-template-columns: minmax(280px,.83fr) minmax(0,1.17fr); gap: clamp(3rem,8vw,9rem); align-items: start; }
   .home-learn .section-kicker { color: #376e83; }
   .learn-intro { position: sticky; top: 7.5rem; }

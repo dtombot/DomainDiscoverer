@@ -1,0 +1,67 @@
+<!-- Locally rendered vector sculpture: no fetched images, canvas, filters, gradients or blur. -->
+<div class="geometry-field" aria-hidden="true">
+  <svg class="geometry-figure" viewBox="0 0 860 680" xmlns="http://www.w3.org/2000/svg">
+    <g class="geometry-guide" fill="none" stroke="#7398BF" stroke-width="1">
+      <circle cx="542" cy="324" r="294" opacity=".13"/>
+      <circle cx="542" cy="324" r="256" opacity=".16"/>
+      <circle cx="542" cy="324" r="219" opacity=".13"/>
+      <path d="M10 324H851M542 1V670" opacity=".13"/>
+      <path d="M48 573 790 75M82 79 811 596" opacity=".12"/>
+    </g>
+    <g class="geometry-orbit">
+      <path d="M350 44 636 3 826 185 824 453 619 633 330 597 169 378 193 144Z" fill="#26375F"/>
+      <path d="M357 56 637 24 804 191 809 451 615 613 343 582 184 378 212 156Z" fill="#354977"/>
+      <path d="M357 56 637 24 804 191 641 197 514 149Z" fill="#515F99"/>
+      <path d="M804 191 809 451 626 385 641 197Z" fill="#237586"/>
+      <path d="M809 451 615 613 557 445 626 385Z" fill="#287E90"/>
+      <path d="M615 613 343 582 446 417 557 445Z" fill="#416B9D"/>
+      <path d="M343 582 184 378 411 348 446 417Z" fill="#1C5075"/>
+      <path d="M184 378 212 156 416 242 411 348Z" fill="#2A507A"/>
+      <path d="M212 156 357 56 514 149 416 242Z" fill="#293F6B"/>
+      <path d="M514 149 641 197 626 385 557 445 446 417 411 348 416 242Z" fill="#192D50"/>
+      <path d="M514 149 641 197 626 385 557 445 446 417 411 348 416 242Z" fill="none" stroke="#9FB9DE" stroke-opacity=".45" stroke-width="1"/>
+      <path d="M416 242 514 149 557 445 446 417Z" fill="#223B63"/>
+      <path d="M514 149 641 197 626 385 557 445Z" fill="#306F94"/>
+      <path d="M557 445 446 417 411 348 416 242 514 149Z" fill="#294C7A"/>
+      <path d="M514 149 557 445 626 385 641 197Z" fill="none" stroke="#AAD8E3" stroke-opacity=".45" stroke-width="1.5"/>
+    </g>
+    <g class="geometry-core">
+      <path d="M433 227 545 190 639 265 639 377 550 452 430 430 363 344 376 268Z" fill="#6BB5C4"/>
+      <path d="M433 227 545 190 639 265 535 306Z" fill="#B4BAF4"/>
+      <path d="M639 265 639 377 550 452 535 306Z" fill="#58A6B5"/>
+      <path d="M550 452 430 430 363 344 535 306Z" fill="#318A9A"/>
+      <path d="M363 344 376 268 433 227 535 306Z" fill="#5A78B2"/>
+      <path d="M433 227 545 190 639 265 639 377 550 452 430 430 363 344 376 268Z" fill="none" stroke="#D5ECF1" stroke-opacity=".63" stroke-width="1.5"/>
+      <path d="M454 289 540 250 601 300 582 383 498 419 430 369Z" fill="#253E68"/>
+      <path d="M454 289 540 250 601 300 498 332Z" fill="#395B8F"/>
+      <path d="M601 300 582 383 498 419 498 332Z" fill="#1D5A75"/>
+      <path d="M498 419 430 369 454 289 498 332Z" fill="#1C456A"/>
+      <path d="M454 289 540 250 601 300 582 383 498 419 430 369Z" fill="none" stroke="#9BD9E8" stroke-opacity=".8" stroke-width="1.5"/>
+    </g>
+    <g class="geometry-accent" fill="none">
+      <path d="M248 185 348 84" stroke="#A7E9E2" stroke-width="3" opacity=".7"/>
+      <path d="M637 559 735 462" stroke="#C9C5FC" stroke-width="3" opacity=".72"/>
+      <path d="M250 523 328 573 375 574" stroke="#9CC4F3" stroke-width="2" opacity=".7"/>
+      <circle cx="759" cy="141" r="5" fill="#A6EFE2"/>
+      <circle cx="245" cy="457" r="4" fill="#BBBCF9"/>
+      <circle cx="706" cy="555" r="4" fill="#A6EFE2"/>
+      <path d="M745 326h77m-38-38v77" stroke="#A2B9DC" stroke-width="1" opacity=".5"/>
+    </g>
+  </svg>
+  <span class="geometry-corner geometry-corner-a"></span>
+  <span class="geometry-corner geometry-corner-b"></span>
+</div>
+<style>
+.geometry-field { position:absolute; inset:0; overflow:hidden; pointer-events:none; user-select:none; z-index:0; }
+.geometry-figure { position:absolute; right:clamp(-280px,-12vw,-110px); top:-175px; width:clamp(600px,71vw,1000px); height:auto; max-width:none; opacity:.93; transform-origin:62% 48%; }
+.geometry-orbit { transform-origin:62% 47%; animation:geometry-breathe 22s ease-in-out infinite alternate; }
+.geometry-core { transform-origin:58% 48%; animation:geometry-shift 24s ease-in-out infinite alternate; }
+.geometry-corner { position:absolute; display:block; width:27px; height:27px; border-color:#8BA4D2; opacity:.35; }
+.geometry-corner-a { right:6%; top:14%; border-top:1px solid; border-right:1px solid; }
+.geometry-corner-b { right:30%; bottom:9%; border-bottom:1px solid; border-left:1px solid; }
+@keyframes geometry-breathe { from { transform:rotate(-3deg) scale(.98); } to { transform:rotate(3deg) scale(1.025); } }
+@keyframes geometry-shift { from { transform:rotate(2deg) translate(0,0); } to { transform:rotate(-3deg) translate(9px,-7px); } }
+@media(max-width:950px) { .geometry-figure { right:-350px; top:-160px; width:800px; opacity:.72; } }
+@media(max-width:700px) { .geometry-figure { right:-365px; top:-115px; width:690px; opacity:.38; } .geometry-corner { display:none; } }
+@media(prefers-reduced-motion:reduce) { .geometry-orbit,.geometry-core { animation:none; } }
+</style>
