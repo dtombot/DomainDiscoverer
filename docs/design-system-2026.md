@@ -2,12 +2,16 @@
 
 Status: Development-only implementation on `dev`. The production `main` branch remains unchanged.
 
+**October 12 refinement:** The graphite and warm-stone palette described in the historical section below was superseded by an original *Midnight Iris / Sea Glass* palette. The hero now contains a self-hosted inline SVG of crisp, overlapping, subtly animated geometric facets, with no gradients, shadows, blur filters or image fetches. The geometry is decorative, excluded from accessibility reading order, automatically muted on small screens, and stationary under reduced-motion preferences. See `docs/brand-palette-research-2026.md` for current exact tokens and design rationale.
+
 ## Design intent
 Domain Discoverer is a **domain checking and educational resource**, not an AI generator or a speculative domain marketplace. Put the useful action before marketing. The visitor should immediately recognize where to enter a domain and what will happen next.
 
 The current design was rebuilt in response to feedback that the old pages appeared generic and AI-generated. We deliberately removed oversized serif/italic display text, bright green accents, numerical decorative labels, generic marketing-card grids, unnecessary scroll effects, and the separation between the homepage hero and the domain checker.
 
-### Visual tokens
+### Original visual tokens (superseded by latest palette)
+
+The section below records the previous design iteration and is not the active palette. The current palette and decisions are documented in `docs/brand-palette-research-2026.md`.
 - Graphite foundation: `#181b20`, with darker header/footer and `#1e2227` content surfaces.
 - Light reading/learning surface: warm `#f1efeb`, dark text `#25282c`.
 - Accent: muted warm stone `#e4c8a4`. It appears mainly in interactive controls, navigation and subtle information labels, never as an arbitrary coloured word inside a headline.
