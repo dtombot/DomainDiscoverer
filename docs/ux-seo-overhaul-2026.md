@@ -84,3 +84,6 @@ Without Search Console or an independent volume dataset attached, these are **in
 - People-first content — https://developers.google.com/search/docs/fundamentals/creating-helpful-content
 - Core Web Vitals — https://developers.google.com/search/docs/appearance/core-web-vitals
 - ICANN RDAP — https://www.icann.org/rdap/
+
+## Runtime baseline
+- Netlify and GitHub Actions use Node.js 22 Maintenance LTS (through April 2027) instead of end-of-life Node.js 20. After any build-runtime change, verify the dev build and Netlify branch deploy independently.
