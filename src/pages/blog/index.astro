@@ -14,30 +14,30 @@ const posts = (await Astro.glob('./*.md'))
 ---
 <BaseLayout {title} {description}>
   <section class="page-hero"><div class="container-pad">
-    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Learn</span></nav>
-    <p class="eyebrow">The learning library / Domain education</p>
-    <h1 class="display">Understand domains. <em>Choose better.</em></h1>
-    <p>Clear, practical explanations for first-time website owners, startup founders and people who research domain names seriously.</p>
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Guides</span></nav>
+    <p class="eyebrow">Domain learning library</p>
+    <h1 class="display">Domain name guides</h1>
+    <p>Clear explanations of domain names, hosting, extensions, registration and the research involved in choosing a name.</p>
   </div></section>
   <section class="container-pad library-section">
-    <div class="library-top"><div><p class="section-kicker">Start anywhere</p><h2>Guides for every stage</h2></div><a href="/domain-availability-checker" class="body-link">Check a domain now ↗</a></div>
+    <div class="library-top"><h2>Browse the guides</h2><a href="/domain-availability-checker" class="body-link">Check a domain →</a></div>
     <div class="rail-grid">
-      {posts.map((post, index) => (
-        <a class="rail-item" href={post.url} data-reveal>
-          <span class="rail-index">{String(index+1).padStart(2,'0')} / {post.category}</span>
+      {posts.map((post) => (
+        <a class="rail-item" href={post.url}>
+          <span class="rail-index">{post.category}</span>
           <h3>{post.title} <span aria-hidden="true">↗</span></h3>
           <p>{post.description}</p>
         </a>
       ))}
     </div>
-    <div class="library-note"><strong>Before you register:</strong> Check whether the name is available, consider possible trademark confusion, then review renewal costs and eligibility with your chosen registrar.</div>
+    <div class="library-note"><strong>Registering a name?</strong> Check availability, potential trademark conflicts, renewal prices and any requirements attached to its extension.</div>
   </section>
 </BaseLayout>
 <style>
-  .library-section { padding-top: 4rem; }
-  .library-top { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: 2rem; }
-  .library-top h2 { font: 2.8rem var(--serif); letter-spacing: -.04em; }
-  .library-note { margin: 3rem 0; padding: 1.4rem 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .95rem; }
+  .library-section { padding-top: 3.5rem; }
+  .library-top { display: flex; justify-content: space-between; align-items: center; gap: 2rem; margin-bottom: 1.5rem; }
+  .library-top h2 { font-size: 1.45rem; font-weight: 700; letter-spacing: -.03em; }
+  .library-note { margin: 3rem 0; padding: 1.35rem 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
   .library-note strong { color: var(--text); }
-  @media(max-width:700px) { .library-top { display: block; } .library-top .body-link { margin-top: 1.2rem; } }
+  @media(max-width:740px) { .library-top { align-items: flex-start; flex-direction: column; gap: .65rem; } }
 </style>

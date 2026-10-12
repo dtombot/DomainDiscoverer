@@ -9,42 +9,43 @@ const breadcrumbs = { '@context':'https://schema.org', '@type':'BreadcrumbList',
 ]};
 ---
 <BaseLayout {title} {description} structuredData={breadcrumbs}>
-  <section class="page-hero">
+  <section class="page-hero checker-hero">
     <div class="container-pad">
       <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Domain checker</span></nav>
-      <p class="eyebrow">Free domain lookup / No signup</p>
-      <h1 class="display">Check if your <em>domain is available.</em></h1>
-      <p>Search one domain at a time using our live registrar lookup connection. It's a starting point, not a registration or a guarantee.</p>
+      <p class="eyebrow">Free availability lookup</p>
+      <h1 class="display">Check domain availability</h1>
+      <p>Type the name you want to check. We'll look it up, then you can confirm the result and pricing with a registrar.</p>
+      <DomainSearch />
     </div>
   </section>
   <section class="container-pad checker-body">
-    <DomainSearch />
     <div class="how-to-grid">
-      <div><span class="eyebrow">01 / Enter</span><h2>Start with the exact name.</h2><p>Try a complete domain such as youridea.com. You can check another extension too, but each is a separate name.</p></div>
-      <div><span class="eyebrow">02 / Verify</span><h2>Confirm with a registrar.</h2><p>Availability can change. Some names may be restricted, premium-priced, reserved or unavailable for other reasons.</p></div>
-      <div><span class="eyebrow">03 / Compare</span><h2>Review the total cost.</h2><p>Compare first-year cost, renewals, privacy options and transfer rules before paying.</p></div>
+      <div><h2>Search the exact name</h2><p>Try example.com or another domain extension. Each extension counts as a separate name.</p></div>
+      <div><h2>Confirm availability</h2><p>The result may change, and some names have restrictions or premium prices. Confirm before you pay.</p></div>
+      <div><h2>Compare the full cost</h2><p>Check first-year and renewal prices, privacy options and transfer rules before registering.</p></div>
     </div>
     <section class="checker-faq">
-      <p class="section-kicker">Common questions</p>
-      <h2 class="display">A little clarity goes a long way.</h2>
+      <p class="section-kicker">Frequently asked questions</p>
+      <h2>About checking domains</h2>
       <details><summary>Is this domain availability check free?</summary><p>Yes. You do not need an account to submit a single name. Each submission makes one lookup request.</p></details>
       <details><summary>Can I buy the domain here?</summary><p>No. Domain Discoverer helps you check and research names. Registration is completed on a registrar's website.</p></details>
       <details><summary>Why might a result differ from a registrar's checkout?</summary><p>Availability can change quickly, and registry restrictions or premium classifications may apply. Treat the registrar's checkout as the final confirmation.</p></details>
       <details><summary>What if the name is taken?</summary><p>Try a short, clear variation or another extension. Avoid confusing spellings or a name too close to an existing brand.</p></details>
-      <a href="/blog/how-to-check-domain-availability-smart-way" class="body-link">Read the full availability guide ↗</a>
+      <a href="/blog/how-to-check-domain-availability-smart-way" class="body-link">Read the domain availability guide →</a>
     </section>
   </section>
 </BaseLayout>
 <style>
-  .checker-body { padding-top: 4rem; }
-  .how-to-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2.3rem; margin: 5rem 0; border-top: 1px solid var(--line); padding-top: 2.5rem; }
-  .how-to-grid h2 { font: 2rem/1.2 var(--serif); margin: 1rem 0; }
-  .how-to-grid p { color: var(--muted); font-size: .95rem; }
-  .checker-faq { max-width: 850px; margin: 5rem 0; }
-  .checker-faq h2 { font-size: clamp(2.4rem,5vw,4.5rem); margin: 1rem 0 2rem; }
-  .checker-faq details { border-bottom: 1px solid var(--line); padding: 1.2rem 0; }
-  .checker-faq summary { font-weight: 650; cursor: pointer; }
-  .checker-faq details p { color: var(--muted); padding-top: .8rem; max-width: 650px; }
+  .checker-body { padding-top: 3.5rem; }
+  .how-to-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 2rem; padding-bottom: 3rem; border-bottom: 1px solid var(--line); }
+  .how-to-grid h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: .75rem; letter-spacing: -.02em; }
+  .how-to-grid p { color: var(--muted); font-size: .91rem; line-height: 1.7; }
+  .checker-faq { max-width: 800px; padding-top: 4rem; }
+  .checker-faq h2 { font-size: clamp(1.8rem,3vw,2.4rem); letter-spacing: -.04em; font-weight: 730; margin: .5rem 0 1.5rem; }
+  .checker-faq details { border-bottom: 1px solid var(--line); padding: 1.25rem 0; }
+  .checker-faq summary { cursor: pointer; font-size: .97rem; font-weight: 650; }
+  .checker-faq details p { margin-top: .7rem; color: var(--muted); max-width: 690px; line-height: 1.7; }
   .checker-faq .body-link { margin-top: 2rem; }
-  @media(max-width:750px) { .how-to-grid { grid-template-columns: 1fr; gap: 1rem; } }
+  .checker-hero :global(.domain-lookup) { margin-top: 2rem; }
+  @media(max-width:740px) { .how-to-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
 </style>
