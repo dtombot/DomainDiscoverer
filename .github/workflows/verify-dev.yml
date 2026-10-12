@@ -1,9 +1,11 @@
-name: Reconcile dev lockfile and verify site
+name: Verify development site
 on:
   push:
     branches: [dev]
+  pull_request:
+    branches: [main]
 permissions:
-  contents: write
+  contents: read
 jobs:
   website:
     runs-on: ubuntu-latest
@@ -13,22 +15,9 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-      - name: Reconcile pre-existing stale lockfile
-        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-      - name: Verify reproducible install
+      - name: Reproducible dependency install
         run: npm ci --no-audit --no-fund
       - name: Validate article links
         run: npm run check:content
       - name: Build static website
         run: npm run build
-      - name: Commit corrected lockfile to dev only
-        if: success()
-        shell: bash
-        run: |
-          if ! git diff --quiet -- package-lock.json; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add package-lock.json
-            git commit -m "Repair pre-existing npm lockfile mismatch"
-            git push origin HEAD:dev
-          fi
