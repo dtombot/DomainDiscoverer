@@ -24,37 +24,36 @@ const groups = [
 <BaseLayout {title} {description}>
   <section class="page-hero"><div class="container-pad">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Research tools</span></nav>
-    <p class="eyebrow">Research directory / Tools with a purpose</p>
-    <h1 class="display">Better decisions need <em>better questions.</em></h1>
-    <p>A considered directory of services people use to find, compare and investigate domain names. Start with what you need; not every project needs every tool.</p>
+    <p class="eyebrow">Domain research directory</p>
+    <h1 class="display">Domain research tools</h1>
+    <p>Explore useful services for checking names, reviewing domain history and researching the market. Choose the tools that match your needs.</p>
   </div></section>
   {groups.map(group => <section class="container-pad tool-group" id={group.id}>
-    <div class="section-heading"><div><p class="section-kicker">{group.number} / Research stage</p><h2>{group.title}</h2><p class="group-copy">{group.copy}</p></div></div>
-    <div class="tool-rows">{group.tools.map(tool => <a href={tool.href} target="_blank" rel="noopener noreferrer" class="tool-row" data-reveal>
+    <div class="section-heading"><div><h2>{group.title}</h2><p class="group-copy">{group.copy}</p></div></div>
+    <div class="tool-rows">{group.tools.map(tool => <a href={tool.href} target="_blank" rel="noopener noreferrer" class="tool-row">
       <div><h3>{tool.name}<span aria-hidden="true"> ↗</span></h3><p>{tool.summary}</p></div><small>{tool.note}</small>
     </a>)}</div>
   </section>)}
   <aside class="container-pad tools-note">
-    <h2 class="display">Research is useful. <em>Judgement still matters.</em></h2>
-    <p>We do not run these external tools automatically or send visitor domain queries to them. Prices, plans and features may change. Some outbound links may be affiliate links, as explained in our <a href="/disclosure">disclosure</a>.</p>
-    <a class="button-accent" href="/domain-availability-checker">Check a domain ↗</a>
+    <h2>Use estimates with care.</h2>
+    <p>External platforms may charge for some features. Traffic estimates and automated valuations are not guarantees. We do not send domain searches automatically to these services. Some links may be affiliate links, as explained in our <a href="/disclosure">disclosure</a>.</p>
+    <a class="button-accent" href="/domain-availability-checker">Check domain availability →</a>
   </aside>
 </BaseLayout>
 <style>
-  .tool-group { padding-top: 5rem; }
-  .tool-group h2 { font: clamp(2.4rem,5vw,4.5rem)/1.1 var(--serif); letter-spacing: -.035em; }
-  .group-copy { color: var(--muted); margin-top: 1rem; }
+  .tool-group { padding-top: 4rem; }
+  .tool-group h2 { font-size: clamp(1.65rem,2.8vw,2.25rem); font-weight: 720; letter-spacing: -.04em; }
+  .group-copy { color: var(--muted); margin-top: .6rem; font-size: .95rem; }
   .tool-rows { border-top: 1px solid var(--line); }
-  .tool-row { display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; padding: 1.6rem .5rem; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .2s ease, padding .2s ease; }
-  .tool-row:hover { background: var(--surface); padding-left: 1rem; }
-  .tool-row h3 { font: 1.7rem var(--serif); }
+  .tool-row { display: grid; grid-template-columns: 1.3fr .8fr; gap: 2rem; padding: 1.4rem .4rem; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .15s ease; }
+  .tool-row:hover { background: var(--surface); }
+  .tool-row h3 { font-size: 1.1rem; font-weight: 690; letter-spacing: -.02em; }
   .tool-row h3 span { color: var(--accent); }
-  .tool-row p { color: var(--muted); font-size: .94rem; }
-  .tool-row small { align-self: center; color: var(--muted); font-size: .83rem; }
-  .tools-note { margin-top: 6rem; border-top: 1px solid var(--line); padding-top: 4rem; }
-  .tools-note h2 { max-width: 750px; font-size: clamp(2.8rem,5vw,5rem); }
-  .tools-note h2 em { color: var(--accent); }
-  .tools-note p { max-width: 700px; color: var(--muted); margin: 1.5rem 0; }
+  .tool-row p { color: var(--muted); margin-top: .3rem; font-size: .9rem; }
+  .tool-row small { color: #b8c6d6; align-self: center; font-size: .81rem; line-height: 1.65; }
+  .tools-note { margin-top: 5rem; border-top: 1px solid var(--line); padding-top: 3rem; }
+  .tools-note h2 { font-size: clamp(1.75rem,3.5vw,2.65rem); font-weight: 720; letter-spacing: -.035em; }
+  .tools-note p { max-width: 750px; color: var(--muted); margin: 1rem 0 1.5rem; font-size: .95rem; }
   .tools-note p a { color: var(--accent); }
-  @media(max-width:650px){ .tool-row { grid-template-columns: 1fr; gap: .5rem; } }
+  @media(max-width:680px) { .tool-row { grid-template-columns: 1fr; gap: .4rem; } }
 </style>

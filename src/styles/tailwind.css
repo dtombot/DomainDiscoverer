@@ -58,7 +58,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .display em, .section-heading em { font-family: inherit; font-weight: inherit; font-style: normal; color: inherit; }
 .page-hero { padding-block: clamp(3.5rem, 7vw, 6.5rem) clamp(3rem, 6vw, 5rem); border-bottom: 1px solid var(--line); background: #172334; }
 .page-hero h1 { max-width: 830px; font-size: clamp(2.55rem, 5.5vw, 4.55rem); margin: 1.25rem 0 1.15rem; }
-.page-hero p:not(.eyebrow) { max-width: 720px; font-size: clamp(1rem,1.6vw,1.13rem); line-height: 1.7; color: var(--muted); }
+.page-hero > .container-pad > p:not(.eyebrow) { max-width: 720px; font-size: clamp(1rem,1.6vw,1.13rem); line-height: 1.7; color: var(--muted); }
 .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: 2rem; }
 .section-heading h2 { font-family: var(--sans); font-weight: 700; font-size: clamp(1.8rem,3vw,2.65rem); line-height: 1.22; letter-spacing: -.04em; }
 .body-link { display: inline-flex; align-items: center; gap: .55rem; font-size: .9rem; font-weight: 650; color: var(--accent); text-decoration: none; transition: color .15s ease; }
