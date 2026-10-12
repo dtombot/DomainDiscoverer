@@ -1,96 +1,212 @@
 ---
 interface Props { compact?: boolean; heading?: string; }
-const { compact = false, heading = 'Enter a domain name' } = Astro.props as Props;
+const { compact = false, heading = 'Domain name' } = Astro.props as Props;
+const id = compact ? 'hero-domain' : 'page-domain';
+const choices = ['.com','.net','.org','.io','.co','.ng'];
 ---
-<div class:list={['domain-lookup', { compact }]}>
+<div class:list={['domain-lookup',{ compact }]}>
   <form class="domain-search" action="/domain-availability-checker" method="get" novalidate>
-    <label for={compact ? 'quick-domain' : 'full-domain'}>{heading}</label>
-    <div class="input-row">
-      <input id={compact ? 'quick-domain' : 'full-domain'} name="domain" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="example.com" maxlength="253" required aria-describedby={compact ? 'quick-help' : 'full-help'} />
-      <button type="submit">Check availability <span aria-hidden="true">→</span></button>
+    <div class="lookup-top">
+      <label for={id}>{heading}</label>
+      <span class="lookup-free"><span class="lookup-free-dot" aria-hidden="true"></span> Free domain lookup</span>
     </div>
-    <p class="search-help" id={compact ? 'quick-help' : 'full-help'}>Enter a full domain or just a name to check its .com version.</p>
+    <div class="input-row">
+      <div class="input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 5 5"/></svg>
+        <input id={id} name="domain" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="yourname.com" maxlength="253" required aria-describedby={`${id}-help`} />
+      </div>
+      <button class="lookup-submit" type="submit"><span class="submit-label">Check availability</span><span class="submit-arrow" aria-hidden="true">↗</span></button>
+    </div>
+    <div class="lookup-footer">
+      <div class="extension-row" role="group" aria-label="Select a domain extension">
+        <span class="extension-caption">Popular extensions</span>
+        {choices.map(ext => <button type="button" class="extension-choice" data-extension={ext} aria-pressed="false">{ext}</button>)}
+      </div>
+      <p class="search-help" id={`${id}-help`}>Enter a name or paste a domain URL. Checks run only when you submit.</p>
+    </div>
     <div class="lookup-result" role="status" aria-live="polite" aria-atomic="true" hidden>
-      <strong class="result-label"></strong>
-      <p class="result-detail"></p>
-      <a class="result-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Review registration options ↗</a>
+      <div class="result-top">
+        <span class="result-icon" aria-hidden="true"></span>
+        <div class="result-main">
+          <strong class="result-label"></strong>
+          <p class="result-detail"></p>
+        </div>
+      </div>
+      <div class="result-actions">
+        <a class="result-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Check with registrar <span aria-hidden="true">↗</span></a>
+        <button class="copy-domain" type="button" hidden>Copy domain</button>
+        <a class="result-guide" href="/blog/how-to-choose-a-domain-name">Domain naming tips <span aria-hidden="true">→</span></a>
+      </div>
     </div>
   </form>
 </div>
 <style>
-  .domain-lookup { max-width: 790px; padding: clamp(1.15rem,2.5vw,1.65rem); border: 1px solid #d3dce6; border-radius: 9px; background: #e9eef4; color: #1b293a; }
-  .domain-search label { display: block; margin: 0 0 .75rem; color: #27384c; font-size: .88rem; font-weight: 700; letter-spacing: 0; }
+  .domain-lookup { width: 100%; max-width: 880px; background: #eeeae3; border: 1px solid #d6d2ca; border-radius: 7px; padding: clamp(1.3rem,3.2vw,2.15rem); color: #27292b; }
+  .domain-lookup.compact { max-width: none; }
+  .lookup-top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: .8rem; }
+  .lookup-top label { color: #333538; font-size: .9rem; font-weight: 670; }
+  .lookup-free { color: #666962; font-size: .75rem; display: inline-flex; align-items: center; gap: .45rem; white-space: nowrap; }
+  .lookup-free-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #8b816f; }
   .input-row { display: flex; gap: .6rem; }
-  .input-row input { flex: 1 1 auto; min-width: 0; width: 100%; border: 1px solid #aebccb; border-radius: 6px; background: #fff; color: #172437; padding: 1rem 1.05rem; font-size: 1.08rem; }
-  .input-row input::placeholder { color: #65768a; opacity: 1; }
-  .input-row button { flex: none; border: 1px solid #355f97; border-radius: 6px; background: #355f97; color: white; padding: .95rem 1.2rem; font-size: .94rem; font-weight: 710; transition: background .15s ease; }
-  .input-row button:hover { background: #234d87; }
-  .input-row button:disabled { opacity: .66; cursor: progress; }
-  .input-row button span { margin-left: .3rem; }
-  .domain-search :focus-visible { outline: 2px solid #315d9b; outline-offset: 2px; }
-  .search-help { font-size: .8rem; line-height: 1.55; color: #526479; margin-top: .7rem; }
-  .lookup-result { margin-top: 1.1rem; border: 1px solid #b5c3d2; border-radius: 6px; background: #fff; padding: 1rem; }
-  .lookup-result[data-state="available"] { border-left: 4px solid #2f775e; }
-  .lookup-result[data-state="taken"],.lookup-result[data-state="error"] { border-left: 4px solid #aa6843; }
-  .lookup-result[data-state="loading"] { border-left: 4px solid #527cac; }
-  .result-label { font-size: .96rem; color: #192c3e; }
-  .result-detail { margin-top: .3rem; font-size: .88rem; line-height: 1.55; color: #465a70; }
-  .result-link { display: inline-block; margin-top: .7rem; color: #214f87; font-size: .87rem; font-weight: 650; }
-  @media(max-width:600px) { .input-row { flex-direction: column; } .input-row button { width: 100%; padding-block: 1rem; } }
+  .input-wrap { display: flex; align-items: center; gap: .75rem; flex: 1 1 auto; min-width: 0; background: #fff; border: 1px solid #c5c3bf; border-radius: 4px; padding-inline: 1.1rem; transition: border-color .15s ease; }
+  .input-wrap:focus-within { border-color: #5f6164; outline: 2px solid rgba(63,66,69,.18); outline-offset: 1px; }
+  .input-wrap svg { width: 21px; height: 21px; flex: 0 0 auto; color: #828282; }
+  .input-wrap input { min-width: 0; width: 100%; padding: 1.22rem 0; border: 0; outline: 0; background: transparent; color: #24272a; font-size: clamp(1rem,2vw,1.18rem); line-height: 1.3; letter-spacing: -.015em; }
+  .input-wrap input:focus-visible { outline: 0; }
+  .input-wrap input::placeholder { color: #8b8b8b; opacity: 1; }
+  .lookup-submit { display: inline-flex; justify-content: center; align-items: center; gap: 1.2rem; flex: none; padding: .85rem 1.25rem; color: #f5f3ee; background: #24272c; border: 1px solid #24272c; border-radius: 4px; font-size: .9rem; font-weight: 640; transition: background .16s ease; }
+  .lookup-submit:hover { background: #3b3f45; }
+  .lookup-submit:disabled { cursor: progress; opacity: .7; }
+  .submit-arrow { font-size: 1.08rem; font-weight: 400; }
+  .lookup-footer { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: .75rem 1rem; margin-top: 1.05rem; }
+  .extension-row { display: flex; align-items: center; gap: .32rem; flex-wrap: wrap; }
+  .extension-caption { color: #74746e; font-size: .76rem; margin-right: .45rem; }
+  .extension-choice { color: #555653; font-size: .78rem; line-height: 1.25; padding: .33rem .52rem; background: transparent; border: 1px solid #cecbc5; border-radius: 4px; transition: background .12s ease,border-color .12s ease; }
+  .extension-choice:hover, .extension-choice[aria-pressed="true"] { color: #24272c; border-color: #797773; background: #e0dcd5; }
+  .search-help { color: #71716e; font-size: .74rem; line-height: 1.5; }
+  .lookup-result { padding: 1.25rem; margin-top: 1.35rem; background: #f9f8f5; border: 1px solid #cac7bf; border-radius: 4px; }
+  .result-top { display: flex; align-items: flex-start; gap: .85rem; }
+  .result-icon { margin-top: .45rem; width: 9px; height: 9px; flex: 0 0 auto; border-radius: 50%; background: #777e89; }
+  .lookup-result[data-state="available"] .result-icon { background: #33745b; }
+  .lookup-result[data-state="taken"] .result-icon { background: #a36d4a; }
+  .lookup-result[data-state="error"] .result-icon { background: #a84e4e; }
+  .result-label { display: block; color: #25292c; font-size: 1.025rem; font-weight: 680; overflow-wrap: anywhere; }
+  .result-detail { margin-top: .4rem; color: #555953; font-size: .88rem; line-height: 1.6; }
+  .result-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem 1.4rem; margin: 1.15rem 0 0 1.75rem; }
+  .result-link { display: inline-flex; align-items: center; gap: .8rem; padding: .59rem .83rem; border: 1px solid #262b2e; border-radius: 4px; color: white; background: #292e32; font-size: .82rem; font-weight: 630; text-decoration: none; }
+  .result-link:hover { background: #444b50; }
+  .copy-domain, .result-guide { padding: .15rem 0; border: 0; color: #4b4e50; font-size: .82rem; font-weight: 620; background: none; text-decoration: underline; text-underline-offset: .25rem; }
+  .copy-domain:hover, .result-guide:hover { color: #101215; }
+  .domain-search :focus-visible { outline-color: #6e634e; }
+  @media(max-width:730px) { .lookup-footer { align-items: flex-start; flex-direction: column; } }
+  @media(max-width:580px) {
+    .domain-lookup { padding: 1.05rem; }
+    .input-row { flex-direction: column; gap: .65rem; }
+    .lookup-submit { min-height: 50px; width: 100%; justify-content: space-between; }
+    .input-wrap input { padding-block: 1rem; }
+    .lookup-free { font-size: .7rem; }
+    .extension-caption { flex-basis: 100%; }
+    .result-actions { margin-left: 0; }
+  }
 </style>
 <script>
   const domainPattern = /^(?=.{4,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z](?:[a-z0-9-]{0,61}[a-z0-9])$/i;
+  const cleanDomain = (value) => value.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').split(/[/?#]/)[0].replace(/\.$/, '');
   document.querySelectorAll('.domain-search').forEach((form) => {
     const input = form.querySelector('input[name="domain"]');
-    const button = form.querySelector('button[type="submit"]');
+    const button = form.querySelector('.lookup-submit');
+    const buttonLabel = form.querySelector('.submit-label');
     const result = form.querySelector('.lookup-result');
     const label = form.querySelector('.result-label');
     const detail = form.querySelector('.result-detail');
     const link = form.querySelector('.result-link');
+    const copyButton = form.querySelector('.copy-domain');
+    const resultActions = form.querySelector('.result-actions');
+    const extensions = [...form.querySelectorAll('[data-extension]')];
     const params = new URLSearchParams(location.search);
-    if (params.has('domain') && input && !input.value) input.value = (params.get('domain') || '').slice(0, 253);
+    if (params.has('domain') && !input.value) input.value = (params.get('domain') || '').slice(0, 253);
+    let requestNumber = 0;
+    let controller = null;
+    let checkedDomain = '';
+    const updateExtensions = () => {
+      const name = cleanDomain(input.value);
+      extensions.forEach(el => el.setAttribute('aria-pressed', String(Boolean(name && name.endsWith(el.dataset.extension)))));
+    };
+    const resetResult = () => {
+      ++requestNumber;
+      controller?.abort();
+      controller = null;
+      checkedDomain = '';
+      result.hidden = true;
+      button.disabled = false;
+      buttonLabel.textContent = 'Check availability';
+    };
+    input.addEventListener('input', () => { resetResult(); updateExtensions(); });
+    extensions.forEach(chip => chip.addEventListener('click', () => {
+      const text = cleanDomain(input.value);
+      const stem = text.replace(/\.[^.]+$/, '');
+      input.value = (stem || 'yourname') + chip.dataset.extension;
+      resetResult();
+      updateExtensions();
+      input.focus();
+      input.setSelectionRange(0, stem.length || 8);
+    }));
+    updateExtensions();
+    copyButton.addEventListener('click', async () => {
+      if (!checkedDomain || !navigator.clipboard?.writeText) return;
+      try {
+        await navigator.clipboard.writeText(checkedDomain);
+        copyButton.textContent = 'Copied';
+      } catch (_) { copyButton.textContent = 'Copy unavailable'; }
+    });
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      let domain = (input?.value || '').trim().toLowerCase().replace(/\.$/, '');
+      let domain = cleanDomain(input.value);
       if (domain && !domain.includes('.')) domain += '.com';
       if (!domainPattern.test(domain)) {
+        resetResult();
         result.hidden = false;
         result.dataset.state = 'error';
-        label.textContent = 'Enter a valid domain name';
-        detail.textContent = 'Use letters, numbers and hyphens with an extension such as .com. Do not include https://, spaces or slashes.';
+        label.textContent = 'Check the domain name';
+        detail.textContent = 'Please enter a valid name like example.com. Spaces, special characters and incomplete extensions are not supported.';
         link.hidden = true;
-        input?.focus();
+        copyButton.hidden = true;
+        resultActions.hidden = false;
+        input.focus();
         return;
       }
+      resetResult();
       input.value = domain;
+      updateExtensions();
+      const thisRequest = ++requestNumber;
+      controller = new AbortController();
+      const timeout = setTimeout(() => controller?.abort(), 10000);
       result.hidden = false;
       result.dataset.state = 'loading';
-      label.textContent = 'Checking ' + domain + '…';
-      detail.textContent = 'Contacting the lookup service.';
+      label.textContent = 'Checking ' + domain;
+      detail.textContent = 'Requesting a live registrar lookup…';
       link.hidden = true;
+      copyButton.hidden = true;
+      resultActions.hidden = true;
       button.disabled = true;
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 10000);
+      buttonLabel.textContent = 'Checking…';
       try {
-        const response = await fetch('/.netlify/functions/check-domain?domain=' + encodeURIComponent(domain), { method: 'GET', signal: controller.signal, cache: 'no-store' });
+        const response = await fetch('/.netlify/functions/check-domain?domain=' + encodeURIComponent(domain), { method:'GET', signal:controller.signal,cache:'no-store' });
         const data = await response.json();
-        if (!response.ok || !['available', 'taken'].includes(data.status)) throw new Error('Lookup unavailable');
+        if (!response.ok || !['available','taken'].includes(data.status)) throw new Error('Service unavailable');
+        if (thisRequest !== requestNumber) return;
+        checkedDomain = domain;
+        resultActions.hidden = false;
+        copyButton.hidden = false;
+        copyButton.textContent = 'Copy domain';
         if (data.status === 'available') {
           result.dataset.state = 'available';
           label.textContent = domain + ' may be available';
-          detail.textContent = 'The lookup returned available. Confirm the final price and availability at checkout; results can change.';
+          detail.textContent = 'The lookup reports this domain as available. Registration and final pricing must be confirmed at checkout.';
           link.href = 'https://www.namecheap.com/domains/registration/results/?domain=' + encodeURIComponent(domain);
           link.hidden = false;
         } else {
           result.dataset.state = 'taken';
-          label.textContent = domain + ' is registered';
-          detail.textContent = 'Try another name or a different extension. Each check is made only when you submit.';
+          label.textContent = domain + ' is already registered';
+          detail.textContent = 'Try a different extension above, or adjust the name and check again. Each check is made only when you submit.';
+          link.hidden = true;
         }
-      } catch (_) {
+      } catch (error) {
+        if (thisRequest !== requestNumber) return;
         result.dataset.state = 'error';
-        label.textContent = 'We could not complete the lookup';
-        detail.textContent = 'Please try again. You can also confirm the name with your preferred registrar.';
-      } finally { clearTimeout(timeout); button.disabled = false; }
+        label.textContent = 'Unable to check this domain';
+        detail.textContent = 'The lookup service could not complete the request. Please try again or verify with a registrar.';
+        link.hidden = true;
+        copyButton.hidden = true;
+        resultActions.hidden = false;
+      } finally {
+        clearTimeout(timeout);
+        if (thisRequest === requestNumber) {
+          controller = null;
+          button.disabled = false;
+          buttonLabel.textContent = 'Check availability';
+        }
+      }
     });
   });
 </script>
