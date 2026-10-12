@@ -1,9 +1,10 @@
-# Local Netlify folder
-.netlify
-node_modules
+# Do not commit secrets
 .env
+.env.*
+!.env.example
+.netlify/
+node_modules/
 dist/
 build/
 .astro/
-
 astro-site/

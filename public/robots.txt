@@ -2,3 +2,4 @@ User-agent: *
 Disallow: /tom/
 Allow: /
 
+Sitemap: https://domaindiscoverer.com/sitemap-index.xml

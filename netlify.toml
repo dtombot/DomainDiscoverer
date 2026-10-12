@@ -9,12 +9,12 @@
 [functions]
   directory = "netlify/functions"
 
-[[redirects]]
-  from = "/blog/long-tail-domain-keywords"
-  to = "/blog/top-domaining-tools-for-investors-2025"
-  status = 301
-
 [[headers]]
   for = "/tom/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow, noarchive"
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
