@@ -2,7 +2,7 @@
 interface Props { compact?: boolean; heading?: string; }
 const { compact = false, heading = 'Domain name' } = Astro.props as Props;
 const id = compact ? 'hero-domain' : 'page-domain';
-const choices = ['.com','.net','.org','.io','.co','.ng'];
+const choices = ['.com','.net','.org','.io','.co','.app'];
 ---
 <div class:list={['domain-lookup',{ compact }]}>
   <form class="domain-search" action="/domain-availability-checker" method="get" novalidate>
@@ -90,8 +90,7 @@ const choices = ['.com','.net','.org','.io','.co','.ng'];
   }
 </style>
 <script>
-  const domainPattern = /^(?=.{4,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z](?:[a-z0-9-]{0,61}[a-z0-9])$/i;
-  const cleanDomain = (value) => value.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').split(/[/?#]/)[0].replace(/\.$/, '');
+  import { domainPattern, cleanDomain, normalizeDomain, withExtension } from '../utils/domain.mjs';
   document.querySelectorAll('.domain-search').forEach((form) => {
     const input = form.querySelector('input[name="domain"]');
     const button = form.querySelector('.lookup-submit');
@@ -123,13 +122,15 @@ const choices = ['.com','.net','.org','.io','.co','.ng'];
     };
     input.addEventListener('input', () => { resetResult(); updateExtensions(); });
     extensions.forEach(chip => chip.addEventListener('click', () => {
-      const text = cleanDomain(input.value);
-      const stem = text.replace(/\.[^.]+$/, '');
-      input.value = (stem || 'yourname') + chip.dataset.extension;
+      if (!cleanDomain(input.value)) {
+        input.placeholder = 'yourname' + chip.dataset.extension;
+        input.focus();
+        return;
+      }
+      input.value = withExtension(input.value, chip.dataset.extension);
       resetResult();
       updateExtensions();
       input.focus();
-      input.setSelectionRange(0, stem.length || 8);
     }));
     updateExtensions();
     copyButton.addEventListener('click', async () => {
@@ -141,8 +142,7 @@ const choices = ['.com','.net','.org','.io','.co','.ng'];
     });
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      let domain = cleanDomain(input.value);
-      if (domain && !domain.includes('.')) domain += '.com';
+      const domain = normalizeDomain(input.value);
       if (!domainPattern.test(domain)) {
         resetResult();
         result.hidden = false;
@@ -159,8 +159,9 @@ const choices = ['.com','.net','.org','.io','.co','.ng'];
       input.value = domain;
       updateExtensions();
       const thisRequest = ++requestNumber;
-      controller = new AbortController();
-      const timeout = setTimeout(() => controller?.abort(), 10000);
+      const lookupController = new AbortController();
+      controller = lookupController;
+      const timeout = setTimeout(() => lookupController.abort(), 10000);
       result.hidden = false;
       result.dataset.state = 'loading';
       label.textContent = 'Checking ' + domain;
@@ -171,7 +172,7 @@ const choices = ['.com','.net','.org','.io','.co','.ng'];
       button.disabled = true;
       buttonLabel.textContent = 'Checking…';
       try {
-        const response = await fetch('/.netlify/functions/check-domain?domain=' + encodeURIComponent(domain), { method:'GET', signal:controller.signal,cache:'no-store' });
+        const response = await fetch('/.netlify/functions/check-domain?domain=' + encodeURIComponent(domain), { method:'GET', signal:lookupController.signal,cache:'no-store' });
         const data = await response.json();
         if (!response.ok || !['available','taken'].includes(data.status)) throw new Error('Service unavailable');
         if (thisRequest !== requestNumber) return;
