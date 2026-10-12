@@ -1,17 +1,17 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-const p: any = Astro.props || {};
-const fm: any = p.frontmatter || {};
-const title: string = String(p.title ?? fm.title ?? 'Domain guide');
-const description: string = String(p.description ?? fm.description ?? 'Practical domain education from Domain Discoverer.');
+const p:any = Astro.props || {};
+const fm:any = p.frontmatter || {};
+const title:string = String(p.title ?? fm.title ?? 'Domain guide');
+const description:string = String(p.description ?? fm.description ?? 'Practical guides to domain names from Domain Discoverer.');
 const pubDate = p.pubDate ?? fm.pubDate;
 const updatedDate = p.updatedDate ?? fm.updatedDate ?? pubDate;
 const category = p.category ?? fm.category ?? 'Domain research';
 const site = 'https://domaindiscoverer.com';
-const toISO = (value: unknown) => value ? new Date(String(value)).toISOString().slice(0,10) : undefined;
+const toISO = (value:unknown) => value ? new Date(String(value)).toISOString().slice(0,10) : undefined;
 const schema = [
-  { '@context':'https://schema.org', '@type':'BlogPosting', headline:title, description, datePublished:toISO(pubDate), dateModified:toISO(updatedDate), mainEntityOfPage:`${site}${Astro.url.pathname}`, publisher:{'@type':'Organization',name:'Domain Discoverer',url:site} },
-  { '@context':'https://schema.org', '@type':'BreadcrumbList', itemListElement:[
+  { '@context':'https://schema.org','@type':'BlogPosting',headline:title,description,datePublished:toISO(pubDate),dateModified:toISO(updatedDate),mainEntityOfPage:`${site}${Astro.url.pathname}`,publisher:{'@type':'Organization',name:'Domain Discoverer',url:site} },
+  { '@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[
     { '@type':'ListItem',position:1,name:'Home',item:`${site}/` },
     { '@type':'ListItem',position:2,name:'Guides',item:`${site}/blog` },
     { '@type':'ListItem',position:3,name:title,item:`${site}${Astro.url.pathname}` }
@@ -19,38 +19,95 @@ const schema = [
 ];
 ---
 <BaseLayout {title} {description} structuredData={schema}>
-  <header class="article-header">
+  <header class="article-hero">
     <div class="container-pad">
-      <nav aria-label="Breadcrumb" class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/blog">Guides</a><span>/</span><span aria-current="page">{category}</span></nav>
-      <p class="eyebrow">{category}</p>
-      <h1 class="display">{title.replace(/ \(2025\)/g, '')}</h1>
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/blog">Guides</a><span aria-hidden="true">/</span><span aria-current="page">{category}</span></nav>
+      <span class="eyebrow">{category}</span>
+      <h1>{title.replace(/ \(2025\)/g,'')}</h1>
       <p class="article-deck">{description}</p>
-      {pubDate && <p class="article-meta"><time datetime={toISO(pubDate)}>Published {new Date(pubDate).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}</time>{updatedDate && toISO(updatedDate)!==toISO(pubDate) && <span> · Updated <time datetime={toISO(updatedDate)}>{new Date(updatedDate).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}</time></span>}</p>}
+      <div class="article-byline">
+        <span>Domain Discoverer</span>
+        {pubDate && <time datetime={toISO(pubDate)}>{new Date(pubDate).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}</time>}
+        {updatedDate && toISO(updatedDate)!==toISO(pubDate) && <span>Updated {new Date(updatedDate).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}</span>}
+      </div>
     </div>
   </header>
-  <div class="container-pad article-quick"><div><strong>Have a domain name in mind?</strong><span>Check whether it is available before registering.</span></div><a href="/domain-availability-checker" class="body-link">Check availability →</a></div>
-  <article class="container-pad article-body"><div class="prose"><slot /></div></article>
+
+  <section class="article-paper">
+    <div class="container-pad article-layout">
+      <article class="prose" id="article-content"><slot /></article>
+      <aside class="article-sidebar" aria-label="Article navigation">
+        <div class="article-aside-inner">
+          <div class="toc-block" hidden>
+            <h2>On this page</h2>
+            <nav id="article-toc" aria-label="Sections in this article"></nav>
+          </div>
+          <div class="sidebar-check">
+            <h2>Checking a name?</h2>
+            <p>Use our free availability checker when you have a domain in mind.</p>
+            <a href="/domain-availability-checker">Check availability <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
   <aside class="container-pad further-reading">
-    <p class="section-kicker">Related guides</p>
-    <h2 class="display">More to read</h2>
+    <div class="section-heading"><div><p class="section-kicker">Continue reading</p><h2>More about domain names</h2></div><a class="body-link" href="/blog">Browse all guides <span aria-hidden="true">↗</span></a></div>
     <div class="rail-grid">
       <a class="rail-item" href="/blog/what-is-a-domain-name"><span class="rail-index">Domain basics</span><h3>What is a domain name? ↗</h3><p>Understand the address before you buy it.</p></a>
-      <a class="rail-item" href="/blog/how-to-choose-a-domain-name"><span class="rail-index">Naming</span><h3>How to choose a domain name ↗</h3><p>A practical shortlist and evaluation method.</p></a>
-      <a class="rail-item" href="/blog/domain-name-vs-web-hosting"><span class="rail-index">Website setup</span><h3>Domain vs web hosting ↗</h3><p>Know which service does what.</p></a>
+      <a class="rail-item" href="/blog/how-to-choose-a-domain-name"><span class="rail-index">Naming</span><h3>How to choose a domain name ↗</h3><p>Evaluate your shortlist before you register.</p></a>
+      <a class="rail-item" href="/blog/domain-name-vs-web-hosting"><span class="rail-index">Website setup</span><h3>Domain vs web hosting ↗</h3><p>Know what each service provides.</p></a>
     </div>
   </aside>
 </BaseLayout>
-<style>
-  .article-header { padding: 4.5rem 0 3rem; border-bottom: 1px solid var(--line); }
-  .article-header h1 { max-width: 900px; font-size: clamp(2.3rem, 5vw, 4.2rem); font-weight: 750; line-height: 1.2; margin: 1.25rem 0 1.7rem; }
-  .article-deck { max-width: 700px; color: var(--muted); font-size: 1.2rem; }
-  .article-meta { font-size: .77rem; color: var(--muted); margin-top: 1.5rem; }
-  .article-quick { display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-bottom: 1px solid var(--line); padding-block: 1.3rem; }
-  .article-quick strong, .article-quick span { display: block; }
-  .article-quick strong { font-size: .95rem; }
-  .article-quick span { font-size: .83rem; color: var(--muted); }
-  .article-body { padding-top: 3.3rem; }
-  .further-reading { margin-top: 6rem; }
-  .further-reading h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); font-weight: 720; margin: 1rem 0 2rem; }
-  @media(max-width:670px) { .article-quick { align-items: flex-start; flex-direction: column; } }
+<style is:global>
+  .article-hero { padding-block: clamp(3rem,5.5vw,5rem) clamp(3rem,5vw,4.5rem); background: #1e2227; }
+  .article-hero h1 { max-width: 880px; margin: 1.25rem 0 1.4rem; font-size: clamp(2.65rem,5.1vw,4.8rem); font-weight: 560; letter-spacing: -.058em; line-height: 1.16; }
+  .article-deck { max-width: 730px; color: #c4c1bb; font-size: 1.13rem; line-height: 1.74; }
+  .article-byline { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 2rem; color: #b2afaa; font-size: .8rem; }
+  .article-byline > *+* { border-left: 1px solid #625e57; padding-left: 1rem; }
+  .article-paper { background: var(--cream); color: var(--paper-ink); padding-block: clamp(3.25rem,6vw,5.75rem); }
+  .article-layout { display: grid; grid-template-columns: minmax(0,750px) minmax(190px,260px); justify-content: space-between; align-items: start; gap: clamp(2.5rem,6vw,7rem); }
+  .article-paper .prose { color: #343738; font-size: 1.015rem; line-height: 1.85; }
+  .article-paper .prose :is(p,li,td,blockquote) { color: #4b4e4d; }
+  .article-paper .prose :is(h1,h2,h3,h4) { color: #282b2d; font-weight: 640; line-height: 1.25; }
+  .article-paper .prose h2 { font-size: clamp(1.55rem,2.5vw,2.05rem); margin-top: 2.1em; }
+  .article-paper .prose h3 { font-size: 1.33rem; margin-top: 1.8em; }
+  .article-paper .prose :is(strong,th) { color: #242628; }
+  .article-paper .prose a { color: #825c37; text-decoration: underline; text-underline-offset: .25rem; }
+  .article-paper .prose code { color: #6d5339; }
+  .article-paper .prose blockquote { border-left: 2px solid #b69b78; color: #62615d; }
+  .article-paper .prose :is(td,th) { border-color: #d2cec7; }
+  .article-paper .prose .callout { background: #ebe7df; border-color: #d2cec7; }
+  .article-aside-inner { position: sticky; top: 7.4rem; }
+  .toc-block { border-top: 1px solid var(--paper-line); padding-top: 1.25rem; }
+  .toc-block h2 { color: #454747; font-size: .85rem; font-weight: 720; margin-bottom: 1rem; }
+  #article-toc { display: flex; flex-direction: column; gap: .8rem; }
+  #article-toc a { color: #656660; font-size: .8rem; line-height: 1.5; text-decoration: none; transition: color .15s ease; }
+  #article-toc a:hover, #article-toc a[aria-current="location"] { color: #25282c; }
+  .sidebar-check { border-top: 1px solid var(--paper-line); margin-top: 2rem; padding-top: 1.3rem; }
+  .sidebar-check h2 { font-size: 1.04rem; font-weight: 660; letter-spacing: -.025em; }
+  .sidebar-check p { font-size: .83rem; color: #6b6c66; line-height: 1.7; margin: .6rem 0 1rem; }
+  .sidebar-check a { display: inline-flex; gap: .5rem; align-items: center; color: #725337; font-size: .83rem; font-weight: 700; text-decoration: none; }
+  .further-reading { padding-top: 5rem; }
+  .further-reading .section-heading h2 { font-size: clamp(1.7rem,3vw,2.5rem); }
+  @media(max-width:900px) { .article-layout { grid-template-columns: minmax(0,1fr) 190px; gap: 2.5rem; } }
+  @media(max-width:730px) { .article-layout { grid-template-columns: 1fr; } .article-aside-inner { position: static; } .article-sidebar { padding-top: 1rem; } }
 </style>
+<script>
+  const article = document.getElementById('article-content');
+  const toc = document.getElementById('article-toc');
+  const tocBlock = document.querySelector('.toc-block');
+  if (article && toc && tocBlock) {
+    const headings = [...article.querySelectorAll('h2')];
+    headings.forEach((heading,index) => {
+      if (!heading.id) heading.id = 'section-' + (index+1);
+      const a = document.createElement('a');
+      a.href = '#' + heading.id;
+      a.textContent = heading.textContent || 'Section ' + (index+1);
+      toc.appendChild(a);
+    });
+    if (headings.length > 1) tocBlock.hidden = false;
+  }
+</script>
