@@ -17,6 +17,10 @@ jobs:
           cache: 'npm'
       - name: Reproducible dependency install
         run: npm ci --no-audit --no-fund
+      - name: Validate Netlify CommonJS function scope
+        run: |
+          node -e "const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path');const root=require('./package.json');const fn=require('./netlify/functions/package.json');assert.equal(root.type,'module');assert.equal(fn.type,'commonjs');const names=fs.readdirSync('./netlify/functions').filter(f=>f.endsWith('.js'));assert.equal(names.length,12);console.log('Validated CommonJS package scope for '+names.length+' Netlify functions');"
+          for file in netlify/functions/*.js; do node --check "$file"; done
       - name: Validate article links
         run: npm run check:content
       - name: Build static website
