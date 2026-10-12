@@ -1,56 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Privacy Policy - Domain Discoverer" description="We respect your privacy. Learn how we collect, use, and protect information, and how to contact us.">
-  <section class="container-pad">
-    <article class="prose">
-      <h1>Privacy Policy</h1>
-      <p>We take privacy seriously. This policy explains what we collect, how we use it, and your choices. If you have questions, please contact us.</p>
-
-      <h2>Overview</h2>
-      <p>DomainDiscoverer.com helps visitors discover valuable domain names. You can check availability and explore curated tools that support research. We aim to collect only what’s necessary for the site to function.</p>
-
-      <h2>Information We Collect</h2>
-      <ul>
-        <li><strong>Email address</strong> if you subscribe to our newsletter or contact us via a form powered by Netlify Forms.</li>
-        <li><strong>Basic logs</strong> from our hosting provider (Netlify) for security and performance (for example, IP address, user agent, and timestamps).</li>
-        <li><strong>Function requests</strong> such as domain availability checks. We do not store the domain queries you enter.</li>
-      </ul>
-
-      <h2>How We Use Information</h2>
-      <ul>
-        <li>To send the newsletter or replies you requested</li>
-        <li>To maintain and improve site reliability</li>
-        <li>To respond when you contact us</li>
-      </ul>
-
-      <h2>Email and Unsubscribe</h2>
-      <p>We only email people who opt in. Every message includes an unsubscribe link or clear directions to opt out. You can also contact us to be removed.</p>
-
-      <h2>Cookies</h2>
-      <p>We use functional cookies to keep the site running (for example, remembering consent). You can manage cookies in your browser.</p>
-
-      <h2>Third‑Party Services</h2>
-      <p>We use Netlify for hosting and forms processing. When you use third‑party links (e.g., to tools or registrars), their policies apply. We recommend that you review them before proceeding.</p>
-
-      <h2>Security</h2>
-      <p>We use modern hosting and sensible practices to protect data. No method is perfect, so please contact us if you find any issue.</p>
-
-      <h2>Data Retention</h2>
-      <p>We keep personal data only as long as necessary to provide the requested service or fulfill legal obligations. You may request deletion of your newsletter address or form submission.</p>
-
-      <h2>Your Choices</h2>
-      <ul>
-        <li>Unsubscribe from emails at any time</li>
-        <li>Request deletion of your newsletter address or form submission</li>
-        <li>Control cookies in your browser</li>
-      </ul>
-
-      <h2>Changes</h2>
-      <p>We may update this policy. The latest version is posted on this page. If changes are important, we’ll note that clearly.</p>
-
-      <h2>Contact</h2>
-      <p>For privacy requests, use our <a href="/contact">contact page</a>. We respond as quickly as possible.</p>
-    </article>
-  </section>
+<BaseLayout title="Privacy Policy" description="How Domain Discoverer handles domain lookups, contact form messages, website logs and third-party links.">
+  <section class="page-hero"><div class="container-pad"><p class="eyebrow">Legal / Privacy</p><h1 class="display">Privacy should be <em>understandable.</em></h1><p>What information we process when you use Domain Discoverer, and what choices you have.</p></div></section>
+  <section class="container-pad legal-content"><article class="prose">
+    <p><strong>Updated October 12, 2026.</strong> This page describes how the website currently operates.</p>
+    <h2>Domain availability requests</h2><p>When you submit a domain to our checker, the name is sent to a Netlify server-side function, which queries our existing registrar API provider (Dynadot). We do not intentionally add your domain queries to a public list or a dedicated visitor search-history database. However, the request and the domain name may appear in infrastructure or provider logs.</p>
+    <h2>Forms and messages</h2><p>If you contact us through our form, the name, email address, subject and message you enter are submitted to Netlify Forms. Operational correspondence may also be handled using our connected email and database providers. Please do not include confidential passwords, credentials or payment information.</p>
+    <h2>Hosting and technical data</h2><p>Our hosting and service providers may process IP addresses, request timestamps, user agents and error logs to operate and secure services. Retention and access depend on provider settings and applicable requirements.</p>
+    <h2>Cookies and browser storage</h2><p>The public pages do not require a marketing-cookie banner to use the domain checker or read guides. Essential functions and third-party services may still use technical storage or cookies when necessary. You can manage storage in browser settings.</p>
+    <h2>External websites</h2><p>We link to registrars and research tools. If you open an external link, that provider applies its own privacy practices. Some links may be affiliate links, explained in our <a href="/disclosure">affiliate disclosure</a>.</p>
+    <h2>How we use information</h2><p>We process information to provide the requested check, respond to enquiries, maintain service reliability and prevent misuse. We do not claim that submitting a domain reserves the name.</p>
+    <h2>Retention and requests</h2><p>Message and technical-data retention may vary by system, legitimate business need and legal obligations. You can ask about personal information we hold or request correction or deletion where applicable through our <a href="/contact">contact page</a>.</p>
+    <h2>Changes to this policy</h2><p>We may update this notice when the site's services change. The current version will be published on this page.</p>
+  </article></section>
 </BaseLayout>
+<style>.legal-content { padding-top: 4rem; }</style>
