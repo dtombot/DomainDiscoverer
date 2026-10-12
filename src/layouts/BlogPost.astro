@@ -1,77 +1,56 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-// Support both direct props (Astro 2/3 style) and nested frontmatter (some MD adapters)
 const p: any = Astro.props || {};
 const fm: any = p.frontmatter || {};
-const title: string = p.title ?? fm.title ?? 'Untitled';
-const description: string | undefined = p.description ?? fm.description;
-const pubDate: string | undefined = p.pubDate ?? fm.pubDate;
-const updatedDate: string | undefined = p.updatedDate ?? fm.updatedDate ?? pubDate;
+const title: string = String(p.title ?? fm.title ?? 'Domain guide');
+const description: string = String(p.description ?? fm.description ?? 'Practical domain education from Domain Discoverer.');
+const pubDate = p.pubDate ?? fm.pubDate;
+const updatedDate = p.updatedDate ?? fm.updatedDate ?? pubDate;
+const category = p.category ?? fm.category ?? 'Domain research';
+const site = 'https://domaindiscoverer.com';
+const toISO = (value: unknown) => value ? new Date(String(value)).toISOString().slice(0,10) : undefined;
+const schema = [
+  { '@context':'https://schema.org', '@type':'BlogPosting', headline:title, description, datePublished:toISO(pubDate), dateModified:toISO(updatedDate), mainEntityOfPage:`${site}${Astro.url.pathname}`, publisher:{'@type':'Organization',name:'Domain Discoverer',url:site} },
+  { '@context':'https://schema.org', '@type':'BreadcrumbList', itemListElement:[
+    { '@type':'ListItem',position:1,name:'Home',item:`${site}/` },
+    { '@type':'ListItem',position:2,name:'Learn',item:`${site}/blog` },
+    { '@type':'ListItem',position:3,name:title,item:`${site}${Astro.url.pathname}` }
+  ]}
+];
 ---
-<BaseLayout title={title} description={description}>
-  <header class="bg-gradient-to-r from-primary to-secondary/70">
-    <div class="container-pad py-12 sm:py-14">
-      <nav aria-label="Breadcrumb" class="text-sm text-white/80 mb-2">
-        <ol class="flex gap-2 items-center">
-          <li><a href="/" class="hover:underline">Home</a></li>
-          <li>/</li>
-          <li><a href="/blog" class="hover:underline">Blog</a></li>
-          <li>/</li>
-          <li aria-current="page" class="text-white">{title}</li>
-        </ol>
-      </nav>
-      <h1 class="text-3xl sm:text-5xl font-extrabold text-white leading-tight drop-shadow">{title}</h1>
-      {(pubDate || updatedDate) && (
-        <div class="text-white/70 text-sm mt-2">
-          {pubDate && (<span>Published: {new Date(pubDate).toLocaleDateString()}</span>)}
-          {pubDate && updatedDate && <span class="mx-2">·</span>}
-          {updatedDate && (<span>Updated: {new Date(updatedDate).toLocaleDateString()}</span>)}
-        </div>
-      )}
+<BaseLayout {title} {description} structuredData={schema}>
+  <header class="article-header">
+    <div class="container-pad">
+      <nav aria-label="Breadcrumb" class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/blog">Learn</a><span>/</span><span aria-current="page">{category}</span></nav>
+      <p class="eyebrow">{category} / Domain Discoverer</p>
+      <h1 class="display">{title.replace(/ \(2025\)/g, '')}</h1>
+      <p class="article-deck">{description}</p>
+      {pubDate && <p class="article-meta"><time datetime={toISO(pubDate)}>Published {new Date(pubDate).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}</time>{updatedDate && toISO(updatedDate)!==toISO(pubDate) && <span> · Updated <time datetime={toISO(updatedDate)}>{new Date(updatedDate).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}</time></span>}</p>}
     </div>
   </header>
-
-  <article class="container-pad my-10">
-    <div class="prose">
-      <slot />
+  <div class="container-pad article-quick"><div><strong>Already have a name in mind?</strong><span>Check availability before you continue reading.</span></div><a href="/domain-availability-checker" class="body-link">Check a domain ↗</a></div>
+  <article class="container-pad article-body"><div class="prose"><slot /></div></article>
+  <aside class="container-pad further-reading">
+    <p class="section-kicker">Keep exploring</p>
+    <h2 class="display">Your next useful read.</h2>
+    <div class="rail-grid">
+      <a class="rail-item" href="/blog/what-is-a-domain-name"><span class="rail-index">01 / DOMAIN BASICS</span><h3>What is a domain name? ↗</h3><p>Understand the address before you buy it.</p></a>
+      <a class="rail-item" href="/blog/how-to-choose-a-domain-name"><span class="rail-index">02 / NAMING</span><h3>How to choose a domain name ↗</h3><p>A practical shortlist and evaluation method.</p></a>
+      <a class="rail-item" href="/blog/domain-name-vs-web-hosting"><span class="rail-index">03 / WEBSITE SETUP</span><h3>Domain vs web hosting ↗</h3><p>Know which service does what.</p></a>
     </div>
-    <!-- Related posts -->
-    <section class="mt-12">
-      <div class="rounded-3xl p-1 bg-gradient-to-r from-secondary/40 to-primary/40">
-        <div class="rounded-3xl p-5 bg-white/80 backdrop-blur-sm border border-slate-200">
-          <h2 class="font-extrabold text-xl mb-4">Related Posts</h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <a href="/blog/best-domain-name-tools-for-beginners" class="group rounded-2xl border border-slate-200 bg-white/90 p-4 hover:shadow-lg transition relative overflow-hidden">
-              <div class="absolute inset-x-0 -top-10 h-20 bg-gradient-to-r from-secondary/20 to-primary/20 opacity-0 group-hover:opacity-100 transition"></div>
-              <div class="font-bold">Best Domain Name Tools for Beginners</div>
-              <div class="text-slate-700 text-sm mt-1">Build a reliable toolkit without overspending.</div>
-              <span class="mt-3 inline-flex items-center gap-1 text-secondary text-sm">Read more <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' class='w-4 h-4'><path d='M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3Z'/></svg></span>
-            </a>
-            <a href="/blog/top-domaining-tools-for-investors-2025" class="group rounded-2xl border border-slate-200 bg-white/90 p-4 hover:shadow-lg transition relative overflow-hidden">
-              <div class="absolute inset-x-0 -top-10 h-20 bg-gradient-to-r from-secondary/20 to-primary/20 opacity-0 group-hover:opacity-100 transition"></div>
-              <div class="font-bold">Top Domaining Tools for Investors</div>
-              <div class="text-slate-700 text-sm mt-1">Expired, brandable, and SEO-ready picks.</div>
-              <span class="mt-3 inline-flex items-center gap-1 text-secondary text-sm">Read more <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' class='w-4 h-4'><path d='M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3Z'/></svg></span>
-            </a>
-            <a href="/blog/cheap-domain-registrars-with-free-whois" class="group rounded-2xl border border-slate-200 bg-white/90 p-4 hover:shadow-lg transition relative overflow-hidden">
-              <div class="absolute inset-x-0 -top-10 h-20 bg-gradient-to-r from-secondary/20 to-primary/20 opacity-0 group-hover:opacity-100 transition"></div>
-              <div class="font-bold">Cheap Registrars with Free WHOIS Privacy</div>
-              <div class="text-slate-700 text-sm mt-1">Protect your info and control renewals.</div>
-              <span class="mt-3 inline-flex items-center gap-1 text-secondary text-sm">Read more <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' class='w-4 h-4'><path d='M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3Z'/></svg></span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </article>
+  </aside>
 </BaseLayout>
-
-<!-- Article structured data -->
-<script type="application/ld+json" set:html={JSON.stringify({
-  '@context': 'https://schema.org', '@type': 'Article',
-  headline: title, description: description,
-  datePublished: pubDate || undefined,
-  dateModified: updatedDate || pubDate || undefined,
-  mainEntityOfPage: { '@type': 'WebPage', '@id': `https://domaindiscoverer.com${Astro.url.pathname}` },
-  publisher: { '@type': 'Organization', name: 'Domain Discoverer', url: 'https://domaindiscoverer.com' }
-})}></script>
+<style>
+  .article-header { padding: 4.5rem 0 3rem; border-bottom: 1px solid var(--line); }
+  .article-header h1 { max-width: 900px; font-size: clamp(3.2rem, 7vw, 6.8rem); margin: 1.25rem 0 1.7rem; }
+  .article-deck { max-width: 700px; color: var(--muted); font-size: 1.2rem; }
+  .article-meta { font-size: .77rem; color: var(--muted); margin-top: 1.5rem; }
+  .article-quick { display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-bottom: 1px solid var(--line); padding-block: 1.3rem; }
+  .article-quick strong, .article-quick span { display: block; }
+  .article-quick strong { font-size: .95rem; }
+  .article-quick span { font-size: .83rem; color: var(--muted); }
+  .article-body { padding-top: 3.3rem; }
+  .further-reading { margin-top: 6rem; }
+  .further-reading h2 { font-size: clamp(2.5rem, 5vw, 4.6rem); margin: 1rem 0 2rem; }
+  @media(max-width:670px) { .article-quick { align-items: flex-start; flex-direction: column; } }
+</style>

@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const title = 'Domain Research Tools: Availability, History, SEO & Sales';
+const description = 'Explore useful domain name research tools for checking availability, researching domain history, finding expired domains, assessing SEO signals, and comparing sales.';
+const groups = [
+  { id: 'availability', number: '01', title: 'Availability & discovery', copy: 'Generate a shortlist and check exact names before moving deeper.', tools:[
+    {name:'Instant Domain Search',href:'https://instantdomainsearch.com/',summary:'Rapid idea exploration and domain availability browsing.',note:'Confirm availability and pricing at registrar checkout.'},
+    {name:'ExpiredDomains.net',href:'https://www.expireddomains.net/',summary:'Search expired, deleted and expiring domain lists with detailed filters.',note:'An expiring name is not necessarily available to register.'},
+    {name:'NameMaxi',href:'https://namemaxi.com/',summary:'Explore names and patterns across available research features.',note:'Review the current free and paid features before committing.'}
+  ]},
+  { id: 'history', number: '02', title: 'History & technical checks', copy: 'Understand what a previously registered name has been connected to.', tools:[
+    {name:'DomainIQ',href:'https://www.domainiq.com/',summary:'Historical domain, ownership and related infrastructure research.',note:'Access to some reports may be paid.'},
+    {name:'DNSlytics',href:'https://dnslytics.com/',summary:'Reverse lookup and DNS-related technical research.',note:'Treat shared infrastructure as a clue, not proof of ownership.'},
+    {name:'DotDB',href:'https://dotdb.com/',summary:'See domain registrations across extensions that contain a term.',note:'Similar names can signal popularity or trademark confusion.'}
+  ]},
+  { id: 'value', number: '03', title: 'Sales data & search signals', copy: 'Evaluate demand and background signals without mistaking estimates for facts.', tools:[
+    {name:'NameBio',href:'https://namebio.com/',summary:'Search reported domain sales for comparable transactions.',note:'Past transactions do not guarantee future resale value.'},
+    {name:'Ahrefs',href:'https://ahrefs.com/',summary:'Inspect backlink profiles and search-related signals.',note:'Third-party SEO metrics are estimates and require context.'},
+    {name:'Semrush',href:'https://www.semrush.com/',summary:'Research keywords, search topics and competitive traffic estimates.',note:'Traffic and search-volume figures are estimates.'},
+    {name:'EstiBot',href:'https://www.estibot.com/',summary:'Explore automated appraisal and related domain data.',note:'An automated valuation is not an actual market offer.'}
+  ]}
+];
+---
+<BaseLayout {title} {description}>
+  <section class="page-hero"><div class="container-pad">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Research tools</span></nav>
+    <p class="eyebrow">Research directory / Tools with a purpose</p>
+    <h1 class="display">Better decisions need <em>better questions.</em></h1>
+    <p>A considered directory of services people use to find, compare and investigate domain names. Start with what you need; not every project needs every tool.</p>
+  </div></section>
+  {groups.map(group => <section class="container-pad tool-group" id={group.id}>
+    <div class="section-heading"><div><p class="section-kicker">{group.number} / Research stage</p><h2>{group.title}</h2><p class="group-copy">{group.copy}</p></div></div>
+    <div class="tool-rows">{group.tools.map(tool => <a href={tool.href} target="_blank" rel="noopener noreferrer" class="tool-row" data-reveal>
+      <div><h3>{tool.name}<span aria-hidden="true"> ↗</span></h3><p>{tool.summary}</p></div><small>{tool.note}</small>
+    </a>)}</div>
+  </section>)}
+  <aside class="container-pad tools-note">
+    <h2 class="display">Research is useful. <em>Judgement still matters.</em></h2>
+    <p>We do not run these external tools automatically or send visitor domain queries to them. Prices, plans and features may change. Some outbound links may be affiliate links, as explained in our <a href="/disclosure">disclosure</a>.</p>
+    <a class="button-accent" href="/domain-availability-checker">Check a domain ↗</a>
+  </aside>
+</BaseLayout>
+<style>
+  .tool-group { padding-top: 5rem; }
+  .tool-group h2 { font: clamp(2.4rem,5vw,4.5rem)/1.1 var(--serif); letter-spacing: -.035em; }
+  .group-copy { color: var(--muted); margin-top: 1rem; }
+  .tool-rows { border-top: 1px solid var(--line); }
+  .tool-row { display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; padding: 1.6rem .5rem; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .2s ease, padding .2s ease; }
+  .tool-row:hover { background: var(--surface); padding-left: 1rem; }
+  .tool-row h3 { font: 1.7rem var(--serif); }
+  .tool-row h3 span { color: var(--accent); }
+  .tool-row p { color: var(--muted); font-size: .94rem; }
+  .tool-row small { align-self: center; color: var(--muted); font-size: .83rem; }
+  .tools-note { margin-top: 6rem; border-top: 1px solid var(--line); padding-top: 4rem; }
+  .tools-note h2 { max-width: 750px; font-size: clamp(2.8rem,5vw,5rem); }
+  .tools-note h2 em { color: var(--accent); }
+  .tools-note p { max-width: 700px; color: var(--muted); margin: 1.5rem 0; }
+  .tools-note p a { color: var(--accent); }
+  @media(max-width:650px){ .tool-row { grid-template-columns: 1fr; gap: .5rem; } }
+</style>

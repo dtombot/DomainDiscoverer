@@ -1,43 +1,43 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-const title = 'Domain Guides & Blog - Domain Discoverer';
-const description = 'SEO-focused domain tutorials: availability checks, expired domains, registrars, and pricing. Learn to choose and register better domain names.';
-const posts = [
-  { slug: 'how-to-check-domain-availability-smart-way', title: 'How to Check Domain Availability The Smart Way', desc: 'Save time and avoid false positives with these tips.', date: '2025-01-15' },
-  { slug: 'best-domain-name-tools-for-beginners', title: 'Best Domain Name Tools for Beginners (2025)', desc: 'Free and low-cost tools to research names fast.', date: '2025-01-20' },
-  { slug: 'top-domaining-tools-for-investors-2025', title: 'Top Domaining Tools for Investors (2025)', desc: 'The essential toolkit for expired, brandable, and SEO-ready names.', date: '2025-03-15' },
-  { slug: 'brandable-domain-names-guide', title: 'Brandable Domain Names: Complete Guide for Startups', desc: 'Choose memorable names that customers remember and search engines respect.', date: '2025-02-16' },
-  { slug: 'cheap-domain-registrars-with-free-whois', title: 'Cheap Domain Registrars with Free WHOIS Privacy (2025)', desc: 'Protect your info while saving money with transparent pricing.', date: '2025-03-05' },
-];
+const title = 'Domain Name Guides: Basics, Registration & Research';
+const description = 'Learn about domain names, choosing extensions, web hosting, availability checks, privacy, renewals, brandability and domain research tools.';
+const posts = (await Astro.glob('./*.md'))
+  .map((post) => ({
+    url: post.url,
+    title: String(post.frontmatter.title ?? 'Domain guide').replace(/ \(2025\)/g, ''),
+    description: String(post.frontmatter.description ?? ''),
+    pubDate: post.frontmatter.pubDate,
+    category: post.frontmatter.category ?? 'Domain research'
+  }))
+  .sort((a,b) => +new Date(b.pubDate) - +new Date(a.pubDate));
 ---
 <BaseLayout {title} {description}>
-  <!-- Blog header -->
-  <section class="bg-gradient-to-r from-primary to-secondary/60">
-    <div class="container-pad py-10">
-      <nav aria-label="Breadcrumb" class="text-sm text-white/80 mb-2">
-        <ol class="flex gap-2 items-center">
-          <li><a href="/" class="hover:underline">Home</a></li>
-          <li>/</li>
-          <li aria-current="page" class="text-white">Blog</li>
-        </ol>
-      </nav>
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Domain Guides & Blog</h1>
-      <p class="text-white/80 mt-2 max-w-2xl">Guides focused on domaining tools that help domain investors, businesses, SaaS, SEO experts, and startups discover valuable domain names.</p>
-    </div>
-  </section>
-
-  <!-- Modern cards -->
-  <section class="container-pad py-10">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {posts.map((p) => (
-        <a href={`/blog/${p.slug}`} class="group rounded-2xl border border-slate-200 bg-white/90 backdrop-blur-sm p-5 shadow hover:shadow-lg transition text-left relative overflow-hidden">
-          <div class="absolute inset-x-0 -top-10 h-20 bg-gradient-to-r from-secondary/20 to-primary/20 opacity-0 group-hover:opacity-100 transition"></div>
-          <div class="text-[12px] text-slate-500">{new Date(p.date).toLocaleDateString()}</div>
-          <h2 class="font-extrabold text-xl mt-1 text-slate-900">{p.title}</h2>
-          <p class="text-slate-700 mt-1">{p.desc}</p>
-          <span class="inline-flex items-center gap-1 mt-3 text-secondary text-sm">Read more <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' class='w-4 h-4'><path d='M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3Z'/></svg></span>
+  <section class="page-hero"><div class="container-pad">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Learn</span></nav>
+    <p class="eyebrow">The learning library / Domain education</p>
+    <h1 class="display">Understand domains. <em>Choose better.</em></h1>
+    <p>Clear, practical explanations for first-time website owners, startup founders and people who research domain names seriously.</p>
+  </div></section>
+  <section class="container-pad library-section">
+    <div class="library-top"><div><p class="section-kicker">Start anywhere</p><h2>Guides for every stage</h2></div><a href="/domain-availability-checker" class="body-link">Check a domain now ↗</a></div>
+    <div class="rail-grid">
+      {posts.map((post, index) => (
+        <a class="rail-item" href={post.url} data-reveal>
+          <span class="rail-index">{String(index+1).padStart(2,'0')} / {post.category}</span>
+          <h3>{post.title} <span aria-hidden="true">↗</span></h3>
+          <p>{post.description}</p>
         </a>
       ))}
     </div>
+    <div class="library-note"><strong>Before you register:</strong> Check whether the name is available, consider possible trademark confusion, then review renewal costs and eligibility with your chosen registrar.</div>
   </section>
 </BaseLayout>
+<style>
+  .library-section { padding-top: 4rem; }
+  .library-top { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: 2rem; }
+  .library-top h2 { font: 2.8rem var(--serif); letter-spacing: -.04em; }
+  .library-note { margin: 3rem 0; padding: 1.4rem 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .95rem; }
+  .library-note strong { color: var(--text); }
+  @media(max-width:700px) { .library-top { display: block; } .library-top .body-link { margin-top: 1.2rem; } }
+</style>
