@@ -9,6 +9,7 @@ const {
   structuredData
 } = Astro.props as Props;
 const site = 'https://domaindiscoverer.com';
+const effectiveRobots = process.env.CONTEXT && process.env.CONTEXT !== 'production' ? 'noindex,nofollow' : robots;
 const fullTitle = title.includes('Domain Discoverer') ? title : `${title} | Domain Discoverer`;
 const pageUrl = canonical ?? new URL(Astro.url.pathname, site).toString();
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -32,7 +33,7 @@ const schemas = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#111815" />
     <meta name="description" content={description} />
-    <meta name="robots" content={robots} />
+    <meta name="robots" content={effectiveRobots} />
     <link rel="canonical" href={pageUrl} />
     <title>{fullTitle}</title>
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -86,7 +87,7 @@ const schemas = [
       });
       nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeNav));
       document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeNav(); });
-      document.addEventListener('click', (event) => { if (!event.target.closest('.nav-shell')) closeNav(); });
+      document.addEventListener('click', (event) => { if (event.target instanceof Element && !event.target.closest('.nav-shell')) closeNav(); });
       const progress = document.getElementById('scroll-progress');
       const header = document.getElementById('site-header');
       let pending = false;

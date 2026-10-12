@@ -7,8 +7,9 @@ export default defineConfig({
   site: 'https://domaindiscoverer.com',
   trailingSlash: 'never',
   integrations: [
-    sitemap(),
+    sitemap({
+      filter: (page) => !/\/(tom(?:\/|$)|404(?:\/|$)|contact\/success(?:\/|$))/.test(new URL(page).pathname)
+    }),
     tailwind({ config: { path: './tailwind.config.mjs' } })
   ]
 });
-
