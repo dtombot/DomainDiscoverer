@@ -2,11 +2,9 @@
 export interface Props { title?: string; description?: string; canonical?: string; robots?: string; structuredData?: Record<string, unknown> | Record<string, unknown>[]; }
 import '../styles/tailwind.css';
 const {
-  title = 'Domain Discoverer | Check Domain Availability',
-  description = 'Check whether a domain name is available, compare your options and read straightforward guides to domain registration.',
-  canonical,
-  robots = 'index,follow',
-  structuredData
+  title = 'Domain Discoverer | Free Domain Availability Checker',
+  description = 'Check domain name availability and find straightforward guides to registering and researching domains.',
+  canonical, robots = 'index,follow', structuredData
 } = Astro.props as Props;
 const site = 'https://domaindiscoverer.com';
 const effectiveRobots = process.env.CONTEXT && process.env.CONTEXT !== 'production' ? 'noindex,nofollow' : robots;
@@ -14,15 +12,15 @@ const fullTitle = title.includes('Domain Discoverer') ? title : `${title} | Doma
 const pageUrl = canonical ?? new URL(Astro.url.pathname, site).toString();
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const nav = [
-  { href: '/domain-availability-checker', label: 'Domain checker' },
-  { href: '/blog', label: 'Guides' },
-  { href: '/tools', label: 'Research tools' },
-  { href: '/about', label: 'About' }
+  { href:'/domain-availability-checker',label:'Domain checker' },
+  { href:'/blog',label:'Guides' },
+  { href:'/tools',label:'Research tools' },
+  { href:'/about',label:'About' }
 ];
-const active = (href: string) => path === href || (href === '/blog' && path.startsWith('/blog/'));
+const active = (href:string) => path === href || (href === '/blog' && path.startsWith('/blog/'));
 const schemas = [
-  { '@context':'https://schema.org', '@type':'Organization', name:'Domain Discoverer', url:site, logo:`${site}/logo.png` },
-  { '@context':'https://schema.org', '@type':'WebSite', name:'Domain Discoverer', url:site },
+  { '@context':'https://schema.org','@type':'Organization',name:'Domain Discoverer',url:site,logo:`${site}/logo.png` },
+  { '@context':'https://schema.org','@type':'WebSite',name:'Domain Discoverer',url:site },
   ...(structuredData ? (Array.isArray(structuredData) ? structuredData : [structuredData]) : [])
 ];
 ---
@@ -31,7 +29,7 @@ const schemas = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#111b29" />
+    <meta name="theme-color" content="#181b20" />
     <meta name="description" content={description} />
     <meta name="robots" content={effectiveRobots} />
     <link rel="canonical" href={pageUrl} />
@@ -51,16 +49,13 @@ const schemas = [
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <header class="site-header" id="site-header">
+    <header class="site-header">
       <div class="container-pad nav-shell">
-        <a class="brand" href="/" aria-label="Domain Discoverer home">
-          <span class="brand-symbol" aria-hidden="true">D<span>D</span></span>
-          <span class="brand-name">Domain<span>Discoverer</span></span>
-        </a>
+        <a class="brand" href="/" aria-label="Domain Discoverer home"><span class="brand-symbol" aria-hidden="true">d<span>.</span></span><span class="brand-name">domain<span>discoverer</span></span></a>
         <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation"><span></span><span></span><span></span></button>
         <nav aria-label="Main navigation" class="primary-nav" id="primary-nav">
-          {nav.map((item) => <a href={item.href} aria-current={active(item.href) ? 'page' : undefined}>{item.label}</a>)}
-          <a href="/domain-availability-checker" class="nav-action">Check a domain <span aria-hidden="true">→</span></a>
+          {nav.map(item => <a href={item.href} aria-current={active(item.href) ? 'page' : undefined}>{item.label}</a>)}
+          <a class="nav-action" href="/domain-availability-checker">Check a name <span aria-hidden="true">↗</span></a>
         </nav>
       </div>
     </header>
@@ -68,27 +63,31 @@ const schemas = [
     <footer class="site-footer">
       <div class="container-pad footer-top">
         <div class="footer-about">
-          <a class="brand footer-brand" href="/"><span class="brand-symbol" aria-hidden="true">D<span>D</span></span><span class="brand-name">Domain<span>Discoverer</span></span></a>
-          <p>Domain availability checks, useful tools and practical guidance for choosing a name online.</p>
+          <a class="brand" href="/"><span class="brand-symbol" aria-hidden="true">d<span>.</span></span><span class="brand-name">domain<span>discoverer</span></span></a>
+          <p>A domain checker and learning resource for people building something online. Research first. Register with confidence.</p>
         </div>
-        <div class="footer-column"><h2>Explore</h2><a href="/domain-availability-checker">Domain checker</a><a href="/blog">Domain guides</a><a href="/tools">Research tools</a></div>
-        <div class="footer-column"><h2>Company</h2><a href="/about">About us</a><a href="/contact">Contact</a><a href="/disclosure">Affiliate disclosure</a></div>
-        <div class="footer-column"><h2>Legal</h2><a href="/privacy">Privacy policy</a><a href="/terms">Terms of use</a></div>
+        <div class="footer-column"><h2>Explore</h2><a href="/domain-availability-checker">Domain availability</a><a href="/blog">Learning library</a><a href="/tools">Research tools</a></div>
+        <div class="footer-column"><h2>Domain Discoverer</h2><a href="/about">About</a><a href="/contact">Contact</a><a href="/disclosure">Affiliate disclosure</a></div>
+        <div class="footer-column"><h2>Information</h2><a href="/privacy">Privacy</a><a href="/terms">Terms of use</a></div>
       </div>
       <div class="container-pad footer-bottom"><span>© {new Date().getFullYear()} Domain Discoverer</span><span>Independent domain research and education</span></div>
     </footer>
     <script>
       const toggle = document.getElementById('menu-toggle');
       const nav = document.getElementById('primary-nav');
-      const closeNav = () => { nav?.classList.remove('is-open'); toggle?.setAttribute('aria-expanded', 'false'); toggle?.setAttribute('aria-label', 'Open navigation'); };
+      const closeNav = () => {
+        nav?.classList.remove('is-open');
+        toggle?.setAttribute('aria-expanded','false');
+        toggle?.setAttribute('aria-label','Open navigation');
+      };
       toggle?.addEventListener('click', () => {
         const open = nav?.classList.toggle('is-open') ?? false;
-        toggle.setAttribute('aria-expanded', String(open));
-        toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+        toggle.setAttribute('aria-expanded',String(open));
+        toggle.setAttribute('aria-label',open ? 'Close navigation' : 'Open navigation');
       });
-      nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeNav));
-      document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeNav(); });
-      document.addEventListener('click', (event) => { if (event.target instanceof Element && !event.target.closest('.nav-shell')) closeNav(); });
+      nav?.querySelectorAll('a').forEach(link => link.addEventListener('click',closeNav));
+      document.addEventListener('keydown',e => { if (e.key==='Escape') closeNav(); });
+      document.addEventListener('click',e => { if (e.target instanceof Element && !e.target.closest('.nav-shell')) closeNav(); });
     </script>
   </body>
 </html>
