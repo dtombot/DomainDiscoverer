@@ -18,7 +18,7 @@ These observations are qualitative visual/UX references, not a pixel-perfect aud
 | NameMaxi — https://www.namepros.com/threads/namemaxi-expert-domain-investor-platform-official-thread.1343571/ | Practitioner-oriented information density; dark utility panels; effective categorization | Their dark/yellow data cards and commercial domain metrics. The official site could not be reliably inspected, so this comparison uses a publicly available community screenshot. |
 | dotDB — https://dotdb.com/news/2024-12-21/exciting-new-features-now-available-on-dotdb-keyword-insights-and-word-analyze | Practical table hierarchy and crisp result distinctions for researching domains | Its white/green dashboard pattern and third-party metrics |
 
-Note: User requested eight references. The seven rows above cover them all: Dynadot, Spaceship, Atom, GoDaddy, Namecheap, NameMaxi, and dotDB, which are **seven named websites** in the request.
+The seven references reviewed are Dynadot, Spaceship, Atom, GoDaddy, Namecheap, NameMaxi and dotDB.
 
 ## Active palette — Midnight Iris / Sea Glass
 This is an **original combination**, not any company's palette.
