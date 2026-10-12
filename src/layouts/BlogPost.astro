@@ -62,34 +62,34 @@ const schema = [
   </aside>
 </BaseLayout>
 <style is:global>
-  .article-hero { padding-block: clamp(3rem,5.5vw,5rem) clamp(3rem,5vw,4.5rem); background: #1e2227; }
+  .article-hero { padding-block: clamp(3rem,5.5vw,5rem) clamp(3rem,5vw,4.5rem); background: #182641; }
   .article-hero h1 { max-width: 880px; margin: 1.25rem 0 1.4rem; font-size: clamp(2.65rem,5.1vw,4.8rem); font-weight: 560; letter-spacing: -.058em; line-height: 1.16; }
-  .article-deck { max-width: 730px; color: #c4c1bb; font-size: 1.13rem; line-height: 1.74; }
-  .article-byline { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 2rem; color: #b2afaa; font-size: .8rem; }
-  .article-byline > *+* { border-left: 1px solid #625e57; padding-left: 1rem; }
+  .article-deck { max-width: 730px; color: #c6d6e6; font-size: 1.13rem; line-height: 1.74; }
+  .article-byline { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 2rem; color: #b4c5dc; font-size: .8rem; }
+  .article-byline > *+* { border-left: 1px solid #586b8e; padding-left: 1rem; }
   .article-paper { background: var(--cream); color: var(--paper-ink); padding-block: clamp(3.25rem,6vw,5.75rem); }
   .article-layout { display: grid; grid-template-columns: minmax(0,750px) minmax(190px,260px); justify-content: space-between; align-items: start; gap: clamp(2.5rem,6vw,7rem); }
-  .article-paper .prose { color: #343738; font-size: 1.015rem; line-height: 1.85; }
-  .article-paper .prose :is(p,li,td,blockquote) { color: #4b4e4d; }
-  .article-paper .prose :is(h1,h2,h3,h4) { color: #282b2d; font-weight: 640; line-height: 1.25; }
+  .article-paper .prose { color: #243d55; font-size: 1.015rem; line-height: 1.85; }
+  .article-paper .prose :is(p,li,td,blockquote) { color: #4e6577; }
+  .article-paper .prose :is(h1,h2,h3,h4) { color: #21354d; font-weight: 640; line-height: 1.25; }
   .article-paper .prose h2 { font-size: clamp(1.55rem,2.5vw,2.05rem); margin-top: 2.1em; }
   .article-paper .prose h3 { font-size: 1.33rem; margin-top: 1.8em; }
-  .article-paper .prose :is(strong,th) { color: #242628; }
-  .article-paper .prose a { color: #825c37; text-decoration: underline; text-underline-offset: .25rem; }
-  .article-paper .prose code { color: #6d5339; }
-  .article-paper .prose blockquote { border-left: 2px solid #b69b78; color: #62615d; }
-  .article-paper .prose :is(td,th) { border-color: #d2cec7; }
-  .article-paper .prose .callout { background: #ebe7df; border-color: #d2cec7; }
+  .article-paper .prose :is(strong,th) { color: #1d344e; }
+  .article-paper .prose a { color: #1e7d89; text-decoration: underline; text-underline-offset: .25rem; }
+  .article-paper .prose code { color: #2d6e87; }
+  .article-paper .prose blockquote { border-left: 2px solid #76b6c1; color: #677e8c; }
+  .article-paper .prose :is(td,th) { border-color: #d0deeb; }
+  .article-paper .prose .callout { background: #e7f0f7; border-color: #d0deeb; }
   .article-aside-inner { position: sticky; top: 7.4rem; }
   .toc-block { border-top: 1px solid var(--paper-line); padding-top: 1.25rem; }
-  .toc-block h2 { color: #454747; font-size: .85rem; font-weight: 720; margin-bottom: 1rem; }
+  .toc-block h2 { color: #3d5265; font-size: .85rem; font-weight: 720; margin-bottom: 1rem; }
   #article-toc { display: flex; flex-direction: column; gap: .8rem; }
-  #article-toc a { color: #656660; font-size: .8rem; line-height: 1.5; text-decoration: none; transition: color .15s ease; }
-  #article-toc a:hover, #article-toc a[aria-current="location"] { color: #25282c; }
+  #article-toc a { color: #637c8f; font-size: .8rem; line-height: 1.5; text-decoration: none; transition: color .15s ease; }
+  #article-toc a:hover, #article-toc a[aria-current="location"] { color: #203048; }
   .sidebar-check { border-top: 1px solid var(--paper-line); margin-top: 2rem; padding-top: 1.3rem; }
   .sidebar-check h2 { font-size: 1.04rem; font-weight: 660; letter-spacing: -.025em; }
-  .sidebar-check p { font-size: .83rem; color: #6b6c66; line-height: 1.7; margin: .6rem 0 1rem; }
-  .sidebar-check a { display: inline-flex; gap: .5rem; align-items: center; color: #725337; font-size: .83rem; font-weight: 700; text-decoration: none; }
+  .sidebar-check p { font-size: .83rem; color: #60778b; line-height: 1.7; margin: .6rem 0 1rem; }
+  .sidebar-check a { display: inline-flex; gap: .5rem; align-items: center; color: #286e85; font-size: .83rem; font-weight: 700; text-decoration: none; }
   .further-reading { padding-top: 5rem; }
   .further-reading .section-heading h2 { font-size: clamp(1.7rem,3vw,2.5rem); }
   @media(max-width:900px) { .article-layout { grid-template-columns: minmax(0,1fr) 190px; gap: 2.5rem; } }

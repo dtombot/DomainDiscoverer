@@ -34,23 +34,23 @@ const posts = (await Astro.glob('./*.md'))
   </section>
 </BaseLayout>
 <style>
-  .guides-hero { background: #1e2227; padding-block: 3.75rem 4.5rem; }
+  .guides-hero { background: #182641; padding-block: 3.75rem 4.5rem; }
   .guides-heading { display: flex; justify-content: space-between; align-items: end; gap: 3rem; margin-bottom: 2rem; }
   .guides-heading h1 { font-size: clamp(3.4rem,6vw,5.8rem); font-weight: 565; letter-spacing: -.065em; line-height: 1.1; }
   .guides-heading p { max-width: 350px; color: var(--muted); font-size: 1.01rem; line-height: 1.75; }
   .guides-content { background: var(--cream); color: var(--paper-ink); padding-block: clamp(3.5rem,6vw,5rem); }
   .library-bar { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 1.4rem; }
   .library-bar h2 { font-size: clamp(1.5rem,2.5vw,2rem); font-weight: 625; letter-spacing: -.03em; }
-  .library-bar span { color: #686b6d; font-size: .81rem; }
+  .library-bar span { color: #617b91; font-size: .81rem; }
   .library-list { border-top: 1px solid var(--paper-line); }
   .library-row { display: grid; grid-template-columns: minmax(140px,.3fr) minmax(0,1fr) 22px; gap: 1rem 2.3rem; align-items: center; padding: 1.6rem .25rem; border-bottom: 1px solid var(--paper-line); text-decoration: none; transition: background .15s ease,padding .15s ease; }
-  .library-row:hover { padding-left: .8rem; background: #eae7e1; }
-  .library-tag { color: #856e51; font-size: .79rem; font-weight: 625; }
+  .library-row:hover { padding-left: .8rem; background: #e5eef5; }
+  .library-tag { color: #2f7185; font-size: .79rem; font-weight: 625; }
   .library-desc { display: flex; flex-direction: column; gap: .45rem; }
-  .library-desc strong { color: #2b2c2c; font-size: clamp(1.15rem,1.9vw,1.55rem); font-weight: 610; letter-spacing: -.035em; }
-  .library-desc > span { max-width: 620px; color: #626663; font-size: .87rem; line-height: 1.6; }
-  .library-arrow { color: #826d56; font-size: 1.1rem; }
-  .library-note { max-width: 770px; color: #6b6c69; font-size: .85rem; margin-top: 2rem; }
+  .library-desc strong { color: #20354e; font-size: clamp(1.15rem,1.9vw,1.55rem); font-weight: 610; letter-spacing: -.035em; }
+  .library-desc > span { max-width: 620px; color: #5c7386; font-size: .87rem; line-height: 1.6; }
+  .library-arrow { color: #338696; font-size: 1.1rem; }
+  .library-note { max-width: 770px; color: #5b7184; font-size: .85rem; margin-top: 2rem; }
   @media(max-width:820px) { .guides-heading { align-items: flex-start; flex-direction: column; gap: 1rem; } .guides-heading p { max-width: 600px; } }
   @media(max-width:650px) { .library-row { grid-template-columns: 1fr 20px; gap: .5rem 1rem; } .library-tag { grid-column: 1/-1; } .library-desc { grid-column: 1; } .library-arrow { grid-column: 2; grid-row: 2; } }
 </style>

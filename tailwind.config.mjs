@@ -9,7 +9,7 @@ export default {
       body:['Inter','Segoe UI Variable','Segoe UI','Arial','sans-serif'],
       mono:['Consolas','Menlo','monospace']
     },
-    colors:{primary:'#181b20',secondary:'#2a2f37',accent:'#e4c8a4'}
+    colors:{primary:'#11172a',secondary:'#263653',accent:'#a8eee4'}
   }},
   plugins:[typography]
 };
