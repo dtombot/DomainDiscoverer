@@ -1,172 +1,109 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const title = 'Discover Valuable Domain Names Faster';
-const description = 'Check domain availability instantly and use curated tools and guides to uncover high potential names for investors, businesses, SaaS, SEO experts, and startups.';
-
-const tools = [
-  { name: 'ExpiredDomains.net', link: 'https://www.expireddomains.net/?ref=dd', img: null, alt: 'ExpiredDomains.net', desc: 'Free powerhouse for finding expiring and expired names with strong filters.' },
-  { name: 'DomainIQ', link: 'https://www.domainiq.com/?ref=dd', img: null, alt: 'DomainIQ', desc: 'Historical ownership, DNS footprint, hosting changes, and related assets.' },
-  { name: 'NameBio', link: 'https://namebio.com/?ref=dd', img: '/domainingtools/namebio.jpg', alt: 'NameBio logo', desc: 'Comparable sales to price with confidence across markets.' },
-  { name: 'Ahrefs', link: 'https://ahrefs.com/?ref=dd', img: '/domainingtools/ahrefs.jpg', alt: 'Ahrefs logo', desc: 'Backlink quality, anchors, and organic signals to vet SEO value.' },
-  { name: 'SEMrush', link: 'https://semrush.com/?ref=dd', img: '/domainingtools/semrush.jpg', alt: 'SEMrush logo', desc: 'SERP volatility and keyword volume for demand validation.' },
-  { name: 'DotDB', link: 'https://dotdb.com/?ref=dd', img: '/domainingtools/dotdb.jpg', alt: 'DotDB logo', desc: 'See saturation across TLDs to gauge interest and potential confusion.' },
-  { name: 'DNSlytics', link: 'https://dnslytics.com/?ref=dd', img: '/domainingtools/dnslytics.jpg', alt: 'DNSlytics logo', desc: 'Reverse IP, analytics IDs, MX, and related infrastructure lookups.' },
-  { name: 'Estibot', link: 'https://estibot.com/?ref=dd', img: '/domainingtools/estibot-01.jpg', alt: 'Estibot logo', desc: 'Directional valuations and liquidity signals for quick triage.' },
-  { name: 'Instant Domain Search', link: 'https://instantdomainsearch.com/?ref=dd', img: '/domainingtools/instant-domain-search.jpg', alt: 'Instant Domain Search logo', desc: 'Lightning-fast availability checks for hand-reg brainstorming.' },
-  { name: 'NameMaxi', link: 'https://namemaxi.com/?ref=dd', img: '/domainingtools/name-maxi.jpg', alt: 'NameMaxi logo', desc: 'Bulk checks and name ideas to explore patterns quickly.' },
+import DomainSearch from '../components/DomainSearch.astro';
+const title = 'Free Domain Availability Checker & Domain Name Guides | Domain Discoverer';
+const description = 'Search domain name availability for free, discover practical domain research tools, and learn how to choose a domain name, compare extensions, and register with confidence.';
+const guides = [
+  { no:'01', title:'What is a domain name?', summary:'Learn what a domain actually does and how it connects people to a website.', href:'/blog/what-is-a-domain-name' },
+  { no:'02', title:'How to choose a domain name', summary:'A practical checklist for finding a clear, memorable name for your business or idea.', href:'/blog/how-to-choose-a-domain-name' },
+  { no:'03', title:'Domain name vs web hosting', summary:'Understand the two services before you pay for either one.', href:'/blog/domain-name-vs-web-hosting' }
 ];
 ---
 <BaseLayout {title} {description}>
-  <!-- Full-width Hero -->
-  <section id="hero" class="relative isolate overflow-hidden bg-gradient-to-b from-[#0b0013] to-[#130022]">
-    <div class="absolute inset-0 pointer-events-none">
-      <div class="absolute -top-24 -left-24 w-72 h-72 bg-secondary/40 blur-3xl rounded-full float-slow"></div>
-      <div class="absolute -bottom-24 -right-24 w-80 h-80 bg-accent/40 blur-3xl rounded-full float-slow" style="animation-delay: -3s"></div>
-    </div>
-    <div class="container-pad pt-24 sm:pt-28 pb-10">
-      <div class="text-center text-white">
-        <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">Discover <span class="text-accent">Valuable Domains</span> Faster</h1>
-        <p class="text-white/80 sm:text-lg mb-6 max-w-2xl mx-auto">Check any domain and explore proven tools that help investors, businesses, SaaS, SEO experts, and startups find high value names.</p>
+  <section class="home-hero">
+    <div class="container-pad hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Independent domain research & education <span aria-hidden="true">/ 001</span></p>
+        <h1 class="display">Good things start with <em>the right name.</em></h1>
+        <p class="hero-lead">Find out whether a domain is available. Understand how names work. Make your next move with confidence, not guesswork.</p>
+        <div class="hero-links"><a href="#check" class="body-link">Try a domain search <span aria-hidden="true">↗</span></a><a href="/blog" class="body-link subdued">Explore the guides <span aria-hidden="true">↗</span></a></div>
       </div>
-      <div class="max-w-3xl mx-auto">
-        <div class="rounded-2xl border border-slate-200/70 bg-white/90 backdrop-blur-xl shadow-xl p-4 sm:p-5">
-          <form id="domain-form" class="mx-auto max-w-xl flex gap-2 flex-col sm:flex-row">
-            <input id="domain-input" type="text" placeholder="e.g. smartmininghub.com" class="flex-1 px-4 py-3 rounded-xl sm:rounded-l-xl sm:rounded-r-none bg-white text-slate-900 border-2 border-secondary focus:outline-none focus:border-accent placeholder-slate-500 font-medium transition text-base" required />
-            <button class="px-6 py-3 rounded-xl sm:rounded-r-xl sm:rounded-l-none w-full sm:w-auto bg-gradient-to-r from-secondary to-primary text-white font-bold shadow hover:scale-[1.02] transition text-base">Check</button>
-          </form>
-          <div id="domain-result" class="mt-4 text-lg font-semibold min-h-[1.5rem]"></div>
-          <div id="domain-cta" class="mt-4 hidden">
-            <a id="reg-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-block px-7 py-3 bg-gradient-to-r from-secondary to-primary text-white font-bold rounded-2xl shadow hover:scale-105 transition text-base">Register this domain now</a>
-          </div>
-        </div>
-      </div>
+      <aside class="hero-aside" aria-label="How Domain Discoverer works">
+        <span class="aside-number">D / 01</span>
+        <span class="aside-rule"></span>
+        <p><span>DISCOVER</span> a name worth remembering.</p>
+        <p><span>UNDERSTAND</span> how the domain works.</p>
+        <p><span>DECIDE</span> what to register next.</p>
+        <span class="aside-caption">A starting point for builders, businesses, and curious people.</span>
+      </aside>
     </div>
   </section>
-
-  <!-- Tools with modal -->
-  <section id="tools" class="container-pad mt-14">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-2xl font-bold">Best Domain Tools</h2>
-      <a href="/blog/top-domaining-tools-for-investors-2025" class="text-secondary text-sm hover:underline">See how to use these tools</a>
+  <section id="check" class="container-pad search-section">
+    <div class="section-heading" data-reveal>
+      <div><p class="section-kicker">01 / Find your name</p><h2>Domain availability, <em>without the noise.</em></h2></div>
+      <p class="section-note">A focused, one-at-a-time search using our existing registrar lookup connection.</p>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
-      {tools.map((t, i) => (
-        <button class="group w-full aspect-square rounded-2xl border border-slate-200 bg-white/80 backdrop-blur-sm shadow hover:shadow-lg transition overflow-hidden flex items-center justify-center relative tool-card" data-idx={i} aria-label={`Open details for ${t.name}`}
-          title={t.name}>
-          {t.img ? (
-            <img src={t.img} alt={t.alt} loading="lazy" class="w-full h-full object-contain p-6 group-hover:scale-105 transition" />
-          ) : (
-            <div class="w-full h-full flex items-center justify-center">
-              <div class="text-slate-700 font-bold text-center px-3">{t.name}</div>
-            </div>
-          )}
-        </button>
-      ))}
+    <DomainSearch compact={true} heading="Enter a domain to check" />
+    <p class="search-disclaimer">Availability is not a reservation. Always confirm registration, pricing and eligibility with the registrar.</p>
+  </section>
+  <section class="feature-band">
+    <div class="container-pad band-grid">
+      <div data-reveal><span>01</span><strong>Search</strong><p>Check a specific name before investing more time in it.</p></div>
+      <div data-reveal><span>02</span><strong>Learn</strong><p>Understand extensions, registration, privacy and renewals.</p></div>
+      <div data-reveal><span>03</span><strong>Choose</strong><p>Compare your options using clear, practical criteria.</p></div>
     </div>
   </section>
-
-  <!-- Tools Modal -->
-  <div id="tool-modal" class="fixed inset-0 z-30 hidden">
-    <div class="absolute inset-0 bg-black/40" data-close></div>
-    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[92%] sm:w-[520px] rounded-2xl border border-slate-200 bg-white/95 backdrop-blur-xl shadow-2xl p-5">
-      <div class="flex items-start gap-3">
-        <div class="flex-1">
-          <h3 id="tool-title" class="font-extrabold text-xl"></h3>
-          <p id="tool-desc" class="text-slate-700 mt-1"></p>
-        </div>
-        <button class="p-2 text-slate-500 hover:text-slate-900" data-close aria-label="Close">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div class="mt-4 flex items-center justify-between gap-3">
-        <a id="tool-cta" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-secondary to-primary shadow hover:scale-[1.02] transition">
-          Visit Tool
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3Z"/></svg>
-        </a>
-        <a href="/blog/top-domaining-tools-for-investors-2025" class="text-sm text-secondary hover:underline">Why this tool?</a>
-      </div>
+  <section class="container-pad content-section" id="learn">
+    <div class="section-heading" data-reveal>
+      <div><p class="section-kicker">02 / The learning library</p><h2>Know what you are <em>buying.</em></h2></div>
+      <a class="body-link" href="/blog">All domain guides <span aria-hidden="true">↗</span></a>
     </div>
-  </div>
-
-  <section class="container-pad mt-16">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-2xl font-bold">Latest Guides</h2>
-      <a href="/blog" class="text-secondary text-sm hover:underline">View all</a>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {[
-        { title: 'How to Check Domain Availability The Smart Way', href: '/blog/how-to-check-domain-availability-smart-way', desc: 'Save time and avoid false positives with these tips.' },
-        { title: 'Top Domaining Tools for Investors (2025)', href: '/blog/top-domaining-tools-for-investors-2025', desc: 'Expired, brandable, and SEO-ready picks without overspending.' },
-        { title: 'Cheap Domain Registrars with Free WHOIS Privacy (2025)', href: '/blog/cheap-domain-registrars-with-free-whois', desc: 'Protect your details and avoid surprise renewal fees.' }
-      ].map((p) => (
-        <a href={p.href} class="group rounded-2xl border border-slate-200 bg-white/80 backdrop-blur-sm p-5 shadow hover:shadow-lg transition text-left relative overflow-hidden">
-          <div class="absolute inset-x-0 -top-10 h-20 bg-gradient-to-r from-secondary/20 to-primary/20 opacity-0 group-hover:opacity-100 transition"></div>
-          <h3 class="font-bold text-lg mb-1 relative">{p.title}</h3>
-          <p class="text-slate-700 text-sm relative">{p.desc}</p>
-          <span class="mt-3 inline-flex items-center gap-1 text-secondary text-sm relative">Read more <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' class='w-4 h-4'><path d='M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3Z'/></svg></span>
-        </a>
-      ))}
+    <div class="rail-grid">
+      {guides.map((guide) => <a href={guide.href} class="rail-item" data-reveal><span class="rail-index">{guide.no} / THE BASICS</span><h3>{guide.title} <span aria-hidden="true">↗</span></h3><p>{guide.summary}</p></a>)}
     </div>
   </section>
-
-  <script>
-    const form = document.getElementById('domain-form');
-    const input = document.getElementById('domain-input');
-    const result = document.getElementById('domain-result');
-    const cta = document.getElementById('domain-cta');
-    const regLink = document.getElementById('reg-link');
-    form?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const domain = input.value.trim().toLowerCase();
-      if (!domain) return;
-      result.textContent = 'Checking...';
-      cta.classList.add('hidden');
-      try {
-        const res = await fetch(`/.netlify/functions/check-domain?domain=${encodeURIComponent(domain)}`);
-        const data = await res.json();
-        if (data.status === 'available') {
-          result.textContent = 'Domain is AVAILABLE!';
-          result.className = 'mt-4 text-lg font-semibold text-green-600';
-          cta.classList.remove('hidden');
-          regLink.href = `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(domain)}&affid=000000`;
-        } else if (data.status === 'taken') {
-          result.textContent = 'Domain is already registered.';
-          result.className = 'mt-4 text-lg font-semibold text-red-600';
-        } else {
-          result.textContent = 'Error checking domain.';
-          result.className = 'mt-4 text-lg font-semibold text-red-500';
-        }
-      } catch (err) {
-        result.textContent = 'Network error. Try again.';
-        result.className = 'mt-4 text-lg font-semibold text-red-500';
-      }
-    });
-
-    // Tools modal
-    const modal = document.getElementById('tool-modal');
-    const titleEl = document.getElementById('tool-title');
-    const descEl = document.getElementById('tool-desc');
-    const ctaEl = document.getElementById('tool-cta');
-    const toolsJsonEl = document.querySelector('script[data-tools]');
-    const toolsData = toolsJsonEl ? JSON.parse(toolsJsonEl.textContent || '[]') : [];
-    document.addEventListener('click', (e) => {
-      const target = e.target || e.srcElement;
-      const card = target && target.closest ? target.closest('.tool-card') : null;
-      const closeTrigger = target && target.closest ? target.closest('[data-close]') : null;
-      if (card) {
-        const idx = parseInt(card.getAttribute('data-idx') || '0', 10);
-        const t = toolsData[idx];
-        if (t) {
-          titleEl.textContent = t.name;
-          descEl.textContent = t.desc || '';
-          ctaEl.setAttribute('href', t.link);
-          modal.classList.remove('hidden');
-        }
-      } else if (closeTrigger) {
-        modal.classList.add('hidden');
-      }
-    });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') modal.classList.add('hidden'); });
-  </script>
-  <script type="application/json" data-tools set:html={JSON.stringify(tools)}></script>
+  <section class="container-pad content-section" id="tools">
+    <div class="section-heading" data-reveal>
+      <div><p class="section-kicker">03 / Useful research</p><h2>The right tool for <em>the question.</em></h2></div>
+      <a class="body-link" href="/tools">Browse research tools <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="tools-list">
+      <a href="/tools#availability" data-reveal><span>01 / Name checks</span><strong>Availability & ideas</strong><span class="tools-arrow" aria-hidden="true">↗</span></a>
+      <a href="/tools#history" data-reveal><span>02 / Due diligence</span><strong>History & ownership</strong><span class="tools-arrow" aria-hidden="true">↗</span></a>
+      <a href="/tools#value" data-reveal><span>03 / Research</span><strong>Comparable sales & SEO</strong><span class="tools-arrow" aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+  <section class="container-pad question-section">
+    <div class="question-panel" data-reveal><p class="section-kicker">Still figuring it out?</p><h2 class="display">You don't need to be a domain expert to <em>begin well.</em></h2><p>Start with the fundamentals, ask better questions and keep control of the decisions that matter.</p><a href="/blog" class="button-accent">Start learning <span aria-hidden="true">↗</span></a></div>
+  </section>
 </BaseLayout>
+<style>
+  .home-hero { border-bottom: 1px solid var(--line); }
+  .hero-grid { display: grid; grid-template-columns: 1.5fr .55fr; gap: 5vw; padding-block: clamp(5rem, 11vw, 10rem); align-items: end; }
+  .hero-copy h1 { font-size: clamp(4.1rem, 9vw, 9rem); max-width: 1000px; margin: 1.5rem 0 2.5rem; }
+  .hero-lead { font-size: clamp(1.08rem, 1.7vw, 1.35rem); max-width: 580px; color: var(--muted); line-height: 1.6; }
+  .hero-links { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 2.3rem; }
+  .hero-links .subdued { color: var(--text); border-color: var(--line); }
+  .hero-aside { display: flex; flex-direction: column; border-left: 1px solid var(--line); padding: 1.3rem 0 0 2rem; gap: 1.1rem; }
+  .aside-number { font: 2.6rem var(--serif); color: var(--accent); }
+  .aside-rule { display: block; width: 100%; height: 1px; background: var(--line); margin-bottom: 1rem; }
+  .hero-aside p { font-size: 1rem; line-height: 1.45; }
+  .hero-aside p span { display: block; letter-spacing: .18em; color: var(--accent); font-size: .65rem; font-weight: 750; margin-bottom: .4rem; }
+  .aside-caption { color: var(--muted); font-size: .75rem; margin-top: 1.6rem; }
+  .search-section { padding-block: 7rem; }
+  .search-section h2, .content-section h2 { max-width: 760px; }
+  .search-section h2 em, .content-section h2 em { color: var(--accent); font-weight: 400; }
+  .section-note { color: var(--muted); max-width: 240px; font-size: .92rem; }
+  .search-disclaimer { color: var(--muted); font-size: .78rem; margin-top: 1.1rem; }
+  .feature-band { background: var(--cream); color: var(--paper-ink); }
+  .band-grid { display: grid; grid-template-columns: repeat(3,1fr); }
+  .band-grid > div { padding: 3rem 2rem; border-right: 1px solid #c2c8b9; }
+  .band-grid > div:first-child { padding-left: 0; }
+  .band-grid > div:last-child { border-right: 0; }
+  .band-grid span { font-size: .78rem; margin-right: 1rem; color: #586c4e; }
+  .band-grid strong { font: 2.25rem var(--serif); }
+  .band-grid p { margin-top: 1rem; max-width: 245px; font-size: .9rem; }
+  .content-section { padding-top: 7rem; }
+  .tools-list { border-top: 1px solid var(--line); }
+  .tools-list a { display: grid; grid-template-columns: 1fr 1.5fr auto; align-items: center; gap: 1.4rem; text-decoration: none; border-bottom: 1px solid var(--line); padding: 2rem .5rem; transition: background .25s ease, padding .25s ease; }
+  .tools-list a:hover { background: var(--surface); padding-left: 1rem; }
+  .tools-list span { font-size: .85rem; color: var(--muted); }
+  .tools-list strong { font-family: var(--serif); font-weight: 400; font-size: clamp(1.4rem,3vw,2.6rem); }
+  .tools-list .tools-arrow { color: var(--accent); font-size: 1.5rem; }
+  .question-section { padding-top: 7rem; }
+  .question-panel { background: var(--surface-2); border: 1px solid var(--line); padding: clamp(2rem, 7vw, 6rem); }
+  .question-panel h2 { font-size: clamp(3rem, 5.5vw, 6rem); max-width: 860px; margin: 1.5rem 0; }
+  .question-panel p:not(.section-kicker) { max-width: 650px; color: var(--muted); font-size: 1.1rem; margin: 1.5rem 0 2rem; }
+  @media(max-width:850px) { .hero-grid { grid-template-columns: 1fr; gap: 3rem; } .hero-aside { display: none; } }
+  @media(max-width:650px) { .hero-copy h1 { font-size: clamp(3.55rem, 15vw, 5rem); } .search-section, .content-section { padding-top: 4.5rem; padding-bottom: 3rem; } .band-grid { grid-template-columns: 1fr; } .band-grid > div { border-right: 0; border-bottom: 1px solid #c2c8b9; padding: 2rem 0; } .tools-list a { grid-template-columns: 1fr auto; } .tools-list strong { grid-column: 1; grid-row: 2; } .tools-list .tools-arrow { grid-column: 2; grid-row: 1 / 3; } }
+</style>

@@ -1,31 +1,50 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import DomainSearch from '../components/DomainSearch.astro';
+const title = 'Free Domain Availability Checker | Search a Domain Name';
+const description = 'Check if a domain name is available with a simple free lookup. Search a .com or other extension and learn what to do before registering.';
+const breadcrumbs = { '@context':'https://schema.org', '@type':'BreadcrumbList', itemListElement:[
+  { '@type':'ListItem',position:1,name:'Home',item:'https://domaindiscoverer.com/' },
+  { '@type':'ListItem',position:2,name:'Domain availability checker',item:'https://domaindiscoverer.com/domain-availability-checker' }
+]};
 ---
-<BaseLayout title="Domain Availability Checker - Free & Fast" description="Quickly check if a domain is available. No signup required. Learn how to avoid false positives and pick better names.">
-  <section class="container-pad">
-    <nav aria-label="Breadcrumb" class="text-sm text-slate-600 mb-3">
-      <ol class="flex gap-2 items-center">
-        <li><a href="/" class="hover:underline">Home</a></li>
-        <li>/</li>
-        <li aria-current="page">Domain Availability Checker</li>
-      </ol>
-    </nav>
-    <h1 class="text-3xl sm:text-4xl font-extrabold mb-4">Domain Availability Checker</h1>
-    <p class="text-slate-700 max-w-2xl mb-6">Use our fast, simple checker to see if your domain is free. Then read our guides to choose a stronger name and register it for the right price.</p>
-    <a href="/#check" class="btn-primary inline-block px-6 py-3">Go to Checker</a>
-    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-      <a href="/blog/how-to-check-domain-availability-smart-way" class="card p-5 hover:shadow-xl transition text-left">
-        <h2 class="font-bold text-lg">Check Availability the Smart Way</h2>
-        <p class="text-white/75 text-sm">Avoid false positives and move fast when a name is free.</p>
-      </a>
-      <a href="/blog/best-domain-name-tools-for-beginners" class="card p-5 hover:shadow-xl transition text-left">
-        <h2 class="font-bold text-lg">Best Tools for Beginners</h2>
-        <p class="text-white/75 text-sm">Free and low-cost tools to research names quickly.</p>
-      </a>
-      <a href="/blog/top-domaining-tools-for-investors-2025" class="card p-5 hover:shadow-xl transition text-left">
-        <h2 class="font-bold text-lg">Top Domaining Tools for Investors</h2>
-        <p class="text-white/75 text-sm">Find expired, brandable, and SEO-ready names faster.</p>
-      </a>
+<BaseLayout {title} {description} structuredData={breadcrumbs}>
+  <section class="page-hero">
+    <div class="container-pad">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Domain checker</span></nav>
+      <p class="eyebrow">Free domain lookup / No signup</p>
+      <h1 class="display">Check if your <em>domain is available.</em></h1>
+      <p>Search one domain at a time using our live registrar lookup connection. It's a starting point, not a registration or a guarantee.</p>
     </div>
   </section>
+  <section class="container-pad checker-body">
+    <DomainSearch />
+    <div class="how-to-grid">
+      <div><span class="eyebrow">01 / Enter</span><h2>Start with the exact name.</h2><p>Try a complete domain such as youridea.com. You can check another extension too, but each is a separate name.</p></div>
+      <div><span class="eyebrow">02 / Verify</span><h2>Confirm with a registrar.</h2><p>Availability can change. Some names may be restricted, premium-priced, reserved or unavailable for other reasons.</p></div>
+      <div><span class="eyebrow">03 / Compare</span><h2>Review the total cost.</h2><p>Compare first-year cost, renewals, privacy options and transfer rules before paying.</p></div>
+    </div>
+    <section class="checker-faq">
+      <p class="section-kicker">Common questions</p>
+      <h2 class="display">A little clarity goes a long way.</h2>
+      <details><summary>Is this domain availability check free?</summary><p>Yes. You do not need an account to submit a single name. Each submission makes one lookup request.</p></details>
+      <details><summary>Can I buy the domain here?</summary><p>No. Domain Discoverer helps you check and research names. Registration is completed on a registrar's website.</p></details>
+      <details><summary>Why might a result differ from a registrar's checkout?</summary><p>Availability can change quickly, and registry restrictions or premium classifications may apply. Treat the registrar's checkout as the final confirmation.</p></details>
+      <details><summary>What if the name is taken?</summary><p>Try a short, clear variation or another extension. Avoid confusing spellings or a name too close to an existing brand.</p></details>
+      <a href="/blog/how-to-check-domain-availability-smart-way" class="body-link">Read the full availability guide ↗</a>
+    </section>
+  </section>
 </BaseLayout>
+<style>
+  .checker-body { padding-top: 4rem; }
+  .how-to-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2.3rem; margin: 5rem 0; border-top: 1px solid var(--line); padding-top: 2.5rem; }
+  .how-to-grid h2 { font: 2rem/1.2 var(--serif); margin: 1rem 0; }
+  .how-to-grid p { color: var(--muted); font-size: .95rem; }
+  .checker-faq { max-width: 850px; margin: 5rem 0; }
+  .checker-faq h2 { font-size: clamp(2.4rem,5vw,4.5rem); margin: 1rem 0 2rem; }
+  .checker-faq details { border-bottom: 1px solid var(--line); padding: 1.2rem 0; }
+  .checker-faq summary { font-weight: 650; cursor: pointer; }
+  .checker-faq details p { color: var(--muted); padding-top: .8rem; max-width: 650px; }
+  .checker-faq .body-link { margin-top: 2rem; }
+  @media(max-width:750px) { .how-to-grid { grid-template-columns: 1fr; gap: 1rem; } }
+</style>

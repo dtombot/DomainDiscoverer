@@ -1,0 +1,94 @@
+---
+interface Props { compact?: boolean; heading?: string; }
+const { compact = false, heading = 'Check a domain name' } = Astro.props as Props;
+---
+<div class:list={['domain-lookup', { compact }]}>
+  <form class="domain-search" action="/domain-availability-checker" method="get" novalidate>
+    <label for={compact ? 'quick-domain' : 'full-domain'}>{heading}</label>
+    <div class="input-row">
+      <input id={compact ? 'quick-domain' : 'full-domain'} name="domain" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="yourgreatidea.com" maxlength="253" required aria-describedby={compact ? 'quick-help' : 'full-help'} />
+      <button type="submit">Check availability <span aria-hidden="true">↗</span></button>
+    </div>
+    <p class="search-help" id={compact ? 'quick-help' : 'full-help'}>Type a complete domain, like example.com, or a name to check its .com version. No account required.</p>
+    <div class="lookup-result" role="status" aria-live="polite" aria-atomic="true" hidden>
+      <span class="result-label"></span>
+      <p class="result-detail"></p>
+      <a class="result-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Review registration with a registrar ↗</a>
+    </div>
+  </form>
+</div>
+<style>
+  .domain-lookup { max-width: 780px; background: #222e25; border: 1px solid #455448; padding: clamp(1.2rem, 3vw, 2rem); }
+  .domain-lookup.compact { max-width: 100%; }
+  .domain-search label { display: block; margin-bottom: .85rem; color: #edf0e7; font-size: .78rem; text-transform: uppercase; letter-spacing: .15em; font-weight: 700; }
+  .input-row { display: flex; gap: .5rem; }
+  .input-row input { min-width: 0; flex: 1 1 auto; width: 100%; padding: 1.08rem 1rem; border: 1px solid #5b6b5e; border-radius: 0; background: #101714; color: #edf0e7; font-size: 1.08rem; }
+  .input-row input::placeholder { color: #96a89b; }
+  .input-row button { flex: none; padding: 1rem 1.4rem; color: #101714; background: #c6dc85; border: 1px solid #c6dc85; font-weight: 750; transition: background .2s ease; }
+  .input-row button:hover { background: #e4f0b8; }
+  .input-row button:disabled { cursor: progress; opacity: .65; }
+  .search-help { margin: .8rem 0 0; font-size: .8rem; color: #b1beb2; }
+  .lookup-result { margin-top: 1.35rem; padding: 1.1rem 1.15rem; border: 1px solid #566854; background: #152019; }
+  .lookup-result[data-state="available"] { border-left: 3px solid #c6dc85; }
+  .lookup-result[data-state="taken"], .lookup-result[data-state="error"] { border-left: 3px solid #d7aa88; }
+  .result-label { font-weight: 750; }
+  .result-detail { margin-top: .4rem; font-size: .9rem; color: #d1dacd; }
+  .result-link { display: inline-block; margin-top: 1rem; color: #c6dc85; text-underline-offset: .3rem; font-size: .9rem; }
+  @media(max-width: 620px) { .input-row { flex-direction: column; } .input-row button { width: 100%; } }
+</style>
+<script>
+  const domainPattern = /^(?=.{4,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z](?:[a-z0-9-]{0,61}[a-z0-9])$/i;
+  document.querySelectorAll('.domain-search').forEach((form) => {
+    const input = form.querySelector('input[name="domain"]');
+    const button = form.querySelector('button[type="submit"]');
+    const result = form.querySelector('.lookup-result');
+    const label = form.querySelector('.result-label');
+    const detail = form.querySelector('.result-detail');
+    const link = form.querySelector('.result-link');
+    const params = new URLSearchParams(location.search);
+    if (params.has('domain') && input && !input.value) input.value = (params.get('domain') || '').slice(0, 253);
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      let domain = (input?.value || '').trim().toLowerCase().replace(/\.$/, '');
+      if (domain && !domain.includes('.')) domain += '.com';
+      if (!domainPattern.test(domain)) {
+        result.hidden = false;
+        result.dataset.state = 'error';
+        label.textContent = 'Enter a valid domain name';
+        detail.textContent = 'Use letters, numbers and hyphens with an extension such as .com. Do not include https://, spaces or slashes.';
+        link.hidden = true;
+        input?.focus();
+        return;
+      }
+      input.value = domain;
+      result.hidden = false;
+      result.dataset.state = 'loading';
+      label.textContent = 'Checking ' + domain + '…';
+      detail.textContent = 'One live availability request is being made.';
+      link.hidden = true;
+      button.disabled = true;
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 10000);
+      try {
+        const response = await fetch('/.netlify/functions/check-domain?domain=' + encodeURIComponent(domain), { method: 'GET', signal: controller.signal, cache: 'no-store' });
+        const data = await response.json();
+        if (!response.ok || !['available', 'taken'].includes(data.status)) throw new Error('Lookup unavailable');
+        if (data.status === 'available') {
+          result.dataset.state = 'available';
+          label.textContent = domain + ' may be available';
+          detail.textContent = 'The lookup returned available. Confirm the final price and availability at checkout; results can change.';
+          link.href = 'https://www.namecheap.com/domains/registration/results/?domain=' + encodeURIComponent(domain);
+          link.hidden = false;
+        } else {
+          result.dataset.state = 'taken';
+          label.textContent = domain + ' is registered';
+          detail.textContent = 'Try a shorter variation, a different word, or another domain extension. Each check is made only when you submit.';
+        }
+      } catch (_) {
+        result.dataset.state = 'error';
+        label.textContent = 'We could not complete the lookup';
+        detail.textContent = 'Please try again. You can also confirm the name with your preferred registrar.';
+      } finally { clearTimeout(timeout); button.disabled = false; }
+    });
+  });
+</script>
